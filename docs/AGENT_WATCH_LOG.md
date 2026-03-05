@@ -1968,3 +1968,124 @@ Purpose: 작업 중복을 막고, 작업 전/후 실제 변경 이력을 시간 
   - ?? src/routes/arena-war/
 - Context compact check: present (`.agent-context/compact/codex-arena-game-feel-latest.md`)
 - Status: DONE
+
+### W-20260306-0034-frontend-codex (start)
+
+- Start: 2026-03-06 00:34 +0900
+- Agent: Codex (GPT-5)
+- Repo path: /Users/ej/Downloads/maxidoge-clones/frontend
+- Branch: codex/terminal-uiux-gtm-refine
+- Base origin/main hash: 7e94a0cf580430cbf8c65b63f83ecf3e82f3786f
+- Working tree status:
+  - ## codex/terminal-uiux-gtm-refine
+  - M docs/AGENT_WATCH_LOG.md
+- Task summary: Terminal page 종합 개선 설계 및 구현 (UIUX + GTM + 중복 제거 + 잠재 버그/성능 개선)
+- Overlap/conflict check result: 기존 변경은 docs/AGENT_WATCH_LOG.md 1건이며 기능 코드와 직접 충돌 없음. 기능 파일은 clean 상태에서 시작.
+- safe:status result: PASS (npm run safe:status 완료, ctx:auto snapshot/compact 완료)
+- Notes: /Users/ej/Downloads/maxi-doge-unified/README.md 경로는 로컬에 존재하지 않아 확인 불가. 현재 리포 AGENTS 규칙 기준으로 진행.
+
+### W-20260306-0034-frontend-codex (finish)
+
+- End: 2026-03-06 00:44 +0900
+- Agent: Codex (GPT-5)
+- What changed:
+  - Terminal UIUX/GTM 개선 반영 (WarRoom 요약/CTA, Intel 상태 UX, Chart first-scan CTA 경량화)
+  - 방향 뱃지 공통 컴포넌트 도입: `src/components/terminal/DirectionBadge.svelte`
+  - 하단 티커 Fear&Greed 강조 및 정보 칩화
+  - 데드코드 제거: `PredictPanel.svelte`, `QuickTradePanel.svelte`, `ScanBriefCards.svelte` 삭제
+  - Notification bell 위치 보정으로 모바일/터미널 겹침 완화
+- Validation results:
+  - `npm run check`: PASS (0 errors, 기존 경고 다수 유지)
+  - `npm run build`: PASS (기존 경고 다수 유지)
+- Commit hash: N/A (커밋/푸시 미요청)
+- Push status: N/A (미요청)
+- Final working tree status:
+  - ## codex/terminal-uiux-gtm-refine
+  - M src/components/arena/ChartPanel.svelte
+  - M src/components/shared/NotificationTray.svelte
+  - M src/components/terminal/IntelPanel.svelte
+  - D src/components/terminal/PredictPanel.svelte
+  - D src/components/terminal/QuickTradePanel.svelte
+  - D src/components/terminal/ScanBriefCards.svelte
+  - M src/components/terminal/VerdictBanner.svelte
+  - M src/components/terminal/VerdictCard.svelte
+  - M src/components/terminal/WarRoom.svelte
+  - M src/components/terminal/warroom/WarRoomFooterSection.svelte
+  - M src/components/terminal/warroom/WarRoomHeaderSection.svelte
+  - M src/components/terminal/warroom/WarRoomSignalFeed.svelte
+  - M src/components/terminal/warroom/warroom.css
+  - M src/routes/terminal/+page.svelte
+  - ?? src/components/terminal/DirectionBadge.svelte
+- Context compact check: present (`frontend/.agent-context/compact/codex-terminal-uiux-gtm-refine-latest.md`)
+- Status: DONE
+
+### W-20260306-0034-frontend-codex (uiux-final finish)
+
+- End: 2026-03-06 01:07 +0900
+- Agent: Codex (GPT-5)
+- What changed:
+  - Positions UX 상태모델 강화: `live/error-empty/demo` 분기 추가
+  - 연결 실패 + 실포지션 0건일 때 데모 포지션 자동 fallback 렌더
+    - `TRADES`, `PERPS`, `MARKET BETS` 모두 demo 배지/스타일로 표시
+  - 동기화 배지 상태에 `DEMO MODE` 추가
+  - 전체 최적화 기준 문서 추가: `frontend/docs/terminal-uiux-optimization-v2.md`
+- Validation results:
+  - `npm run check`: PASS (0 errors, 47 warnings)
+  - `npm run build`: PASS
+- Commit hash: N/A (커밋/푸시 미요청)
+- Push status: N/A (미요청)
+- Final working tree status:
+  - ## codex/terminal-uiux-gtm-refine
+  - M src/components/arena/ChartPanel.svelte
+  - M src/components/shared/NotificationTray.svelte
+  - M src/components/terminal/IntelPanel.svelte
+  - D src/components/terminal/PredictPanel.svelte
+  - D src/components/terminal/QuickTradePanel.svelte
+  - D src/components/terminal/ScanBriefCards.svelte
+  - M src/components/terminal/VerdictBanner.svelte
+  - M src/components/terminal/VerdictCard.svelte
+  - M src/components/terminal/WarRoom.svelte
+  - M src/components/terminal/warroom/WarRoomFooterSection.svelte
+  - M src/components/terminal/warroom/WarRoomHeaderSection.svelte
+  - M src/components/terminal/warroom/WarRoomSignalFeed.svelte
+  - M src/components/terminal/warroom/warroom.css
+  - M src/routes/terminal/+page.svelte
+  - ?? src/components/terminal/DirectionBadge.svelte
+  - ?? docs/terminal-uiux-optimization-v2.md
+- Context compact check: present (`frontend/.agent-context/compact/codex-terminal-uiux-gtm-refine-latest.md`)
+- Status: DONE
+
+### W-20260306-0034-frontend-codex (follow-up finish)
+
+- End: 2026-03-06 00:57 +0900
+- Agent: Codex (GPT-5)
+- What changed:
+  - `src/routes/terminal/+page.svelte` runes/legacy 혼합 회귀 제거 (legacy `$:` 반응형으로 복원), ticker chip/resize-handle 공통화는 유지
+  - `src/components/terminal/VerdictBanner.svelte` 미사용 파생값 제거
+  - `src/components/terminal/warroom/WarRoomSignalFeed.svelte` 방향/신뢰도 중복 UI 제거
+  - `src/components/terminal/warroom/warroom.css` 미사용 vote/conf 스타일 제거
+- Validation results:
+  - `npm run check`: PASS (0 errors, 47 warnings 유지)
+  - `npm run build`: PASS
+  - `npm run safe:status`: PASS
+- Commit hash: N/A (커밋/푸시 미요청)
+- Push status: N/A (미요청)
+- Final working tree status:
+  - ## codex/terminal-uiux-gtm-refine
+  - M src/components/arena/ChartPanel.svelte
+  - M src/components/shared/NotificationTray.svelte
+  - M src/components/terminal/IntelPanel.svelte
+  - D src/components/terminal/PredictPanel.svelte
+  - D src/components/terminal/QuickTradePanel.svelte
+  - D src/components/terminal/ScanBriefCards.svelte
+  - M src/components/terminal/VerdictBanner.svelte
+  - M src/components/terminal/VerdictCard.svelte
+  - M src/components/terminal/WarRoom.svelte
+  - M src/components/terminal/warroom/WarRoomFooterSection.svelte
+  - M src/components/terminal/warroom/WarRoomHeaderSection.svelte
+  - M src/components/terminal/warroom/WarRoomSignalFeed.svelte
+  - M src/components/terminal/warroom/warroom.css
+  - M src/routes/terminal/+page.svelte
+  - ?? src/components/terminal/DirectionBadge.svelte
+- Context compact check: present (`frontend/.agent-context/compact/codex-terminal-uiux-gtm-refine-latest.md`)
+- Status: DONE
