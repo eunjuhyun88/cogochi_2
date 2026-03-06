@@ -221,5 +221,6 @@ Purpose: Cogochi 작업 중복을 막고, 작업 전/후 실제 변경 이력을
 - Diff vs plan:
   - Anthropic 글은 context 관리 자체보다 eval noise 통제 문서로 반영했고, OpenAI 글은 repo map/progressive disclosure/mechanical validation 규칙으로 반영
 - Commit / Push:
-  - pending
+  - local commit `8427797` created
+  - pushed to `origin/main`
 - Status: DONE
