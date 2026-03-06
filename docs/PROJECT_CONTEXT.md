@@ -27,6 +27,10 @@ Read in this order:
 1. `CLAUDE.md`
 2. `docs/PROJECT_CONTEXT.md`
 3. `docs/PRODUCT_BLUEPRINT.md`
+4. `docs/GAME_DESIGN.md`
+5. `docs/TECH_ARCHITECTURE.md`
+6. `docs/UIUX_SYSTEM.md`
+7. `docs/PROGRESSION_MODEL.md`
 
 ## Current State
 
@@ -71,6 +75,10 @@ When the product direction or implementation boundary changes, update:
 - `CLAUDE.md`
 - `docs/PROJECT_CONTEXT.md`
 - `docs/PRODUCT_BLUEPRINT.md`
+- `docs/GAME_DESIGN.md`
+- `docs/TECH_ARCHITECTURE.md`
+- `docs/UIUX_SYSTEM.md`
+- `docs/PROGRESSION_MODEL.md`
 - `docs/AGENT_WATCH_LOG.md`
 
 ## Next Engineering Steps

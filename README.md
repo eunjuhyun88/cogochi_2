@@ -36,4 +36,8 @@ npm run build
 - workspace and engineering rules: `CLAUDE.md`
 - product and current state: `docs/PROJECT_CONTEXT.md`
 - product blueprint: `docs/PRODUCT_BLUEPRINT.md`
+- game design: `docs/GAME_DESIGN.md`
+- technical architecture: `docs/TECH_ARCHITECTURE.md`
+- UIUX system: `docs/UIUX_SYSTEM.md`
+- progression model: `docs/PROGRESSION_MODEL.md`
 - work history: `docs/AGENT_WATCH_LOG.md`

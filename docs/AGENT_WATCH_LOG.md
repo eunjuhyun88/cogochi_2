@@ -96,6 +96,31 @@ Purpose: Cogochi 작업 중복을 막고, 작업 전/후 실제 변경 이력을
 
 ---
 
+### W-20260306-2123-cogochi-codex
+
+- Start (KST): 2026-03-06 21:23
+- End (KST): 2026-03-06 21:23
+- Branch: `main`
+- Scope (planned):
+  - Cogochi 전용 정식 설계문서 4종 추가
+  - 기존 context 문서에서 새 설계문서 체계를 정본으로 연결
+- Overlap check (before work):
+  - 문서 파일만 수정
+  - 앱 코드 변경 없음
+- Changes (actual):
+  - `docs/GAME_DESIGN.md` 추가
+  - `docs/TECH_ARCHITECTURE.md` 추가
+  - `docs/UIUX_SYSTEM.md` 추가
+  - `docs/PROGRESSION_MODEL.md` 추가
+  - `README.md`, `CLAUDE.md`, `docs/PROJECT_CONTEXT.md`에서 새 문서 링크/정본 체계 반영
+- Diff vs plan:
+  - AIMON 원본 문서 중 로컬에서 직접 확인 가능한 것은 `GDD`와 `Prototype HTML`뿐이었고, 나머지는 현재 Cogochi 방향과 기존 정리 문서를 바탕으로 재구성
+- Commit / Push:
+  - pending
+- Status: DONE
+
+---
+
 ### W-20260306-2116-cogochi-codex
 
 - Start (KST): 2026-03-06 21:16
