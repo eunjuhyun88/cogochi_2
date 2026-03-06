@@ -1,16 +1,20 @@
 # Cogochi
 
-Standalone SvelteKit app for `AI MON: Signal Wars`.
+Cogochi is a standalone SvelteKit game project focused on:
 
-Current product direction:
+- owning individual AI agents
+- tuning indicators and retraining paths
+- building a 4-agent squad
+- battling opponent squads
+- feeding results back into growth and evolution
 
-- raise your own AI agent creatures
-- tune indicators and retraining per agent
-- build a 4-agent squad
-- battle against opponent squads
-- feed results back into growth and evolution
+This repo should read as a `Cogochi` product repo, not as a sub-note for another project.
 
-Current information architecture:
+## Product Loop
+
+`owned agent -> roster -> training/retraining -> squad -> battle -> growth`
+
+## Current Screens
 
 - `/` -> Trainer Hub
 - `/roster` -> Owned Agents
@@ -27,7 +31,9 @@ npm run check
 npm run build
 ```
 
-## Context
+## Docs
 
-- product/dev context: `docs/PROJECT_CONTEXT.md`
-- Codex workspace guide: `CLAUDE.md`
+- workspace and engineering rules: `CLAUDE.md`
+- product and current state: `docs/PROJECT_CONTEXT.md`
+- product blueprint: `docs/PRODUCT_BLUEPRINT.md`
+- work history: `docs/AGENT_WATCH_LOG.md`

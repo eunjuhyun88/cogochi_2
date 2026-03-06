@@ -4,9 +4,9 @@ Last updated: 2026-03-06
 
 ## Product Definition
 
-Cogochi is not a trading interface reskin.
+Cogochi is not a trading interface reskin and not a documentation alias for AIMON.
 
-It is a creature-raising game built by extracting the battle shell feel from STOCKCLAW arena and rebuilding the product around:
+It is its own product repo for a creature-raising game built around:
 
 `owned agents -> roster -> training/retraining -> squad -> battle -> growth`
 
@@ -17,6 +17,16 @@ The player fantasy is:
 - send them into battle against another squad
 - see who wins
 - grow, evolve, and refine the team
+
+## Source Of Truth
+
+This repo should be understandable without opening root-level project notes.
+
+Read in this order:
+
+1. `CLAUDE.md`
+2. `docs/PROJECT_CONTEXT.md`
+3. `docs/PRODUCT_BLUEPRINT.md`
 
 ## Current State
 
@@ -35,6 +45,7 @@ Current limitation:
 - UI is roster-first, but data model is still prototype-level
 - `playerStore` still uses `unlockedDexIds`, `teamDexIds`, and global XP
 - real `OwnedAgent`, `rosterStore`, `squadStore`, and per-agent progression are not implemented yet
+- code still uses internal `aimon` namespaces as prototype leftovers
 
 ## Important Files
 
@@ -52,6 +63,15 @@ Current limitation:
 2. keep the arena battle readability from STOCKCLAW
 3. make training and retraining decisions affect battle outcomes
 4. move toward async PvP or opponent snapshots after the roster model is real
+
+## Documentation Rules
+
+When the product direction or implementation boundary changes, update:
+
+- `CLAUDE.md`
+- `docs/PROJECT_CONTEXT.md`
+- `docs/PRODUCT_BLUEPRINT.md`
+- `docs/AGENT_WATCH_LOG.md`
 
 ## Next Engineering Steps
 

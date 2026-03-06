@@ -25,7 +25,7 @@ Purpose: Cogochi 작업 중복을 막고, 작업 전/후 실제 변경 이력을
 - End (KST): 2026-03-06 20:57
 - Branch: `main`
 - Scope (planned):
-  - standalone AIMON app를 `Cogochi/`로 rename
+  - standalone prototype app를 `Cogochi/`로 rename
   - separate git repo initialize
   - GitHub remote 연결
   - repo-local context 문서 정리
@@ -67,4 +67,28 @@ Purpose: Cogochi 작업 중복을 막고, 작업 전/후 실제 변경 이력을
 - Commit / Push:
   - local commit `61498fb` created
   - remote push pending
+- Status: DONE
+
+---
+
+### W-20260306-2120-cogochi-codex
+
+- Start (KST): 2026-03-06 21:20
+- End (KST): 2026-03-06 21:20
+- Branch: `main`
+- Scope (planned):
+  - Cogochi 문서를 repo 전용 문서 체계로 개편
+  - 외부 root 문서 의존도 제거
+- Overlap check (before work):
+  - 문서 파일만 수정
+  - 앱 코드/배틀 로직 변경 없음
+- Changes (actual):
+  - `README.md`를 Cogochi 제품 소개 문서로 재작성
+  - `CLAUDE.md`에서 root extraction plan 의존 제거
+  - `docs/PRODUCT_BLUEPRINT.md` 신규 추가
+  - `docs/PROJECT_CONTEXT.md`를 Cogochi 전용 source-of-truth 관점으로 수정
+- Diff vs plan:
+  - watch log에 현재 항목까지 함께 기록
+- Commit / Push:
+  - pending
 - Status: DONE
