@@ -39,10 +39,10 @@ Purpose: Cogochi 작업 중복을 막고, 작업 전/후 실제 변경 이력을
   - `README.md`, `docs/PROJECT_CONTEXT.md`, `CLAUDE.md` 추가/정리
   - Trainer Hub / Roster / Battle route 구조 유지
 - Diff vs plan:
-  - push는 GitHub auth token invalid로 보류
+  - 최초 HTTPS push는 GitHub auth 부재로 실패했고, 이후 SSH remote로 전환해 해결
 - Commit / Push:
   - local commit `35a9c75` created
-  - remote push pending
+  - pushed to `origin/main`
 - Status: DONE
 
 ---
@@ -66,7 +66,7 @@ Purpose: Cogochi 작업 중복을 막고, 작업 전/후 실제 변경 이력을
   - 없음
 - Commit / Push:
   - local commit `61498fb` created
-  - remote push pending
+  - pushed to `origin/main`
 - Status: DONE
 
 ---
@@ -90,5 +90,30 @@ Purpose: Cogochi 작업 중복을 막고, 작업 전/후 실제 변경 이력을
 - Diff vs plan:
   - watch log에 현재 항목까지 함께 기록
 - Commit / Push:
-  - pending
+  - local commit `18cfabf` created
+  - pushed to `origin/main`
+- Status: DONE
+
+---
+
+### W-20260306-2116-cogochi-codex
+
+- Start (KST): 2026-03-06 21:16
+- End (KST): 2026-03-06 21:16
+- Branch: `main`
+- Scope (planned):
+  - Cogochi 초기 커밋들을 원격에 push
+  - push/auth 전환 이력 기록
+- Overlap check (before work):
+  - remote `origin`은 비어 있었고, 로컬 `main`만 존재
+  - merge 대상 브랜치 없음
+- Changes (actual):
+  - `gh auth login`으로 GitHub auth 복구
+  - remote URL을 HTTPS -> SSH로 전환
+  - `git push -u origin main` 성공
+- Diff vs plan:
+  - merge는 필요 없었음. 원격이 empty repo였기 때문에 첫 push만 수행
+- Commit / Push:
+  - no code commit
+  - `main` successfully pushed and upstream configured
 - Status: DONE
