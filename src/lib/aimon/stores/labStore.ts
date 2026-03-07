@@ -4,6 +4,7 @@ import { createStarterAgents, createStarterMemoryBanks } from '../data/agentSeed
 import { DEFAULT_DATA_SOURCES, DEFAULT_TOOLS } from '../data/labCatalog';
 import { rosterStore } from './rosterStore';
 import type {
+  ArtifactLineageRecord,
   LabState,
   MemoryBank,
   MemoryRecord,
@@ -26,7 +27,8 @@ function defaultState(): LabState {
     trainingRuns: [],
     promptVariants: [],
     datasetBundles: [],
-    modelArtifacts: []
+    modelArtifacts: [],
+    artifactLineage: []
   };
 }
 
@@ -86,6 +88,11 @@ function normalizeArtifacts(rawArtifacts: unknown): ModelArtifact[] {
   return rawArtifacts.filter((artifact): artifact is ModelArtifact => Boolean(artifact && typeof artifact === 'object'));
 }
 
+function normalizeArtifactLineage(rawLineage: unknown): ArtifactLineageRecord[] {
+  if (!Array.isArray(rawLineage)) return [];
+  return rawLineage.filter((entry): entry is ArtifactLineageRecord => Boolean(entry && typeof entry === 'object'));
+}
+
 function loadState(): LabState {
   if (typeof window === 'undefined') return defaultState();
 
@@ -102,7 +109,8 @@ function loadState(): LabState {
       trainingRuns: normalizeTrainingRuns(parsed?.trainingRuns),
       promptVariants: Array.isArray(parsed?.promptVariants) ? parsed.promptVariants : [],
       datasetBundles: Array.isArray(parsed?.datasetBundles) ? parsed.datasetBundles : [],
-      modelArtifacts: normalizeArtifacts(parsed?.modelArtifacts)
+      modelArtifacts: normalizeArtifacts(parsed?.modelArtifacts),
+      artifactLineage: normalizeArtifactLineage(parsed?.artifactLineage)
     };
   } catch {
     return defaultState();
@@ -333,5 +341,12 @@ export function setModelArtifactStatus(artifactId: string, status: ModelArtifact
             promotedAt: status === 'ACTIVE' ? Date.now() : artifact.promotedAt
           }
     )
+  }));
+}
+
+export function appendArtifactLineageRecord(record: ArtifactLineageRecord): void {
+  labStore.update((state) => ({
+    ...state,
+    artifactLineage: [record, ...state.artifactLineage.filter((item) => item.id !== record.id)].slice(0, 64)
   }));
 }

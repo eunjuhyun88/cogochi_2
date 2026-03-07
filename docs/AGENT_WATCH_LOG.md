@@ -310,3 +310,33 @@ Purpose: Cogochi 작업 중복을 막고, 작업 전/후 실제 변경 이력을
 - Commit / Push:
   - pending
 - Status: DONE
+
+---
+
+### W-20260307-0300-cogochi-codex
+
+- Start (KST): 2026-03-07 03:00
+- End (KST): 2026-03-07 03:30
+- Branch: `main`
+- Scope (planned):
+  - repo governance 강화를 위해 architecture lint, code-aware context freshness, benchmark manifests, artifact lineage를 구현
+  - `npm run check`에 강제 규칙 연결
+  - lab UI에 운영 로그를 노출
+- Overlap check (before work):
+  - 직전 training orchestrator 단계 이후 동일 repo 내부 governance 보강
+  - 기존 기능 구현과 충돌하지 않는 수준의 lint rule만 우선 적용
+- Changes (actual):
+  - `scripts/check-aimon-architecture.mjs` 추가 및 `package.json`의 `check` 체인에 연결
+  - `scripts/check-context-docs.mjs`를 code-aware freshness 검증까지 확장
+  - `benchmarkManifestService.ts` 추가
+  - `types.ts`, `matchStore.ts`, `labStore.ts`, `battleStore.ts`에 benchmark manifest / artifact lineage persistence 추가
+  - `trainingOrchestrator.ts`가 artifact created/promoted lineage를 기록하도록 확장
+  - `/lab`에서 recent benchmark runs / artifact lineage 노출
+  - `CONTEXT_ENGINEERING.md`, `QUALITY_SCORE.md`, implementation contracts, tech debt tracker 업데이트
+  - `npm run check`, `npm run build` 통과
+- Diff vs plan:
+  - CPU/memory telemetry는 browser-local approximation으로 우선 기록
+  - durable remote registry/export는 다음 단계 debt로 유지
+- Commit / Push:
+  - pending
+- Status: DONE

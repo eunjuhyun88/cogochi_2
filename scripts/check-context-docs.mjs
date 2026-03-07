@@ -17,6 +17,7 @@ const requiredPaths = [
   'docs/PLANS.md',
   'docs/QUALITY_SCORE.md',
   'docs/RELIABILITY.md',
+  'docs/TECH_ARCHITECTURE.md',
   'docs/exec-plans/README.md',
   'docs/exec-plans/tech-debt-tracker.md',
   'docs/exec-plans/active/.gitkeep',
@@ -55,13 +56,37 @@ const referenceRules = [
   {
     file: 'docs/AI_RUNTIME_TRAINING_SPEC.md',
     mustInclude: ['AI_IMPLEMENTATION_CONTRACTS.md']
+  },
+  {
+    file: 'docs/CONTEXT_ENGINEERING.md',
+    mustInclude: ['doc freshness lint', 'benchmark run manifests', 'artifact lineage']
+  },
+  {
+    file: 'docs/RELIABILITY.md',
+    mustInclude: ['Benchmark run manifest', 'authoritative']
   }
+];
+
+const serviceDocs = [
+  'contextAssembler.ts',
+  'datasetBuilder.ts',
+  'evalService.ts',
+  'fineTuneService.ts',
+  'memoryService.ts',
+  'modelProvider.ts',
+  'reflectionService.ts',
+  'trainingOrchestrator.ts',
+  'benchmarkManifestService.ts'
 ];
 
 const errors = [];
 
 function readFile(relPath) {
   return fs.readFileSync(path.join(root, relPath), 'utf8');
+}
+
+function readJson(relPath) {
+  return JSON.parse(readFile(relPath));
 }
 
 for (const relPath of requiredPaths) {
@@ -84,6 +109,26 @@ for (const rule of referenceRules) {
     const lineCount = contents.split('\n').length;
     if (lineCount > rule.maxLines) {
       errors.push(`${rule.file} should stay concise (${lineCount} lines > ${rule.maxLines})`);
+    }
+  }
+}
+
+if (fs.existsSync(path.join(root, 'package.json'))) {
+  const pkg = readJson('package.json');
+  const scripts = pkg.scripts ?? {};
+  if (scripts['check:architecture'] !== 'node scripts/check-aimon-architecture.mjs') {
+    errors.push('package.json must expose check:architecture for AIMON governance.');
+  }
+  if (typeof scripts.check !== 'string' || !scripts.check.includes('check:architecture') || !scripts.check.includes('check:context')) {
+    errors.push('package.json check script must run both architecture and context checks.');
+  }
+}
+
+if (fs.existsSync(path.join(root, 'docs/AI_IMPLEMENTATION_CONTRACTS.md'))) {
+  const contents = readFile('docs/AI_IMPLEMENTATION_CONTRACTS.md');
+  for (const serviceFile of serviceDocs) {
+    if (!contents.includes(serviceFile)) {
+      errors.push(`docs/AI_IMPLEMENTATION_CONTRACTS.md must reference ${serviceFile}`);
     }
   }
 }

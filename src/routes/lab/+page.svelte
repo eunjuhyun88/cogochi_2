@@ -34,6 +34,8 @@
   );
   let memoryCardCount = $derived(lab.memoryBanks.reduce((sum, bank) => sum + bank.records.length, 0));
   let recentLessons = $derived(matches.recentResults.slice(0, 4));
+  let recentBenchmarkRuns = $derived(matches.recentBenchmarkRuns.slice(0, 4));
+  let recentLineage = $derived(lab.artifactLineage.slice(0, 4));
   let memoryOverview = $derived(
     selectedTeam.map((agent) => ({
       agent,
@@ -280,6 +282,58 @@
           {#each lab.dataSources as source (source.id)}
             <span>{source.name}</span>
           {/each}
+        </div>
+      </section>
+    </PokemonFrame>
+  </section>
+
+  <section class="grid two-up">
+    <PokemonFrame variant="dark" padding="16px">
+      <section class="panel">
+        <div class="section-head">
+          <h2>Benchmark Runs</h2>
+          <span>{recentBenchmarkRuns.length} recent</span>
+        </div>
+        <div class="list">
+          {#if recentBenchmarkRuns.length > 0}
+            {#each recentBenchmarkRuns as run (run.runId)}
+              <article class="list-card">
+                <div class="list-head">
+                  <strong>{run.profile}</strong>
+                  <span>{run.authoritative ? 'AUTHORITATIVE' : 'DEBUG ONLY'}</span>
+                </div>
+                <p>{run.benchmarkPackId} · fallback {run.fallbackCount} · invalid JSON {run.invalidJsonCount}</p>
+                <small>avg {run.averageLatencyMs}ms · p95 {run.p95LatencyMs}ms · manifest {run.runId}</small>
+              </article>
+            {/each}
+          {:else}
+            <p class="empty-copy">No benchmark run manifests captured yet.</p>
+          {/if}
+        </div>
+      </section>
+    </PokemonFrame>
+
+    <PokemonFrame variant="dark" padding="16px">
+      <section class="panel">
+        <div class="section-head">
+          <h2>Artifact Lineage</h2>
+          <span>{recentLineage.length} recent</span>
+        </div>
+        <div class="list">
+          {#if recentLineage.length > 0}
+            {#each recentLineage as entry (entry.id)}
+              <article class="list-card">
+                <div class="list-head">
+                  <strong>{entry.event}</strong>
+                  <span>{formatDate(entry.createdAt)}</span>
+                </div>
+                <p>{entry.note}</p>
+                <small>{entry.artifactId} · {entry.benchmarkPackId}</small>
+              </article>
+            {/each}
+          {:else}
+            <p class="empty-copy">No artifact lineage recorded yet.</p>
+          {/if}
         </div>
       </section>
     </PokemonFrame>

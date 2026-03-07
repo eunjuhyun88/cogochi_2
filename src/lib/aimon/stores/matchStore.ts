@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import { DEFAULT_EVAL_SCENARIO_ID, createEvalScenario } from '../data/evalScenarios';
-import type { BattlePhase, EvalMatchResult, MatchState } from '../types';
+import type { BattlePhase, BenchmarkRunManifest, EvalMatchResult, MatchState } from '../types';
 
 const STORAGE_KEY = 'cogochi.match-history.v2';
 
@@ -8,7 +8,8 @@ const defaultState: MatchState = {
   selectedScenarioId: DEFAULT_EVAL_SCENARIO_ID,
   activeScenario: null,
   currentPhase: 'IDLE',
-  recentResults: []
+  recentResults: [],
+  recentBenchmarkRuns: []
 };
 
 function loadState(): MatchState {
@@ -22,7 +23,8 @@ function loadState(): MatchState {
       selectedScenarioId: typeof parsed?.selectedScenarioId === 'string' ? parsed.selectedScenarioId : DEFAULT_EVAL_SCENARIO_ID,
       activeScenario: parsed?.activeScenario ?? null,
       currentPhase: parsed?.currentPhase ?? 'IDLE',
-      recentResults: Array.isArray(parsed?.recentResults) ? parsed.recentResults : []
+      recentResults: Array.isArray(parsed?.recentResults) ? parsed.recentResults : [],
+      recentBenchmarkRuns: Array.isArray(parsed?.recentBenchmarkRuns) ? parsed.recentBenchmarkRuns : []
     };
   } catch {
     return defaultState;
@@ -65,5 +67,12 @@ export function recordEvalMatchResult(matchResult: EvalMatchResult): void {
     activeScenario: null,
     currentPhase: 'RESULT',
     recentResults: [matchResult, ...state.recentResults].slice(0, 20)
+  }));
+}
+
+export function recordBenchmarkRunManifest(manifest: BenchmarkRunManifest): void {
+  matchStore.update((state) => ({
+    ...state,
+    recentBenchmarkRuns: [manifest, ...state.recentBenchmarkRuns.filter((item) => item.runId !== manifest.runId)].slice(0, 24)
   }));
 }

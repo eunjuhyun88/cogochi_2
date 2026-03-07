@@ -189,16 +189,21 @@ The following changes are now part of the standard Cogochi setup:
 - quality score file
 - execution plan directories
 - context-doc lint added to `npm run check`
+- AIMON architecture lint added to `npm run check`
+- code-aware doc freshness checks for implementation contracts
+- doc freshness lint against actual code exports
+- benchmark run manifests stored per eval
+- artifact lineage recorded in repo-local state
 
 ## 6. Future improvements
 
 These are not required immediately, but they are the next context-engineering layer:
 
-1. doc freshness lint against actual code exports
-2. benchmark run manifests stored per eval
-3. automated doc-gardening tasks
-4. scenario pack versioning checks
-5. artifact lineage diff viewers
+1. automated doc-gardening tasks
+2. scenario pack versioning checks
+3. artifact lineage diff viewers
+4. benchmark manifest export to durable storage
+5. architecture rule autofix hints
 
 ## 7. Rule of thumb
 

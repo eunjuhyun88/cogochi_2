@@ -19,15 +19,15 @@ This file tracks repo readability and agent-operability, not just user-facing po
 | AI runtime design clarity | A | Runtime and implementation contract docs now exist |
 | Repo entrypoint clarity | B | `AGENTS.md` and docs index added, but code-level doc drift still possible |
 | Plan hygiene | C | Plan directories and tracker are added, but active plan inventory is still sparse |
-| Mechanical context validation | B | `check-context-docs.mjs` added, but it only validates structure, not freshness |
-| Eval reliability discipline | B | Reliability policy exists and eval/reflection services are separated, but runtime manifests are not yet emitted |
-| Artifact lineage and promotion rigor | B | Contracts exist, dataset bundles feed a local training orchestrator and artifact manifests, provider-backed registry is still pending |
+| Mechanical context validation | A | Context lint now checks structure, cross-links, package wiring, and implementation-contract freshness |
+| Eval reliability discipline | B | Reliability policy exists and benchmark run manifests are emitted, but authoritative runs are still local-only |
+| Artifact lineage and promotion rigor | B | Local artifact lineage is recorded and promotion is tracked, but provider-backed registry and rollback workflows are still pending |
 | Async PvP snapshot readiness | C | Storage model is designed, implementation is pending |
 
 ## Next Upgrades
 
-1. Add code-aware doc freshness checks
-2. Emit benchmark run manifests from the runtime
-3. Add execution-plan templates
-4. Add artifact lineage persistence
-5. Add snapshot validation for async PvP
+1. Add execution-plan templates
+2. Export benchmark manifests to durable storage
+3. Add provider-backed artifact registry persistence
+4. Add snapshot validation for async PvP
+5. Add doc-gardening automation

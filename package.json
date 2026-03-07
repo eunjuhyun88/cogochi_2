@@ -8,8 +8,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "prepare": "svelte-kit sync || echo ''",
+    "check:architecture": "node scripts/check-aimon-architecture.mjs",
     "check:context": "node scripts/check-context-docs.mjs",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && npm run check:context"
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && npm run check:architecture && npm run check:context"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^7.0.0",

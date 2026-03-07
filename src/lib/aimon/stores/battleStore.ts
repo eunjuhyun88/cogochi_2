@@ -1,6 +1,7 @@
 import { get, writable } from 'svelte/store';
 import { createEvalScenario } from '../data/evalScenarios';
 import { advanceBattleState, applyFocusTap, createInitialBattleState } from '../engine/battleEngine';
+import { buildBenchmarkRunManifest } from '../services/benchmarkManifestService';
 import { buildAgentContextPacket, buildAgentDecisionContext } from '../services/contextAssembler';
 import { buildDatasetFromEval } from '../services/datasetBuilder';
 import { buildEvalMatchResult } from '../services/evalService';
@@ -12,7 +13,7 @@ import { applyBattleRewardsToRoster, rosterStore } from './rosterStore';
 import { runtimeStore } from './runtimeStore';
 import { squadStore } from './squadStore';
 import { appendDatasetBundle, appendMemoryRecords, labStore } from './labStore';
-import { beginLegacyMatch, matchStore, recordEvalMatchResult, syncMatchPhase } from './matchStore';
+import { beginLegacyMatch, matchStore, recordBenchmarkRunManifest, recordEvalMatchResult, syncMatchPhase } from './matchStore';
 import type { AgentContextPacket, BattleState, EvalScenario, OwnedAgent, SquadTacticPreset } from '../types';
 
 let timer: ReturnType<typeof setInterval> | null = null;
@@ -262,6 +263,7 @@ export async function startBattle(): Promise<void> {
         const rosterAgents = get(rosterStore).agents;
         const activeScenario = get(matchStore).activeScenario ?? createEvalScenario(get(matchStore).selectedScenarioId);
         const activeSquad = get(squadStore).activeSquad;
+        const runtime = get(runtimeStore).config;
         const activeAgents = next.playerTeam
           .map((instance) => rosterAgents.find((agent) => agent.id === instance.ownedAgentId))
           .filter((agent): agent is OwnedAgent => Boolean(agent));
@@ -309,10 +311,20 @@ export async function startBattle(): Promise<void> {
         const contextPackets = buildContextPackets(next, activeAgents, activeScenario, activeSquad.tacticPreset);
         const datasetBundle = buildDatasetFromEval(finalMatchResult, contextPackets, reflectionsByAgent);
         appendDatasetBundle(datasetBundle);
+        const benchmarkManifest = buildBenchmarkRunManifest({
+          matchResult: finalMatchResult,
+          runtime: runtime,
+          agents: activeAgents,
+          decisionTraces: Object.values(decisionTracesByAgent),
+          startedAt: activeScenario.scenarioStartAt,
+          finishedAt: finalMatchResult.createdAt
+        });
+        recordBenchmarkRunManifest(benchmarkManifest);
         recordEvalMatchResult({
           ...finalMatchResult,
           contextPackets,
-          datasetBundleId: datasetBundle.id
+          datasetBundleId: datasetBundle.id,
+          benchmarkManifestId: benchmarkManifest.runId
         });
         return { ...next, rewardsApplied: true };
       }

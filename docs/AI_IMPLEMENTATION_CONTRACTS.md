@@ -149,6 +149,63 @@ export function comparePromotionCandidates(
 ): PromotionCandidateComparison;
 ```
 
+### Supporting runtime helpers already used by the MVP
+
+These supporting services are part of the current code path and must stay documented even though they are smaller than the training/eval orchestrators.
+
+```ts
+// src/lib/aimon/services/contextAssembler.ts
+import type {
+  AgentContextPacket,
+  AgentDecisionContext,
+  BattleRetrievedMemory,
+  DataSourceBinding,
+  DataSourceKind,
+  EvalScenario,
+  MarketState,
+  OwnedAgent
+} from '$lib/aimon/types';
+
+export function buildAgentDecisionContext(
+  agent: OwnedAgent,
+  market: MarketState,
+  retrievedMemories: BattleRetrievedMemory[],
+  squadNotes: string[],
+  tacticPreset: AgentDecisionContext['tacticPreset'],
+  scenario?: Pick<EvalScenario, 'id' | 'label' | 'symbol' | 'timeframe' | 'objective' | 'allowedDataSourceKinds'>,
+  activeDataSourceKinds?: DataSourceKind[]
+): AgentDecisionContext;
+
+export function buildAgentContextPacket(
+  agent: OwnedAgent,
+  decisionContext: AgentDecisionContext,
+  activeDataSources?: DataSourceBinding[]
+): AgentContextPacket;
+
+// src/lib/aimon/services/memoryService.ts
+import type { AgentRole, MemoryBank, MemoryRecord, RetrievalPolicy } from '$lib/aimon/types';
+
+export interface MemoryRetrievalContext {
+  role: AgentRole;
+  symbol: string;
+  timeframe: string;
+  regime: string;
+  tags: string[];
+  scenarioStartAt: number;
+}
+
+export interface MemoryRetrievalCandidate {
+  record: MemoryRecord;
+  totalScore: number;
+}
+
+export function retrieveRelevantMemories(
+  bank: MemoryBank | null,
+  policy: RetrievalPolicy,
+  context: MemoryRetrievalContext
+): MemoryRetrievalCandidate[];
+```
+
 ### 2.3 `src/lib/aimon/services/embeddingProvider.ts`
 
 Purpose:
@@ -321,7 +378,37 @@ export function promoteArtifact(artifactId: string, agentId: string): Promise<vo
 export function rollbackArtifact(agentId: string, previousArtifactId: string): Promise<void>;
 ```
 
-### 2.8 `src/lib/aimon/services/modelProvider.ts`
+### 2.8 `src/lib/aimon/services/benchmarkManifestService.ts`
+
+Purpose:
+
+- emit benchmark run manifests from actual eval executions
+- centralize runtime noise metadata and authoritative gating flags
+
+```ts
+import type {
+  AgentDecisionTrace,
+  BenchmarkRunManifest,
+  EvalMatchResult,
+  OwnedAgent,
+  RuntimeConfig
+} from '$lib/aimon/types';
+
+export interface BuildBenchmarkRunManifestInput {
+  matchResult: EvalMatchResult;
+  runtime: RuntimeConfig;
+  agents: OwnedAgent[];
+  decisionTraces: AgentDecisionTrace[];
+  startedAt: number;
+  finishedAt?: number;
+}
+
+export function buildBenchmarkRunManifest(
+  input: BuildBenchmarkRunManifestInput
+): BenchmarkRunManifest;
+```
+
+### 2.9 `src/lib/aimon/services/modelProvider.ts`
 
 Purpose:
 

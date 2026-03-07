@@ -11,6 +11,7 @@ import {
   runSftJob
 } from './fineTuneService';
 import {
+  appendArtifactLineageRecord,
   compactMemoryBank,
   labStore,
   registerModelArtifact,
@@ -204,6 +205,17 @@ function getBaselineMetrics(agentId: string, benchmarkPackId: string): EvalMetri
   return averageMetrics(recent, benchmarkPackId);
 }
 
+function buildRetrievalPolicyVersion(agentId: string): string | undefined {
+  const agent = get(rosterStore).agents.find((item) => item.id === agentId);
+  if (!agent) return undefined;
+  const policy = agent.loadout.retrievalPolicy;
+  return `topK-${policy.topK}-sim-${policy.similarityWeight.toFixed(2)}-succ-${policy.successWeight.toFixed(2)}`;
+}
+
+function buildBasePromptVariantId(agentId: string): string | undefined {
+  return get(labStore).promptVariants.find((variant) => variant.agentId === agentId)?.id;
+}
+
 function adjustMetrics(base: EvalMetrics, benchmarkPackId: string, deltas: Partial<EvalMetrics>): EvalMetrics {
   return applyScenarioWeights(
     {
@@ -371,6 +383,27 @@ async function runFineTuneJob(job: TrainingJob, kind: 'SFT' | 'LORA'): Promise<{
   const manifest = kind === 'SFT' ? await runSftJob(payload) : await runLoraJob(payload);
   const artifact = registerArtifact(manifest);
   registerModelArtifact(artifact);
+  appendArtifactLineageRecord({
+    id: `lineage-created-${artifact.id}`,
+    artifactId: artifact.id,
+    agentId: job.agentId,
+    event: 'CREATED',
+    trainingJobId: job.id,
+    benchmarkPackId: job.benchmarkPackId,
+    sourceDatasetBundleIds: Array.isArray(job.payload.datasetBundleIds)
+      ? job.payload.datasetBundleIds.filter((item): item is string => typeof item === 'string')
+      : [],
+    promotedFromArtifactId:
+      typeof job.payload.activeArtifactId === 'string' && job.payload.activeArtifactId.length > 0
+        ? job.payload.activeArtifactId
+        : undefined,
+    basePromptVariantId: buildBasePromptVariantId(job.agentId),
+    retrievalPolicyVersion: buildRetrievalPolicyVersion(job.agentId),
+    memoryCompactionLevel:
+      get(labStore).memoryBanks.find((bank) => bank.agentId === job.agentId || bank.id === agent.memoryBankId)?.compactionLevel ?? 0,
+    note: `${kind} candidate created from merged dataset bundle set.`,
+    createdAt: manifest.createdAt
+  });
 
   return {
     manifest,
@@ -532,7 +565,26 @@ export async function promoteTrainingJob(jobId: TrainingJobId): Promise<Training
   }
 
   if (job.resultArtifactId) {
+    const previousArtifactId = get(rosterStore).agents.find((item) => item.id === job.agentId)?.activeArtifactId;
     await promoteArtifact(job.resultArtifactId, job.agentId);
+    appendArtifactLineageRecord({
+      id: `lineage-promoted-${job.resultArtifactId}-${Date.now()}`,
+      artifactId: job.resultArtifactId,
+      agentId: job.agentId,
+      event: 'PROMOTED',
+      trainingJobId: job.id,
+      benchmarkPackId: job.benchmarkPackId,
+      sourceDatasetBundleIds: Array.isArray(job.payload.datasetBundleIds)
+        ? job.payload.datasetBundleIds.filter((item): item is string => typeof item === 'string')
+        : [],
+      promotedFromArtifactId: previousArtifactId,
+      basePromptVariantId: buildBasePromptVariantId(job.agentId),
+      retrievalPolicyVersion: buildRetrievalPolicyVersion(job.agentId),
+      memoryCompactionLevel:
+        get(labStore).memoryBanks.find((bank) => bank.agentId === job.agentId)?.compactionLevel ?? 0,
+      note: 'Artifact cleared promotion gates and became active.',
+      createdAt: Date.now()
+    });
   } else {
     updateAgentConfiguration(job.agentId, { status: 'READY' });
   }

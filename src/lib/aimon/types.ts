@@ -328,6 +328,8 @@ export interface AgentDecisionTrace {
   providerId?: string;
   providerLabel?: string;
   fallbackUsed?: boolean;
+  latencyMs?: number;
+  providerError?: string;
 }
 
 export interface AgentContextPacket {
@@ -465,6 +467,22 @@ export interface ModelArtifact {
   metrics: EvalMetrics;
   createdAt: number;
   promotedAt?: number;
+}
+
+export interface ArtifactLineageRecord {
+  id: string;
+  artifactId: string;
+  agentId: string;
+  event: 'CREATED' | 'PROMOTED' | 'ROLLED_BACK';
+  trainingJobId?: string;
+  benchmarkPackId: string;
+  sourceDatasetBundleIds: string[];
+  promotedFromArtifactId?: string;
+  basePromptVariantId?: string;
+  retrievalPolicyVersion?: string;
+  memoryCompactionLevel?: number;
+  note: string;
+  createdAt: number;
 }
 
 export interface TrainingRun {
@@ -641,7 +659,39 @@ export interface EvalMatchResult {
   reflections?: ReflectionNote[];
   contextPackets?: Record<string, AgentContextPacket>;
   datasetBundleId?: string;
+  benchmarkManifestId?: string;
   createdAt: number;
+}
+
+export interface BenchmarkRunManifest {
+  runId: string;
+  profile: string;
+  benchmarkPackId: string;
+  scenarioId: string;
+  squadId: string;
+  primaryArtifactId?: string;
+  artifactIds: string[];
+  runtime: {
+    mode: RuntimeInferenceMode;
+    baseUrl: string;
+    modelId: string;
+    temperature: number;
+    timeoutMs: number;
+  };
+  system: {
+    cpuLoadPct: number;
+    memoryUsedGb: number;
+    warmCache: boolean;
+  };
+  fallbackCount: number;
+  invalidJsonCount: number;
+  averageLatencyMs: number;
+  p95LatencyMs: number;
+  traceValidityRate: number;
+  scenarioSeedVersion: string;
+  authoritative: boolean;
+  startedAt: number;
+  finishedAt: number;
 }
 
 export interface RosterState {
@@ -663,6 +713,7 @@ export interface LabState {
   promptVariants: PromptVariant[];
   datasetBundles: TrainingDatasetBundle[];
   modelArtifacts: ModelArtifact[];
+  artifactLineage: ArtifactLineageRecord[];
 }
 
 export interface MatchState {
@@ -670,6 +721,7 @@ export interface MatchState {
   activeScenario: EvalScenario | null;
   currentPhase: BattlePhase | 'IDLE';
   recentResults: EvalMatchResult[];
+  recentBenchmarkRuns: BenchmarkRunManifest[];
 }
 
 export interface MarketState {

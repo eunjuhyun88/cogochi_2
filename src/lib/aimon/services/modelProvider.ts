@@ -131,6 +131,7 @@ function buildThesis(action: AgentAction, context: AgentDecisionContext, memoryT
 }
 
 function decideHeuristically(context: AgentDecisionContext): AgentDecisionTrace {
+  const startedAt = Date.now();
   const memoryTilt = inferMemoryTilt(context);
   const marketTilt = inferMarketTilt(context);
   const scenarioAdjustment = inferScenarioAdjustment(context);
@@ -155,6 +156,7 @@ function decideHeuristically(context: AgentDecisionContext): AgentDecisionTrace 
     invalidation: buildInvalidation(action, context),
     evidenceTitles: context.retrievedMemories.slice(0, 3).map((memory) => memory.title),
     generatedAt: Date.now(),
+    latencyMs: Date.now() - startedAt,
     providerId: heuristicModelProvider.id,
     providerLabel: heuristicModelProvider.label
   };
@@ -195,7 +197,8 @@ function createFallbackTrace(context: AgentDecisionContext, errorMessage: string
     thesis: `${fallback.thesis} External provider fallback: ${errorMessage}`,
     providerId: fallback.providerId,
     providerLabel: fallback.providerLabel,
-    fallbackUsed: true
+    fallbackUsed: true,
+    providerError: errorMessage
   };
 }
 
@@ -290,6 +293,7 @@ async function fetchWithTimeout(url: string, init: RequestInit, timeoutMs: numbe
 }
 
 async function callOllama(context: AgentDecisionContext, config: RuntimeConfig): Promise<AgentDecisionTrace> {
+  const startedAt = Date.now();
   const response = await fetchWithTimeout(
     `${config.baseUrl.replace(/\/$/, '')}/api/chat`,
     {
@@ -330,12 +334,14 @@ async function callOllama(context: AgentDecisionContext, config: RuntimeConfig):
 
   return {
     ...parsed,
+    latencyMs: Date.now() - startedAt,
     providerId: 'ollama',
     providerLabel: `Ollama · ${config.modelId}`
   };
 }
 
 async function callOpenAICompatible(context: AgentDecisionContext, config: RuntimeConfig): Promise<AgentDecisionTrace> {
+  const startedAt = Date.now();
   const response = await fetchWithTimeout(
     `${config.baseUrl.replace(/\/$/, '')}/chat/completions`,
     {
@@ -374,6 +380,7 @@ async function callOpenAICompatible(context: AgentDecisionContext, config: Runti
 
   return {
     ...parsed,
+    latencyMs: Date.now() - startedAt,
     providerId: 'openai-compatible',
     providerLabel: `OpenAI Compat · ${config.modelId}`
   };
