@@ -20,8 +20,15 @@ const routeMeta = [
     route: '/',
     role: 'product entry',
     primaryConcern: 'positioning, navigation, onboarding',
-    keyState: '`walletStore`, `userProfileStore`',
+    keyState: '`walletStore`, `authSessionStore`, `profileTier`',
     deepDocs: '`docs/PRODUCT_SENSE.md`'
+  },
+  {
+    route: '/agent',
+    role: 'agent hub bridge',
+    primaryConcern: 'merged train and record entry point',
+    keyState: '`agentData`, `userProfileStore`, `matchHistoryStore`',
+    deepDocs: '`docs/product-specs/agents.md`'
   },
   {
     route: '/agents',
@@ -29,6 +36,13 @@ const routeMeta = [
     primaryConcern: 'stats, memory, roster legibility',
     keyState: '`agentData`',
     deepDocs: '`docs/PRODUCT_SENSE.md`'
+  },
+  {
+    route: '/create',
+    role: 'create-agent bridge',
+    primaryConcern: 'activation, wallet connection, and terminal handoff',
+    keyState: '`walletStore`, `authSessionStore`',
+    deepDocs: '`docs/page-specs/create-agent-page.md`'
   },
   {
     route: '/arena',
@@ -66,9 +80,16 @@ const routeMeta = [
     deepDocs: '`docs/PRODUCT_SENSE.md`'
   },
   {
+    route: '/lab',
+    role: 'model training workbench',
+    primaryConcern: 'agent doctrine, retained memory, release readiness',
+    keyState: '`agentData`',
+    deepDocs: '`docs/page-specs/lab-page.md`'
+  },
+  {
     route: '/oracle',
     role: 'redirect route',
-    primaryConcern: 'redirect into signals/oracle view',
+    primaryConcern: 'redirect into signals ai leaderboard view',
     keyState: 'none',
     deepDocs: '`docs/product-specs/signals.md`'
   },
@@ -76,7 +97,7 @@ const routeMeta = [
     route: '/passport',
     role: 'profile/progression surface',
     primaryConcern: 'identity, stats, learning, history',
-    keyState: '`userProfileStore`, `matchHistoryStore`, `quickTradeStore`',
+    keyState: '`userProfileStore`, `userLifecycleStore`, `matchHistoryStore`, `quickTradeStore`',
     deepDocs: '`docs/product-specs/passport.md`'
   },
   {
@@ -94,11 +115,32 @@ const routeMeta = [
     deepDocs: '`docs/product-specs/signals.md`'
   },
   {
+    route: '/signals/[postId]',
+    role: 'community signal detail route',
+    primaryConcern: 'single-post evidence, comments, and trade handoff',
+    keyState: 'route-local post loader + `communityStore` reaction state',
+    deepDocs: '`docs/page-specs/signals-detail-page.md`'
+  },
+  {
     route: '/terminal',
     role: 'intel/action surface',
     primaryConcern: 'scan, intel, action orchestration',
     keyState: 'route shell + `copyTradeStore`, `trackedSignalStore`, live prices',
     deepDocs: '`docs/product-specs/terminal.md`'
+  },
+  {
+    route: '/world',
+    role: 'world bridge surface',
+    primaryConcern: 'world-map preview, readiness framing, battle handoff',
+    keyState: '`gameState`',
+    deepDocs: '`docs/page-specs/world-page.md`'
+  },
+  {
+    route: '/creator/[userId]',
+    role: 'public creator profile route',
+    primaryConcern: 'creator context and recent community signals',
+    keyState: 'route-local creator loader + community signal cards',
+    deepDocs: '`docs/page-specs/creator-page.md`'
   }
 ];
 
@@ -108,8 +150,11 @@ const storeMeta = [
   ['arenaV2State', 'route/session transient', 'simplified arena v2 local flow', 'Route-specific state.'],
   ['arenaWarStore', 'route/session transient', 'arena-war state machine and local orchestration', 'Durable record still belongs to server persistence.'],
   ['activeGamesStore', 'route/session transient', 'local multi-game runtime tracking', 'Coordination state, not durable truth.'],
-  ['walletStore', 'server-authoritative projection', 'wallet connection and user progression stage', 'Durable auth/progression still server-backed.'],
-  ['userProfileStore', 'server-authoritative projection', 'profile, badges, user summary', 'Should remain server-derived or server-validated.'],
+  ['authSessionStore', 'server-authoritative projection', 'authenticated session mirror and cookie-backed identity', 'Session authority should stay separate from wallet UX and route-local control state.'],
+  ['walletStore', 'route/session transient', 'wallet connection transport and signed-wallet shell', 'Connection UX state should stay separate from durable profile or trade truth.'],
+  ['walletModalStore', 'route/session transient', 'wallet modal visibility and step flow', 'Modal UX state is split from wallet transport and progression state.'],
+  ['remoteSessionGuard', 'derived/support', 'remote-session gate helpers', 'Utility helpers around authenticated remote-backed store access.'],
+  ['userProfileStore', 'server-authoritative projection', 'profile projection and progression read model', 'Current unified profile surface remains the durable profile-facing store.'],
   ['quickTradeStore', 'server-authoritative projection', 'quick trades with optimistic staging', 'Reconcile optimistic IDs to server truth.'],
   ['trackedSignalStore', 'server-authoritative projection', 'tracked signals and conversion state', 'Local cache/fallback only.'],
   ['copyTradeStore', 'server-authoritative projection', 'copy-trade builder and publish reconcile', 'Canonical publish path belongs to server.'],
@@ -117,13 +162,13 @@ const storeMeta = [
   ['predictStore', 'server-authoritative projection', 'prediction/polymarket state', 'Durable positions and votes are server-owned.'],
   ['matchHistoryStore', 'server-authoritative projection', 'arena history and performance', 'Should reflect durable outcomes.'],
   ['communityStore', 'server-authoritative projection', 'community posts and reactions', 'Local storage is convenience, not source of truth.'],
-  ['notificationStore', 'route/session transient', 'notifications, toasts, Guardian alerts', 'Mixed runtime UI state.'],
+  ['notificationStore', 'server-authoritative projection', 'durable notifications with optimistic staging', 'Canonical notification records come from the server.'],
   ['pnlStore', 'derived/support', 'pnl summaries and derived display state', 'Depends on durable trade/outcome data.'],
   ['battleFeedStore', 'route/session transient', 'live battle feed', 'Runtime-only presentation state.'],
   ['agentData', 'derived/support', 'agent stats and learning presentation layer', 'Should not silently redefine server truth.'],
   ['warRoomStore', 'route/session transient', 'war-room discussion state', 'Runtime coordination state.'],
+  ['dbStore', 'derived/support', 'localStorage CRUD helpers and table adapters', 'Utility persistence layer for local fallback tables; not durable server truth.'],
   ['hydration', 'derived/support', 'orchestrates initial store hydration', 'Not domain truth itself.'],
-  ['dbStore', 'derived/support', 'local persistence helper for browser-side cache/state', 'Support utility only; do not treat as canonical authority.'],
   ['progressionRules', 'derived/support', 'tier and LP mapping logic', 'Rule/helper module, not state owner.'],
   ['storageKeys', 'derived/support', 'local storage key registry', 'Utility only.']
 ];
@@ -252,7 +297,8 @@ function groupApiRoute(route) {
   if (route === '/api/predictions' || route.startsWith('/api/predictions/')) return 'Predictions';
   if (
     route.startsWith('/api/activity') ||
-    route.startsWith('/api/community/')
+    route.startsWith('/api/community/') ||
+    route.startsWith('/api/creator/')
   ) return 'Community';
   if (route.startsWith('/api/copy-trades/')) return 'Copy Trading';
   if (route.startsWith('/api/tournaments/')) return 'Tournaments';

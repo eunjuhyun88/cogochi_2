@@ -13,10 +13,10 @@ Purpose:
 
 ## Current Reliability Sources
 
-- `docs/FRONTEND_REFACTOR_EXECUTION_DESIGN_2026-03-06.md`
-- `docs/terminal-refactor-master-plan-2026-03-06.md`
-- `docs/TERMINAL_SCAN_E2E_SPEC.md`
-- `docs/warning-priority-2026-03-06.md`
+- `docs/references/active/FRONTEND_REFACTOR_EXECUTION_DESIGN_2026-03-06.md`
+- `docs/references/active/terminal-refactor-master-plan-2026-03-06.md`
+- `docs/references/active/TERMINAL_SCAN_E2E_SPEC.md`
+- `docs/references/active/warning-priority-2026-03-06.md`
 - `scripts/perf/k6-auth-snapshot.js`
 
 ## Current Gaps

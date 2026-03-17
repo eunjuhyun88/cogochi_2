@@ -1,30 +1,22 @@
-# Product Specs Index
+# Product Specs
 
-Purpose:
-- Surface-level product specs for the canonical frontend repo.
-
-## Read Order
-
-1. `docs/SYSTEM_INTENT.md`
-2. Relevant surface spec below
-3. Supporting detailed spec or execution design
+This folder contains the canonical surface specs referenced by `docs/README.md` and `context-kit.json`.
 
 ## Surface Specs
 
-- `docs/product-specs/terminal.md`
-- `docs/product-specs/arena.md`
-- `docs/product-specs/signals.md`
-- `docs/product-specs/passport.md`
+| Surface label | Canonical file | Notes |
+| --- | --- | --- |
+| `home` | `docs/product-specs/home.md` | first-action path and product promise |
+| `create-agent` | `docs/product-specs/create-agent.md` | mint + AI bind + initial setup |
+| `terminal` | `docs/product-specs/terminal.md` | brain console and readiness gate |
+| `world` | `docs/product-specs/world.md` | BTC-history world map and traversal |
+| `battle` | `docs/product-specs/arena.md` | legacy file path; canonical surface label is `Battle` |
+| `agent` | `docs/product-specs/agents.md` | legacy file path; canonical surface label is `Agent` |
+| `signals-community` | `docs/product-specs/signals.md` | secondary public/community route, not primary IA |
+| `passport-legacy` | `docs/product-specs/passport.md` | legacy implementation slice being absorbed into `Agent` |
+| `community` | `docs/product-specs/community.md` | supporting social layer |
+| `api` | `docs/product-specs/api.md` | contracts and integration boundaries |
 
-## Local Deep Dives
+## Page Specs
 
-- `docs/design-docs/arena-domain-model.md`
-- `docs/design-docs/learning-loop.md`
-- `docs/generated/game-record-schema.md`
-
-## Supporting Detailed Docs
-
-- `docs/ARENA_SYSTEM_SPEC_V3_0.md`
-- `docs/TERMINAL_SCAN_E2E_SPEC.md`
-- `docs/API_CONTRACT.md`
-- `docs/community-chart-signal-copytrade-flow-2026-03-06.md`
+Detailed page-level specs live in `docs/page-specs/`. See `docs/page-specs/index.md` for the full list.

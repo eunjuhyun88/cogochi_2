@@ -1,7 +1,7 @@
 # STOCKCLAW 구조 정합성 액션 플랜
 
 작성일: 2026-02-22
-근거: `structure-mismatch-audit-latest.md` 9개 불일치 항목
+근거: `docs/references/active/structure-mismatch-audit-latest.md` 9개 불일치 항목
 목표: v3 스펙(8-Agent/5-Phase/Spec/LP)과 실행 코드의 완전 정렬
 
 ---

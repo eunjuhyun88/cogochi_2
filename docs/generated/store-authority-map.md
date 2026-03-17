@@ -21,8 +21,11 @@ Source of truth remains store implementations plus canonical state-authority doc
 | `arenaV2State` | route/session transient | simplified arena v2 local flow | Route-specific state. |
 | `arenaWarStore` | route/session transient | arena-war state machine and local orchestration | Durable record still belongs to server persistence. |
 | `activeGamesStore` | route/session transient | local multi-game runtime tracking | Coordination state, not durable truth. |
-| `walletStore` | server-authoritative projection | wallet connection and user progression stage | Durable auth/progression still server-backed. |
-| `userProfileStore` | server-authoritative projection | profile, badges, user summary | Should remain server-derived or server-validated. |
+| `authSessionStore` | server-authoritative projection | authenticated session mirror and cookie-backed identity | Session authority should stay separate from wallet UX and route-local control state. |
+| `walletStore` | route/session transient | wallet connection transport and signed-wallet shell | Connection UX state should stay separate from durable profile or trade truth. |
+| `walletModalStore` | route/session transient | wallet modal visibility and step flow | Modal UX state is split from wallet transport and progression state. |
+| `remoteSessionGuard` | derived/support | remote-session gate helpers | Utility helpers around authenticated remote-backed store access. |
+| `userProfileStore` | server-authoritative projection | profile projection and progression read model | Current unified profile surface remains the durable profile-facing store. |
 | `quickTradeStore` | server-authoritative projection | quick trades with optimistic staging | Reconcile optimistic IDs to server truth. |
 | `trackedSignalStore` | server-authoritative projection | tracked signals and conversion state | Local cache/fallback only. |
 | `copyTradeStore` | server-authoritative projection | copy-trade builder and publish reconcile | Canonical publish path belongs to server. |
@@ -30,13 +33,13 @@ Source of truth remains store implementations plus canonical state-authority doc
 | `predictStore` | server-authoritative projection | prediction/polymarket state | Durable positions and votes are server-owned. |
 | `matchHistoryStore` | server-authoritative projection | arena history and performance | Should reflect durable outcomes. |
 | `communityStore` | server-authoritative projection | community posts and reactions | Local storage is convenience, not source of truth. |
-| `notificationStore` | route/session transient | notifications, toasts, Guardian alerts | Mixed runtime UI state. |
+| `notificationStore` | server-authoritative projection | durable notifications with optimistic staging | Canonical notification records come from the server. |
 | `pnlStore` | derived/support | pnl summaries and derived display state | Depends on durable trade/outcome data. |
 | `battleFeedStore` | route/session transient | live battle feed | Runtime-only presentation state. |
 | `agentData` | derived/support | agent stats and learning presentation layer | Should not silently redefine server truth. |
 | `warRoomStore` | route/session transient | war-room discussion state | Runtime coordination state. |
+| `dbStore` | derived/support | localStorage CRUD helpers and table adapters | Utility persistence layer for local fallback tables; not durable server truth. |
 | `hydration` | derived/support | orchestrates initial store hydration | Not domain truth itself. |
-| `dbStore` | derived/support | local persistence helper for browser-side cache/state | Support utility only; do not treat as canonical authority. |
 | `progressionRules` | derived/support | tier and LP mapping logic | Rule/helper module, not state owner. |
 | `storageKeys` | derived/support | local storage key registry | Utility only. |
 
