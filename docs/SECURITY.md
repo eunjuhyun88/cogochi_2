@@ -13,8 +13,8 @@ Purpose:
 
 ## Canonical Security Sources
 
-- `docs/BACKEND_SECURITY_REVIEW_2026-02-25.md`
-- `docs/SECURITY_SCALE_PLAN_2026-02-25.md`
+- `docs/references/active/BACKEND_SECURITY_REVIEW_2026-02-25.md`
+- `docs/references/active/SECURITY_SCALE_PLAN_2026-02-25.md`
 - `docs/API_CONTRACT.md`
 - `src/hooks.server.ts`
 - `src/lib/server/requestGuards.ts`

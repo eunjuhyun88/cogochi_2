@@ -3,8 +3,10 @@ set -euo pipefail
 
 usage() {
 	echo "Usage: bash scripts/dev/context-compact.sh [--source <snapshot.md>] [--checkpoint <checkpoint.md>] [--work-id <id>] [--max-lines <n>]"
+	echo "       [--docs-check <pass|fail|warn|unknown>] [--check <pass|fail|warn|unknown>]"
+	echo "       [--build <pass|fail|warn|unknown>] [--gate <pass|fail|warn|unknown>]"
 	echo ""
-	echo "Generates branch-local brief and handoff artifacts from the latest snapshot and semantic checkpoint."
+	echo "Generates branch-local brief/handoff artifacts from the latest snapshot and semantic checkpoint."
 }
 
 sanitize() {
@@ -14,16 +16,21 @@ sanitize() {
 extract_section() {
 	local source="$1"
 	local header="$2"
-	awk -v h="## $header" '
+	local limit="${3:-0}"
+	awk -v h="## $header" -v limit="$limit" '
 		$0 == h {in_section=1; next}
 		in_section && /^## / {exit}
-		in_section {print}
+		in_section && NF {
+			print
+			count += 1
+			if (limit > 0 && count >= limit) exit
+		}
 	' "$source"
 }
 
 trim_non_empty() {
 	local limit="$1"
-	awk 'NF {print}' | head -n "$limit"
+	awk -v limit="$limit" 'NF {print; count += 1; if (count >= limit) exit}'
 }
 
 meta_value() {
@@ -40,6 +47,10 @@ SOURCE_FILE=""
 CHECKPOINT_FILE=""
 WORK_ID=""
 MAX_LINES=160
+VALIDATION_DOCS_CHECK="unknown"
+VALIDATION_CHECK="unknown"
+VALIDATION_BUILD="unknown"
+VALIDATION_GATE="unknown"
 
 while [ "$#" -gt 0 ]; do
 	case "$1" in
@@ -57,6 +68,22 @@ while [ "$#" -gt 0 ]; do
 			;;
 		--max-lines)
 			MAX_LINES="${2:-160}"
+			shift 2
+			;;
+		--docs-check)
+			VALIDATION_DOCS_CHECK="${2:-unknown}"
+			shift 2
+			;;
+		--check)
+			VALIDATION_CHECK="${2:-unknown}"
+			shift 2
+			;;
+		--build)
+			VALIDATION_BUILD="${2:-unknown}"
+			shift 2
+			;;
+		--gate)
+			VALIDATION_GATE="${2:-unknown}"
 			shift 2
 			;;
 		-h|--help)
@@ -91,7 +118,8 @@ CATALOG_FILE="$BASE_DIR/catalog.tsv"
 mkdir -p "$BRIEF_DIR" "$HANDOFF_DIR" "$COMPACT_DIR" "$RUNTIME_DIR" "$STATE_DIR"
 
 if [ -z "$SOURCE_FILE" ]; then
-	SOURCE_FILE="$(ls -1t "$SNAPSHOT_DIR"/*.md 2>/dev/null | head -n 1 || true)"
+	SOURCE_FILE="$(ls -1t "$SNAPSHOT_DIR"/*.md 2>/dev/null || true)"
+	SOURCE_FILE="${SOURCE_FILE%%$'\n'*}"
 fi
 
 if [ -z "$SOURCE_FILE" ] || [ ! -f "$SOURCE_FILE" ]; then
@@ -100,11 +128,13 @@ if [ -z "$SOURCE_FILE" ] || [ ! -f "$SOURCE_FILE" ]; then
 	exit 1
 fi
 
-if [ -z "$CHECKPOINT_FILE" ] && [ -n "$WORK_ID" ]; then
-	WORK_SAFE="$(sanitize "$WORK_ID")"
-	CANDIDATE="$CHECKPOINT_DIR/${WORK_SAFE}.md"
-	if [ -f "$CANDIDATE" ]; then
-		CHECKPOINT_FILE="$CANDIDATE"
+if [ -z "$CHECKPOINT_FILE" ]; then
+	if [ -n "$WORK_ID" ]; then
+		WORK_SAFE="$(sanitize "$WORK_ID")"
+		CANDIDATE="$CHECKPOINT_DIR/${WORK_SAFE}.md"
+		if [ -f "$CANDIDATE" ]; then
+			CHECKPOINT_FILE="$CANDIDATE"
+		fi
 	fi
 fi
 
@@ -121,14 +151,15 @@ if [ -n "$CHECKPOINT_FILE" ] && [ -f "$CHECKPOINT_FILE" ]; then
 fi
 
 TS_HUMAN="$(date '+%Y-%m-%d %H:%M:%S %z')"
-SNAPSHOT_OBJECTIVE="$(extract_section "$SOURCE_FILE" "Objective" | trim_non_empty 6)"
-REPO_STATE="$(extract_section "$SOURCE_FILE" "Repo State" | trim_non_empty 12)"
-UNCOMMITTED="$(extract_section "$SOURCE_FILE" "Uncommitted Files" | trim_non_empty 30)"
-CHANGED_FILES="$(extract_section "$SOURCE_FILE" "Changed Files vs origin/main" | trim_non_empty 30)"
-RECENT_COMMITS="$(extract_section "$SOURCE_FILE" "Recent Commits" | trim_non_empty 10)"
-RUNTIME_FLAGS="$(extract_section "$SOURCE_FILE" "Runtime Context Flags" | trim_non_empty 10)"
-NOTES="$(extract_section "$SOURCE_FILE" "Notes" | trim_non_empty 12)"
-RESUME_COMMANDS="$(extract_section "$SOURCE_FILE" "Resume Commands" | trim_non_empty 10)"
+SNAPSHOT_OBJECTIVE="$(extract_section "$SOURCE_FILE" "Objective" 6)"
+WORK_IDENTITY="$(extract_section "$SOURCE_FILE" "Work Identity" 8)"
+REPO_STATE="$(extract_section "$SOURCE_FILE" "Repo State" 12)"
+UNCOMMITTED="$(extract_section "$SOURCE_FILE" "Uncommitted Files" 30)"
+CHANGED_FILES="$(extract_section "$SOURCE_FILE" "Changed Files vs origin/main" 30)"
+RECENT_COMMITS="$(extract_section "$SOURCE_FILE" "Recent Commits" 10)"
+RUNTIME_FLAGS="$(extract_section "$SOURCE_FILE" "Runtime Context Flags" 10)"
+NOTES="$(extract_section "$SOURCE_FILE" "Notes" 12)"
+RESUME_COMMANDS="$(extract_section "$SOURCE_FILE" "Resume Commands" 10)"
 
 WORK_ID_EFFECTIVE="${WORK_ID:-}"
 SURFACE="unknown"
@@ -149,16 +180,16 @@ if [ "$HAS_CHECKPOINT" -eq 1 ]; then
 	WORK_ID_EFFECTIVE="$(meta_value "$CHECKPOINT_FILE" "Work ID")"
 	SURFACE="$(meta_value "$CHECKPOINT_FILE" "Surface")"
 	STATUS="$(meta_value "$CHECKPOINT_FILE" "Status")"
-	CURRENT_OBJECTIVE="$(extract_section "$CHECKPOINT_FILE" "Objective" | trim_non_empty 6)"
-	WHY_NOW="$(extract_section "$CHECKPOINT_FILE" "Why Now" | trim_non_empty 10)"
-	SCOPE="$(extract_section "$CHECKPOINT_FILE" "Scope" | trim_non_empty 12)"
-	OWNED_FILES="$(extract_section "$CHECKPOINT_FILE" "Owned Files" | trim_non_empty 20)"
-	CANONICAL_DOCS="$(extract_section "$CHECKPOINT_FILE" "Canonical Docs Opened" | trim_non_empty 12)"
-	DECISIONS="$(extract_section "$CHECKPOINT_FILE" "Decisions Made" | trim_non_empty 12)"
-	REJECTED="$(extract_section "$CHECKPOINT_FILE" "Rejected Alternatives" | trim_non_empty 10)"
-	OPEN_QUESTIONS="$(extract_section "$CHECKPOINT_FILE" "Open Questions" | trim_non_empty 12)"
-	NEXT_ACTIONS="$(extract_section "$CHECKPOINT_FILE" "Next Actions" | trim_non_empty 10)"
-	EXIT_CRITERIA="$(extract_section "$CHECKPOINT_FILE" "Exit Criteria" | trim_non_empty 10)"
+	CURRENT_OBJECTIVE="$(extract_section "$CHECKPOINT_FILE" "Objective" 6)"
+	WHY_NOW="$(extract_section "$CHECKPOINT_FILE" "Why Now" 10)"
+	SCOPE="$(extract_section "$CHECKPOINT_FILE" "Scope" 12)"
+	OWNED_FILES="$(extract_section "$CHECKPOINT_FILE" "Owned Files" 20)"
+	CANONICAL_DOCS="$(extract_section "$CHECKPOINT_FILE" "Canonical Docs Opened" 12)"
+	DECISIONS="$(extract_section "$CHECKPOINT_FILE" "Decisions Made" 12)"
+	REJECTED="$(extract_section "$CHECKPOINT_FILE" "Rejected Alternatives" 10)"
+	OPEN_QUESTIONS="$(extract_section "$CHECKPOINT_FILE" "Open Questions" 12)"
+	NEXT_ACTIONS="$(extract_section "$CHECKPOINT_FILE" "Next Actions" 10)"
+	EXIT_CRITERIA="$(extract_section "$CHECKPOINT_FILE" "Exit Criteria" 10)"
 else
 	WARNINGS+=("no semantic checkpoint recorded for this branch")
 fi
@@ -173,9 +204,9 @@ BRIEF_BRANCH_FILE="$BRIEF_DIR/${BRANCH_SAFE}-latest.md"
 HANDOFF_WORK_FILE="$HANDOFF_DIR/${WORK_SAFE}.md"
 HANDOFF_BRANCH_FILE="$HANDOFF_DIR/${BRANCH_SAFE}-latest.md"
 STATE_FILE="$STATE_DIR/${WORK_SAFE}.json"
-COMPAT_FILE="$COMPACT_DIR/$BRANCH_SAFE-latest.md"
+COMPAT_FILE="$COMPACT_DIR/${BRANCH_SAFE}-latest.md"
 
-if [ -z "$CURRENT_OBJECTIVE" ] || printf '%s' "$CURRENT_OBJECTIVE" | grep -Eiq '^(auto-(safe-status|safe-sync-start|safe-sync-end|pre-push|post-merge)|unknown)$'; then
+if [ -z "$CURRENT_OBJECTIVE" ] || [[ "$CURRENT_OBJECTIVE" =~ ^(auto-(safe-status|safe-sync-start|safe-sync-end|pre-push|post-merge)|unknown)$ ]]; then
 	WARNINGS+=("objective is still stage-like; checkpoint objective should replace automation stage names")
 fi
 
@@ -189,15 +220,16 @@ fi
 
 PINNED_FACTS="- none"
 if [ -f "$PINNED_FILE" ]; then
-	PINNED_FACTS="$(sed -n '1,120p' "$PINNED_FILE" | trim_non_empty 40)"
+	PINNED_FACTS="$(trim_non_empty 40 < "$PINNED_FILE")"
 	[ -n "$PINNED_FACTS" ] || PINNED_FACTS="- none"
 fi
 
 VALIDATION_SNAPSHOT=$(
 	cat <<EOF
-- docs:check: unknown
-- check: unknown
-- build: unknown
+- docs:check: $VALIDATION_DOCS_CHECK
+- check: $VALIDATION_CHECK
+- build: $VALIDATION_BUILD
+- gate: $VALIDATION_GATE
 - head: $HEAD_SHA
 - uncommitted_state: $( [ "$UNCOMMITTED" = "- clean" ] && echo clean || echo dirty )
 EOF
@@ -230,7 +262,7 @@ if [ "${#WARNINGS[@]}" -gt 0 ]; then
 	for warning in "${WARNINGS[@]}"; do
 		WARNING_BLOCK+="- $warning"$'\n'
 	done
-	WARNING_BLOCK="$(printf '%s' "$WARNING_BLOCK" | trim_non_empty 20)"
+	WARNING_BLOCK="$(trim_non_empty 20 <<< "$WARNING_BLOCK")"
 fi
 
 {
@@ -267,14 +299,14 @@ fi
 	echo "## Open Questions"
 	echo "${OPEN_QUESTIONS:-- none}"
 	echo ""
-	echo "## Immediate Next Step"
-	echo "${NEXT_ACTIONS:-- none}"
-	echo ""
-	echo "## Exit Criteria"
-	echo "${EXIT_CRITERIA:-- none}"
-	echo ""
-	echo "## Validation Snapshot"
-	echo "$VALIDATION_SNAPSHOT"
+echo "## Immediate Next Step"
+echo "${NEXT_ACTIONS:-- none}"
+echo ""
+echo "## Exit Criteria"
+echo "${EXIT_CRITERIA:-- none}"
+echo ""
+echo "## Validation Snapshot"
+echo "$VALIDATION_SNAPSHOT"
 	echo ""
 	echo "## Read These First"
 	echo "$READ_THESE_FIRST"
@@ -365,9 +397,10 @@ cat > "$STATE_FILE" <<EOF
   "head": "$(json_escape "$HEAD_SHA")",
   "checkpointPresent": $HAS_CHECKPOINT,
   "validation": {
-    "docsCheck": "unknown",
-    "check": "unknown",
-    "build": "unknown"
+    "docsCheck": "$(json_escape "$VALIDATION_DOCS_CHECK")",
+    "check": "$(json_escape "$VALIDATION_CHECK")",
+    "build": "$(json_escape "$VALIDATION_BUILD")",
+    "gate": "$(json_escape "$VALIDATION_GATE")"
   },
   "briefPath": "$(json_escape "${BRIEF_WORK_FILE#$ROOT_DIR/}")",
   "handoffPath": "$(json_escape "${HANDOFF_WORK_FILE#$ROOT_DIR/}")"

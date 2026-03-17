@@ -249,4 +249,4 @@ TARGET:
 2. 입력 payload: `text`, `mentions[]`, `attachments[]`, `context{pair,timeframe,scanId}`
 3. 전송 상태: `pending/sent/failed`와 재시도 큐 보유
 
-상세 플로우는 `TERMINAL_SCAN_E2E_SPEC.md`를 따른다.
+상세 플로우는 `docs/references/active/TERMINAL_SCAN_E2E_SPEC.md`를 따른다.

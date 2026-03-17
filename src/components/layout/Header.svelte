@@ -3,34 +3,27 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { gameState } from '$lib/stores/gameState';
-  import { walletStore, isWalletConnected, openWalletModal, hydrateAuthSession } from '$lib/stores/walletStore';
+  import { walletStore, isWalletConnected } from '$lib/stores/walletStore';
+  import { openWalletModal } from '$lib/stores/walletModalStore';
+  import { hydrateAuthSession } from '$lib/stores/walletStore';
   import { hydrateDomainStores } from '$lib/stores/hydration';
   import { livePrices } from '$lib/stores/priceStore';
   import { updatePrice } from '$lib/stores/priceStore';
   import { fetchPrice } from '$lib/api/binance';
   import { TOKEN_MAP } from '$lib/data/tokens';
+  import { buildDeepLink } from '$lib/utils/deepLinks';
+  import { DESKTOP_NAV_SURFACES, isAppSurfaceActive } from '$lib/navigation/appSurfaces';
 
-  $: state = $gameState;
-  $: wallet = $walletStore;
-  $: connected = $isWalletConnected;
-  $: liveP = $livePrices;
+  const gState = $derived($gameState);
+  const wallet = $derived($walletStore);
+  const connected = $derived($isWalletConnected);
+  const liveP = $derived($livePrices);
+  const activePath = $derived($page.url.pathname);
 
-  // Derive active route from actual URL
-  $: activePath = $page.url.pathname;
-
-  // Navigation items
-  const NAV_ITEMS = [
-    { path: '/terminal', label: 'TERMINAL', desc: '실시간 차트와 스캔' },
-    { path: '/arena', label: 'ARENA', desc: '드래프트와 배틀' },
-    { path: '/arena-war', label: 'WAR', desc: 'AI와 1:1 분석 대결', accent: true },
-    { path: '/signals', label: 'COMMUNITY', desc: '시그널, 오라클 리더보드, 라이브 피드' },
-    { path: '/passport', label: 'PASSPORT', desc: '내 기록과 포트폴리오' },
-  ];
-
-  // ─── 페어 변경 시 priceStore에 없는 토큰 가격 자동 fetch ────
   let _lastFetchedToken = '';
-  $: {
-    const token = state.pair.split('/')[0] || 'BTC';
+
+  $effect(() => {
+    const token = gState.pair.split('/')[0] || 'BTC';
     if (token !== _lastFetchedToken && !(token in liveP)) {
       _lastFetchedToken = token;
       const tokDef = TOKEN_MAP.get(token);
@@ -39,131 +32,178 @@
           if (Number.isFinite(price) && price > 0) {
             updatePrice(token, price, 'rest');
           }
-        }).catch(() => {/* 실패 시 ChartPanel에서 kline 로드 후 업데이트됨 */});
+        }).catch(() => {});
       }
     }
-  }
-
-  onMount(() => {
-    void hydrateAuthSession();
-    void hydrateDomainStores();
-    // NOTE: WS 가격 구독은 +layout.svelte에서 전역으로 관리 (S-03)
-    // Header는 priceStore를 읽기만 함
-    // 페어 변경 시 위의 reactive block이 REST fetch 보완
   });
 
-  function nav(path: string) {
+  onMount(() => {
+    void (async () => {
+      await hydrateAuthSession();
+      await hydrateDomainStores();
+    })();
+  });
+
+  function isActive(id: import('$lib/navigation/appSurfaces').AppSurfaceId): boolean {
+    return isAppSurfaceActive(id, activePath);
+  }
+
+  let profileDropdownOpen = $state(false);
+
+  function toggleProfileDropdown() {
+    profileDropdownOpen = !profileDropdownOpen;
+  }
+
+  function closeProfileDropdown() {
+    profileDropdownOpen = false;
+  }
+
+  function handleProfileNav(path: string) {
+    closeProfileDropdown();
     goto(path);
   }
 
-  function isActive(path: string): boolean {
-    if (path === '/arena') return activePath === '/arena' || activePath.startsWith('/arena-v2');
-    if (path === '/arena-war') return activePath.startsWith('/arena-war');
-    return activePath.startsWith(path);
+  $effect(() => {
+    activePath;
+    if (profileDropdownOpen) {
+      closeProfileDropdown();
+    }
+  });
+
+  $effect(() => {
+    connected;
+    if (!connected && profileDropdownOpen) {
+      closeProfileDropdown();
+    }
+  });
+
+  async function handleLogout() {
+    closeProfileDropdown();
+    const { logoutAuth } = await import('$lib/api/auth');
+    const { clearAuthenticatedUser } = await import('$lib/stores/walletStore');
+    const { disconnectWallet } = await import('$lib/stores/walletStore');
+    await logoutAuth();
+    clearAuthenticatedUser();
+    disconnectWallet();
   }
 
-  function pctClass(val: number): string {
-    return val >= 0 ? 'up' : 'dn';
-  }
-
-  function pctStr(base: number, cur: number): string {
-    if (base === 0) return '+0.00%';
-    const pct = ((cur - base) / base * 100).toFixed(2);
-    return (Number(pct) >= 0 ? '+' : '') + pct + '%';
-  }
-
-  $: selectedToken = state.pair.split('/')[0] || 'BTC';
-  // 선택된 토큰의 가격만 표시. 없으면 0 (BTC 가격으로 폴백하지 않음)
-  $: selectedPrice = liveP[selectedToken] || 0;
-  $: selectedBase = state.bases[selectedToken as keyof typeof state.bases] || state.bases.BTC;
-  $: selectedPriceText = selectedPrice > 0
-    ? Number(selectedPrice).toLocaleString('en-US', {
-        minimumFractionDigits: selectedPrice >= 1000 ? 2 : 4,
-        maximumFractionDigits: selectedPrice >= 1000 ? 2 : 4
-      })
-    : '---';
+  const selectedToken = $derived(gState.pair.split('/')[0] || 'BTC');
+  const selectedPrice = $derived(liveP[selectedToken] || 0);
+  const selectedPriceText = $derived(
+    selectedPrice > 0
+      ? Number(selectedPrice).toLocaleString('en-US', {
+          minimumFractionDigits: selectedPrice >= 1000 ? 2 : 4,
+          maximumFractionDigits: selectedPrice >= 1000 ? 2 : 4
+        })
+      : '---'
+  );
 </script>
 
 <nav id="nav">
   <div class="nav-main">
-    <button class="nav-logo" on:click={() => nav('/')}>
-      Stockclaw
-    </button>
+    <a class="nav-logo" href={buildDeepLink('/')} aria-label="Home">
+      <span class="nav-logo-main">Cogochi</span>
+    </a>
 
-      <div class="nav-sep"></div>
+    <div class="nav-sep"></div>
 
-      <div class="selected-ticker">
-        <span class="st-pair">{state.pair}</span>
-        <span class="st-price">${selectedPriceText}</span>
-      </div>
-
-      <div class="nav-sep"></div>
-
-      {#each NAV_ITEMS as item}
-        <button
-          class="nav-tab nav-tab-desktop"
-          class:active={isActive(item.path)}
-          class:arena-accent={item.accent}
-          title={`${item.label} · ${item.desc}`}
-          aria-label={`${item.label}: ${item.desc}`}
-          on:click={() => nav(item.path)}
-        >
-          {item.label}
-        </button>
-      {/each}
+    <div class="selected-ticker">
+      <span class="st-pair">{gState.pair}</span>
+      <span class="st-price">${selectedPriceText}</span>
     </div>
 
-    <div class="nav-right">
-      <div class="score-badge">
-        SCORE <b>{Math.round(state.score)}</b>
-      </div>
+    <div class="nav-sep"></div>
 
-      <button class="settings-btn" title="SETTINGS" aria-label="SETTINGS" on:click={() => nav('/settings')}>SET</button>
+    {#each DESKTOP_NAV_SURFACES as item}
+      <a
+        class="nav-tab-desktop"
+        class:active={isActive(item.id)}
+        title={`${item.label} · ${item.description}`}
+        aria-label={`${item.label}: ${item.description}`}
+        aria-current={isActive(item.id) ? 'page' : undefined}
+        href={item.href}
+      >
+        {item.label.toUpperCase()}
+      </a>
+    {/each}
+  </div>
 
-      {#if connected}
-        <button class="wallet-btn connected" on:click={openWalletModal}>
+  <div class="nav-right">
+    <div class="score-badge">
+      <span class="score-label">SCORE</span>
+      <span class="score-value">{Math.round(gState.score)}</span>
+    </div>
+
+    <a
+      class="settings-btn"
+      title="Settings"
+      aria-label="Settings"
+      href={buildDeepLink('/settings')}
+    >
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </a>
+
+    {#if connected}
+      <div class="profile-dropdown-wrap">
+        <button class="wallet-btn connected" onclick={toggleProfileDropdown}>
           <span class="wallet-dot"></span>
           {wallet.shortAddr}
         </button>
-      {:else}
-        <button class="wallet-btn" on:click={openWalletModal}>
-          CONNECT
-        </button>
-      {/if}
-    </div>
-
-  <!-- Mobile bottom tab bar -->
-  <div class="nav-tabs-mobile">
-    {#each NAV_ITEMS as item}
-      <button
-        class="nav-tab-m"
-        class:active={isActive(item.path)}
-        on:click={() => nav(item.path)}
-      >
-        {item.label}
+        {#if profileDropdownOpen}
+          <!-- svelte-ignore a11y_click_events_have_key_events -->
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
+          <div class="dropdown-backdrop" onclick={closeProfileDropdown}></div>
+          <div class="profile-dropdown">
+            <button class="dropdown-item" onclick={() => handleProfileNav('/agent')}>Agent</button>
+            <button class="dropdown-item" onclick={() => handleProfileNav('/settings')}>Settings</button>
+            <button class="dropdown-item" onclick={() => { closeProfileDropdown(); openWalletModal(); }}>Wallet</button>
+            <div class="dropdown-sep"></div>
+            <button class="dropdown-item dropdown-item-danger" onclick={handleLogout}>Disconnect</button>
+          </div>
+        {/if}
+      </div>
+    {:else}
+      <button class="wallet-btn" onclick={openWalletModal}>
+        CONNECT
       </button>
-    {/each}
+    {/if}
   </div>
+
 </nav>
 
 <style>
-  /* ═══════════════════════════════════════
-     HEADER — LOOX SPACE THEME
-     Dark green-black + salmon pink
-     ═══════════════════════════════════════ */
   #nav {
-    background: #0a1a0d;
-    border-bottom: 1px solid rgba(232,150,125,0.15);
+    background:
+      radial-gradient(circle at 10% 0%, rgba(255, 118, 181, 0.12), transparent 28%),
+      radial-gradient(circle at 86% 0%, rgba(186, 240, 106, 0.1), transparent 24%),
+      linear-gradient(180deg, rgba(10, 15, 26, 0.96), rgba(8, 13, 23, 0.94));
+    border-bottom: 1px solid var(--sc-line-soft);
     position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 110;
+    z-index: var(--sc-z-header);
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
-    height: 36px;
-    padding: 0 12px;
-    font-family: var(--fp, 'Press Start 2P', monospace);
-    color: #F0EDE4;
+    height: var(--sc-header-h);
+    padding: 0 var(--sc-sp-3);
+    font-family: var(--sc-font-body);
+    color: var(--sc-text-0);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  #nav::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 118, 181, 0.44), rgba(255, 217, 122, 0.18), rgba(186, 240, 106, 0.24), transparent);
+    pointer-events: none;
   }
 
   .nav-main {
@@ -175,275 +215,318 @@
     height: 100%;
   }
 
-  /* Removed: .nav-back (BACK button removed) */
   .nav-logo {
-    font-family: var(--fp);
-    font-size: 12px;
-    letter-spacing: 1px;
-    color: #F0EDE4;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    color: var(--sc-text-0);
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
     flex-shrink: 0;
     line-height: 1;
-    transition: opacity .15s;
+    text-decoration: none;
+    transition: opacity var(--sc-duration-fast);
   }
   .nav-logo:hover { opacity: 0.8; }
 
+  .nav-logo-main {
+    font-family: var(--sc-font-display);
+    font-size: 1.35rem;
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 10px rgba(255, 118, 181, 0.1);
+  }
+
   .nav-sep {
     width: 1px;
-    height: 18px;
-    background: rgba(232,150,125,0.15);
-    margin: 0 8px;
+    height: 20px;
+    background: var(--sc-line-soft);
+    margin: 0 var(--sc-sp-2);
     flex-shrink: 0;
   }
 
-  /* ── Ticker ── */
+  /* Ticker */
   .selected-ticker {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 0 4px;
+    gap: var(--sc-sp-1_5);
+    padding: 0 var(--sc-sp-2);
     flex-shrink: 0;
   }
   .st-pair {
-    font-family: var(--fp);
-    font-size: 9px;
-    color: rgba(240,237,228,0.4);
+    font-family: var(--sc-font-pixel);
+    font-size: var(--sc-fs-2xs);
+    color: var(--sc-text-3);
     letter-spacing: 1px;
   }
   .st-price {
-    font-family: var(--fp);
-    font-size: 11px;
-    color: #F0EDE4;
+    font-family: var(--sc-font-pixel);
+    font-size: var(--sc-fs-sm);
+    color: var(--sc-text-0);
   }
 
-  /* ── Desktop Nav Tabs ── */
+  /* Desktop Nav Tabs */
   .nav-tab-desktop {
-    font-family: var(--fp);
-    font-size: 9px;
-    letter-spacing: 1px;
-    color: rgba(240,237,228,0.45);
-    padding: 0 8px;
-    height: 100%;
+    font-family: var(--sc-font-body);
+    font-weight: 700;
+    font-size: var(--sc-fs-2xs);
+    letter-spacing: 0.12em;
+    color: var(--sc-text-3);
+    padding: 0 var(--sc-sp-3);
+    height: 28px;
     display: flex;
     align-items: center;
-    border: none;
-    border-right: 1px solid rgba(232,150,125,0.06);
-    background: none;
+    border: 1px solid rgba(255, 217, 122, 0.08);
+    border-right: 1px solid rgba(255, 217, 122, 0.08);
+    border-radius: 999px;
+    background: rgba(13, 19, 31, 0.72);
     cursor: pointer;
-    transition: color .15s, background .15s;
+    transition: color var(--sc-duration-fast), background var(--sc-duration-fast);
     white-space: nowrap;
     position: relative;
+    text-decoration: none;
+    margin-right: 6px;
   }
   .nav-tab-desktop:last-of-type { border-right: none; }
-  .nav-tab-desktop:hover { color: #F0EDE4; background: rgba(232,150,125,0.04); }
+  .nav-tab-desktop:hover {
+    color: var(--sc-text-0);
+    background: rgba(255, 118, 181, 0.08);
+  }
   .nav-tab-desktop.active {
-    color: #E8967D;
-    background: rgba(232,150,125,0.08);
-    text-shadow: 0 0 8px rgba(232,150,125,0.4);
+    color: #fff5dc;
+    background: linear-gradient(135deg, rgba(255, 118, 181, 0.14), rgba(186, 240, 106, 0.1));
+    text-shadow: 0 0 10px rgba(255, 118, 181, 0.18);
   }
   .nav-tab-desktop.active::after {
     content: '';
     position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: #E8967D;
-    box-shadow: 0 0 8px rgba(232,150,125,0.5);
+    inset: auto 10px -6px;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(255, 118, 181, 0.82), rgba(255, 217, 122, 0.62), rgba(186, 240, 106, 0.62));
+    box-shadow: 0 0 10px rgba(255, 118, 181, 0.16);
   }
-  .nav-tab-desktop.arena-accent { letter-spacing: 1.5px; }
-  .nav-tab-desktop.arena-accent.active {
-    color: #E8967D;
-    background: rgba(232,150,125,0.12);
-  }
-
-  /* ── Right Section ── */
+  /* Right Section */
   .nav-right {
-    margin-left: 8px;
+    margin-left: var(--sc-sp-2);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--sc-sp-2);
     flex-shrink: 0;
   }
 
   .score-badge {
-    font-family: var(--fp);
-    font-size: 8px;
-    background: rgba(232,150,125,0.08);
-    color: #E8967D;
-    border: 1px solid rgba(232,150,125,0.2);
-    border-radius: 4px;
-    padding: 3px 8px;
-    letter-spacing: 1px;
+    font-family: var(--sc-font-mono);
+    font-size: var(--sc-fs-2xs);
+    background: rgba(255, 217, 122, 0.06);
+    color: #fff0ca;
+    border: 1px solid rgba(255, 217, 122, 0.12);
+    border-radius: 999px;
+    padding: var(--sc-sp-1) var(--sc-sp-2);
+    letter-spacing: 0.12em;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--sc-sp-1);
   }
-  .score-badge b {
-    font-family: var(--fp);
-    font-size: 10px;
-    color: #F0EDE4;
+  .score-value {
+    font-size: var(--sc-fs-xs);
+    color: var(--sc-text-0);
+    font-weight: 700;
   }
 
-  /* ── Wallet ── */
-  .wallet-btn {
-    font-family: var(--fp);
-    font-size: 9px;
-    background: #E8967D;
-    color: #0a1a0d;
-    border: none;
-    border-radius: 4px;
-    padding: 4px 12px;
+  /* Settings */
+  .settings-btn {
+    color: var(--sc-text-2);
+    background: rgba(13, 19, 31, 0.52);
+    border: 1px solid var(--sc-line-soft);
+    border-radius: var(--sc-radius-sm);
     cursor: pointer;
-    letter-spacing: 1px;
-    transition: all .15s;
-    box-shadow: 0 0 10px rgba(232,150,125,0.2);
+    padding: var(--sc-sp-1);
+    transition: all var(--sc-duration-fast);
+    line-height: 0;
     display: flex;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
+    text-decoration: none;
+  }
+  .settings-btn:hover {
+    color: var(--sc-text-0);
+    border-color: rgba(255, 118, 181, 0.28);
+    background: rgba(255, 118, 181, 0.08);
+  }
+
+  /* Wallet */
+  .wallet-btn {
+    font-family: var(--sc-font-body);
+    font-weight: 700;
+    font-size: var(--sc-fs-2xs);
+    background: linear-gradient(135deg, #ff76b5, #ffd6e5 44%, #c8f06f);
+    color: #0f1520;
+    border: 1px solid rgba(255, 217, 122, 0.34);
+    border-radius: 999px;
+    padding: var(--sc-sp-1) var(--sc-sp-3);
+    min-height: var(--sc-touch-sm, 36px);
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: all var(--sc-duration-fast);
+    box-shadow: var(--sc-shadow-glow);
+    display: flex;
+    align-items: center;
+    gap: var(--sc-sp-1);
   }
   .wallet-btn:hover {
-    box-shadow: 0 0 16px rgba(232,150,125,0.4);
+    box-shadow: 0 0 20px rgba(255, 116, 182, 0.24);
     transform: translateY(-1px);
   }
   .wallet-btn.connected {
-    background: rgba(0,204,102,0.1);
-    color: #00cc66;
-    border: 1px solid rgba(0,204,102,0.3);
+    background: rgba(186, 240, 106, 0.12);
+    color: #dff8bd;
+    border: 1px solid rgba(186, 240, 106, 0.2);
     box-shadow: none;
-    font-size: 8px;
+    font-size: var(--sc-fs-2xs);
   }
   .wallet-dot {
     width: 5px; height: 5px;
     border-radius: 50%;
-    background: #00cc66;
-    box-shadow: 0 0 6px #00cc66;
+    background: var(--sc-good);
+    box-shadow: 0 0 6px var(--sc-good);
   }
 
-  .settings-btn {
-    font-family: var(--fp);
-    font-size: 8px;
-    letter-spacing: 1px;
-    color: rgba(240,237,228,0.55);
+  /* ── Profile Dropdown ── */
+  .profile-dropdown-wrap {
+    position: relative;
+  }
+  .dropdown-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+  }
+  .profile-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 100;
+    min-width: 150px;
+    background: rgba(10, 15, 25, 0.98);
+    border: 1px solid rgba(255, 118, 181, 0.2);
+    border-radius: var(--sc-radius-md);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    padding: var(--sc-sp-1) 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .dropdown-item {
+    font-family: var(--sc-font-body);
+    font-weight: 600;
+    font-size: var(--sc-fs-2xs);
+    letter-spacing: 0.04em;
+    color: var(--sc-text-1);
     background: none;
-    border: 1px solid rgba(232,150,125,0.2);
-    border-radius: 4px;
+    border: none;
+    padding: var(--sc-sp-2) var(--sc-sp-3);
+    text-align: left;
     cursor: pointer;
-    padding: 3px 7px;
-    transition: all .15s;
-    line-height: 1.1;
+    transition: background var(--sc-duration-fast), color var(--sc-duration-fast);
   }
-  .settings-btn:hover {
-    color: #F0EDE4;
-    border-color: rgba(232,150,125,0.45);
-    background: rgba(232,150,125,0.08);
+  .dropdown-item:hover {
+    background: rgba(255, 118, 181, 0.08);
+    color: var(--sc-text-0);
+  }
+  .dropdown-item-danger:hover {
+    background: rgba(255, 89, 89, 0.1);
+    color: #ff6b6b;
+  }
+  .dropdown-sep {
+    height: 1px;
+    background: var(--sc-line-soft);
+    margin: var(--sc-sp-1) 0;
   }
 
-  /* ── Mobile tab bar: hidden on desktop ── */
-  .nav-tabs-mobile {
-    display: none;
+  /* ── Active States (Apple-tier touch feedback) ── */
+  .nav-logo:active { opacity: 0.6; transform: scale(0.95); }
+  .nav-tab-desktop:active { background: var(--sc-accent-bg); }
+  .settings-btn:active {
+    background: var(--sc-accent-bg);
+    transform: scale(0.92);
+  }
+  .wallet-btn:active {
+    transform: scale(0.96);
+    opacity: 0.85;
   }
 
-  /* ═══ MOBILE ═══ */
-  @media (max-width: 900px) {
+  /* ═══ COMPACT DESKTOP (769–1024px) ═══
+     한 줄 유지, 티커/스코어 숨김, 탭 패딩 축소 */
+  @media (max-width: 1024px) and (min-width: 769px) {
+    .nav-sep { display: none; }
+    .selected-ticker { display: none; }
+    .score-badge { display: none; }
+    .nav-tab-desktop {
+      padding: 0 var(--sc-sp-2);
+      font-size: var(--sc-fs-2xs);
+      letter-spacing: 0.5px;
+    }
+    .nav-logo {
+      gap: 6px;
+    }
+    .nav-logo-main { font-size: var(--sc-fs-sm); }
+    .nav-right { gap: var(--sc-sp-1); }
+  }
+
+  /* ═══ MOBILE (≤ 768px) — compact top chrome, primary nav moves to bottom bar ═══ */
+  @media (max-width: 768px) {
     #nav {
-      height: auto;
+      height: var(--sc-header-h-mobile, 40px);
+      flex-wrap: nowrap;
     }
-
-    .nav-main {
-      height: 36px;
-    }
-
-    /* Hide desktop elements */
     .nav-sep { display: none; }
     .selected-ticker { display: none; }
     .nav-tab-desktop { display: none; }
     .score-badge { display: none; }
-    .settings-btn { display: none; }
 
+    .nav-main {
+      height: var(--sc-header-h-mobile, 40px);
+    }
     .nav-logo {
-      font-size: 11px;
+      gap: 0;
+    }
+    .nav-logo-main {
+      font-size: var(--sc-fs-sm);
       letter-spacing: 1.5px;
     }
-
     .nav-right {
       margin-left: auto;
-      height: 36px;
-      display: flex;
-      align-items: center;
+      height: var(--sc-header-h-mobile, 40px);
+    }
+    .settings-btn {
+      padding: var(--sc-sp-2);
+      min-width: var(--sc-touch-sm, 36px);
+      min-height: var(--sc-touch-sm, 36px);
     }
     .wallet-btn {
-      font-size: 9px;
-      padding: 5px 14px;
-      border-radius: 6px;
-    }
-    .wallet-btn.connected {
-      font-size: 8px;
-      padding: 5px 10px;
-    }
-
-    /* Show mobile tab bar — full width second row */
-    .nav-tabs-mobile {
-      display: flex;
-      align-items: stretch;
-      width: 100%;
-      border-top: 1px solid rgba(232,150,125,0.08);
-      height: 36px;
-    }
-    .nav-tab-m {
-      flex: 1;
-      font-family: var(--fp, 'Press Start 2P', monospace);
-      font-size: 8px;
-      letter-spacing: 1px;
-      color: rgba(240,237,228,0.4);
-      background: none;
-      border: none;
-      border-right: 1px solid rgba(232,150,125,0.06);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: color .15s, background .15s;
-      position: relative;
-    }
-    .nav-tab-m:last-child { border-right: none; }
-    .nav-tab-m:active { background: rgba(232,150,125,0.06); }
-    .nav-tab-m.active {
-      color: #E8967D;
-      background: rgba(232,150,125,0.06);
-      text-shadow: 0 0 6px rgba(232,150,125,0.3);
-    }
-    .nav-tab-m.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 20%; right: 20%;
-      height: 2px;
-      background: #E8967D;
-      box-shadow: 0 0 6px rgba(232,150,125,0.4);
-      border-radius: 1px;
+      padding: var(--sc-sp-1) var(--sc-sp-3);
+      border-radius: var(--sc-radius-md);
     }
   }
 
-  @media (max-width: 640px) {
+  /* ═══ SMALL MOBILE (≤ 480px) ═══ */
+  @media (max-width: 480px) {
+    .nav-main {
+      height: var(--sc-touch-sm, 36px);
+    }
+    .nav-right {
+      height: var(--sc-touch-sm, 36px);
+    }
     .nav-logo {
-      font-size: 10px;
-      letter-spacing: 1.2px;
+      gap: 0;
     }
-    .nav-tabs-mobile {
-      height: 34px;
-    }
-    .nav-tab-m {
-      font-size: 7px;
-      letter-spacing: 0.8px;
+    .nav-logo-main {
+      font-size: var(--sc-fs-xs);
+      letter-spacing: 1px;
     }
     .wallet-btn {
-      font-size: 8px;
-      padding: 4px 10px;
-    }
-    .wallet-btn.connected {
-      font-size: 7px;
-      padding: 4px 8px;
+      padding: var(--sc-sp-1) var(--sc-sp-2);
+      min-height: var(--sc-touch-sm, 36px);
     }
   }
 </style>

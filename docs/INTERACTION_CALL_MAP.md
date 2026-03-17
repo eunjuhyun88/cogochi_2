@@ -520,7 +520,7 @@ UI 변경:
 ## 14. Scan 1회 기준 상세 흐름 (Trader E2E)
 
 관련 상세 문서:
-1. `TERMINAL_SCAN_E2E_SPEC.md`
+1. `docs/references/active/TERMINAL_SCAN_E2E_SPEC.md`
 
 핵심:
 1. 차트 pair/timeframe 변경 -> `gameState` 갱신
