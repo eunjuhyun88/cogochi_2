@@ -2,6 +2,19 @@
 
 This folder contains the canonical surface specs referenced by `docs/README.md` and `context-kit.json`.
 
+## Surface Specs
+
+- `home.md`
+- `create-agent.md`
+- `terminal.md`
+- `world.md`
+- `arena.md`
+- `agents.md`
+- `passport.md`
+- `signals.md`
+- `api.md`
+- `community.md`
+
 ## Release Surface Mapping
 
 | Release surface | Canonical file(s) | Notes |

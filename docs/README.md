@@ -14,6 +14,17 @@ Purpose:
 5. `docs/design-docs/unified-product-model.md`
 6. `docs/FRONTEND.md`
 
+## Structured Knowledge Base
+
+- Active implementation target: current git worktree rooted at this repository
+- `docs/design-docs/` contains stable design beliefs and release-shaping product models
+- `docs/product-specs/` contains canonical surface specs
+- `docs/page-specs/` contains page-level contracts
+- `docs/exec-plans/` contains active and completed execution plans
+- `docs/decisions/` contains stable decisions
+- `docs/references/active/` contains non-canonical support docs that are still in use
+- `docs/archive/` is historical context only
+
 ## Canonical Groups
 
 - Product and UX canon:
@@ -38,6 +49,15 @@ Purpose:
   - `docs/generated/`
 - Archive:
   - `docs/archive/`
+
+## Canonical Entry Docs
+
+- `docs/DESIGN.md`
+- `docs/design-docs/steam-ready-game-reset.md`
+- `docs/design-docs/steam-ship-blueprint.md`
+- `docs/SYSTEM_INTENT.md`
+- `docs/design-docs/unified-product-model.md`
+- `docs/FRONTEND.md`
 
 ## Reading Order By Need
 
