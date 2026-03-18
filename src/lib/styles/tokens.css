@@ -79,16 +79,16 @@
   --sc-font-retro: 'VT323', monospace;
 
   /* ── TYPOGRAPHY: Font Sizes (WCAG: min 9px) ── */
-  --sc-fs-2xs: 9px;
-  --sc-fs-xs: 10px;
-  --sc-fs-sm: 11px;
-  --sc-fs-base: 12px;
-  --sc-fs-md: 13px;
-  --sc-fs-lg: 15px;
-  --sc-fs-xl: 18px;
-  --sc-fs-2xl: 22px;
-  --sc-fs-3xl: 28px;
-  --sc-fs-4xl: 36px;
+  --sc-fs-2xs: 12px;
+  --sc-fs-xs: 13px;
+  --sc-fs-sm: 15px;
+  --sc-fs-base: 17px;
+  --sc-fs-md: 19px;
+  --sc-fs-lg: 22px;
+  --sc-fs-xl: 26px;
+  --sc-fs-2xl: 32px;
+  --sc-fs-3xl: 40px;
+  --sc-fs-4xl: 52px;
 
   /* ── TYPOGRAPHY: Line Heights ── */
   --sc-lh-tight: 1.2;
@@ -145,7 +145,7 @@
   --sc-duration-slow: 350ms;
 
   /* ── LAYOUT ── */
-  --sc-header-h: 56px;
+  --sc-header-h: 68px;
   --sc-header-h-mobile: 44px;
   --sc-bottom-bar-h: 28px;
   --sc-tab-strip-h: 34px;
@@ -162,10 +162,10 @@
   --sc-touch-sm: 36px;       /* acceptable with adequate spacing */
 
   /* ── RESPONSIVE FONT SIZES (clamp pattern) ── */
-  --sc-fs-resp-2xs: clamp(9px, 2vw, 10px);
-  --sc-fs-resp-xs: clamp(10px, 2.2vw, 11px);
-  --sc-fs-resp-sm: clamp(11px, 2.4vw, 12px);
-  --sc-fs-resp-base: clamp(12px, 2.6vw, 13px);
+  --sc-fs-resp-2xs: clamp(11px, 2vw, 12px);
+  --sc-fs-resp-xs: clamp(12px, 2.2vw, 13px);
+  --sc-fs-resp-sm: clamp(13px, 2.4vw, 14px);
+  --sc-fs-resp-base: clamp(15px, 2.6vw, 16px);
 
   /* ── SAFE AREA (notch devices) ── */
   --sc-safe-top: env(safe-area-inset-top, 0px);

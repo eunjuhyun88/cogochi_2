@@ -1,15 +1,39 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { agentJourneyStore, currentJourneyGrowthFocus } from '$lib/stores/agentJourneyStore';
   import { gameState } from '$lib/stores/gameState';
-  import { buildAgentLink, buildBattleLink, buildTerminalLink } from '$lib/utils/deepLinks';
+  import { buildAgentLink, buildBattleLink, buildCreateLink, buildTerminalLink } from '$lib/utils/deepLinks';
 
+  const journey = $derived($agentJourneyStore);
+  const growthFocus = $derived($currentJourneyGrowthFocus);
   const gs = $derived($gameState);
 
-  const readinessItems = [
-    'Model connection',
-    'Doctrine selection',
-    'First train / validation run',
-  ];
+  const readinessItems = $derived([
+    { label: 'Model connection', done: journey.readiness.modelLinked },
+    { label: 'Doctrine selection', done: journey.readiness.doctrineSet },
+    { label: 'First train / validation run', done: journey.readiness.firstValidationRun },
+  ]);
+
+  const worldTitle = $derived(
+    journey.minted ? `Deploy ${journey.agentName} onto the BTC map.` : 'Choose a lead before you deploy.'
+  );
+  const worldSubtitle = $derived(
+    journey.minted
+      ? `${journey.shellLabel} is your active lead and ${growthFocus.label} is the current growth path. This bridge page previews the chart-map traversal layer before Arena encounters.`
+      : 'World sits between training and proof. Finish Create first, then bring the chosen lead back here once the first companion is bound.'
+  );
+
+  function openWorldPrimary() {
+    if (!journey.minted) {
+      goto(buildCreateLink());
+      return;
+    }
+    if (!journey.terminalReady) {
+      goto(buildTerminalLink());
+      return;
+    }
+    goto(buildBattleLink());
+  }
 </script>
 
 <svelte:head>
@@ -19,27 +43,24 @@
 <main class="world-page">
   <section class="world-hero">
     <p class="eyebrow">World</p>
-    <h1>Deploy the run onto the BTC map.</h1>
-    <p class="subtitle">
-      World is the chart reinterpreted as traversal. This bridge page keeps the route alive while the full map,
-      era progression, and encounter system are split out of the old Terminal shell.
-    </p>
+    <h1>{worldTitle}</h1>
+    <p class="subtitle">{worldSubtitle}</p>
 
     <div class="world-status">
-      <span class="status-chip">Pair {gs.pair}</span>
-      <span class="status-chip">Era staging</span>
-      <span class="status-chip">Battle handoff ready</span>
+      <span class="status-chip">Lead {journey.shellLabel}</span>
+      <span class="status-chip">Growth {growthFocus.label}</span>
+      <span class="status-chip">Readiness {journey.terminalReady ? 'Arena ready' : 'Train first'}</span>
     </div>
 
     <div class="action-row">
-      <button class="primary-btn" type="button" onclick={() => goto(buildTerminalLink())}>
-        Prepare In Terminal
+      <button class="primary-btn" type="button" onclick={openWorldPrimary}>
+        {journey.minted ? (journey.terminalReady ? 'Enter Arena' : 'Finish Training') : 'Choose Lead In Create'}
       </button>
       <button class="secondary-btn" type="button" onclick={() => goto(buildBattleLink())}>
         Open Battle Shell
       </button>
       <button class="ghost-btn" type="button" onclick={() => goto(buildAgentLink())}>
-        Open Agent
+        Open Agent HQ
       </button>
     </div>
   </section>
@@ -52,30 +73,31 @@
       </div>
       <div class="map-preview">
         <div class="map-line"></div>
-        <div class="agent-marker">Agent</div>
+        <div class="agent-marker">{journey.shellLabel}</div>
         <div class="encounter-marker">Whale</div>
       </div>
       <p class="card-copy">
         The final World surface will render era segments, traversal speed, markers, HP, streak, and encounter
-        timing over the BTC-history map.
+        timing over the BTC-history map. The selected lead will walk that route, not a generic dashboard avatar.
       </p>
     </article>
 
     <article class="checklist-card">
       <div class="card-head">
         <span class="card-kicker">Unlock Rules</span>
-        <strong>Terminal readiness</strong>
+        <strong>Mission handoff</strong>
       </div>
       <div class="checklist">
         {#each readinessItems as item}
-          <div class="check-row">
+          <div class="check-row" class:done={item.done}>
             <span class="check-dot"></span>
-            <span>{item}</span>
+            <span>{item.label}</span>
           </div>
         {/each}
       </div>
       <p class="card-copy">
-        This route is still a bridge. Use Terminal as the real readiness gate until world progression is server-backed.
+        This route is still a bridge. Use Terminal as the real readiness gate until world progression is server-backed,
+        then hand the trained lead into Arena for proof.
       </p>
     </article>
   </section>
@@ -99,11 +121,6 @@
     border: 1px solid rgba(173, 202, 124, 0.16);
     background: linear-gradient(180deg, rgba(13, 21, 34, 0.94), rgba(9, 15, 25, 0.95));
     box-shadow: 0 20px 54px rgba(0, 0, 0, 0.22);
-  }
-
-  .world-hero,
-  .map-card,
-  .checklist-card {
     padding: clamp(20px, 3vw, 28px);
   }
 
@@ -128,7 +145,7 @@
   h1 {
     font-size: clamp(2rem, 4vw, 3.2rem);
     line-height: 0.96;
-    max-width: 11ch;
+    max-width: 12ch;
   }
 
   .subtitle,
@@ -275,12 +292,22 @@
     color: var(--sc-text-1);
   }
 
+  .check-row.done {
+    color: var(--sc-text-0);
+    border-color: rgba(173, 202, 124, 0.18);
+    background: rgba(173, 202, 124, 0.08);
+  }
+
   .check-dot {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--sc-accent-2);
+    background: rgba(242, 209, 147, 0.4);
     box-shadow: 0 0 10px rgba(173, 202, 124, 0.2);
+  }
+
+  .check-row.done .check-dot {
+    background: var(--sc-accent-2);
   }
 
   @media (max-width: 900px) {

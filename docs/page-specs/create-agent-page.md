@@ -4,62 +4,67 @@ Route scope:
 - `/create`
 
 Purpose:
-- Define the first-run activation route that creates a usable agent and hands the user into `Terminal`.
+- Define the first-run creation route that produces a usable starter agent and hands the player into `Terminal`.
 
 ## Primary User Job
 
-- Complete character selection, minting, AI binding, and starter setup in one guided flow.
+- Confirm the selected starter crew, choose the lead companion, and decide what kind of specialist to raise first.
 
 ## Core Flow
 
-1. User selects a character shell.
-2. User enters an agent name.
-3. User connects wallet if not already connected.
-4. User completes mint or activation.
-5. User binds an AI/model source.
-6. User chooses starter temperament or doctrine preset.
-7. Completion state unlocks `Terminal` and routes the user there.
+1. User arrives with a starter roster already pinned from Home, or drafts it here if they skipped Home selection.
+2. User chooses which starter becomes the lead companion.
+3. User enters an agent name.
+4. User chooses a starter growth focus and doctrine.
+5. User binds an AI or starter brain source.
+6. Completion state unlocks `Terminal` and routes the user there.
+7. Optional wallet or ownership upgrade can be offered later without blocking first-session value.
 
 ## Guardrails
 
-- Do not split minting and AI setup across separate top-level pages.
-- The route must end with one concrete outcome, not a vague “setup later” state.
-- Wallet, mint, and AI errors must be explicit and recoverable in-route.
+- Do not split creation and brain setup across separate top-level routes.
+- Do not make wallet connection mandatory for the first playable run.
+- The route must end with one concrete outcome, not vague setup debt.
+- Errors must be explicit and recoverable in-route.
 - The page should feel ceremonial, but not slow or overloaded.
 
 ## Key UI Blocks
 
 - step progress header
-- character shell selector
+- starter roster summary
+- lead companion selector
 - name input
-- wallet connect block
-- mint / activation confirmation block
+- growth focus selector
+- starter doctrine selector
 - AI bind block
-- starter setup block
 - completion summary and `Enter Terminal` CTA
+- optional ownership upgrade block kept visually secondary
 
 ## State Authority
 
-- selected shell, draft name, and step UI state: route local
-- wallet connection: `walletStore`
-- mint / activation result: server-authoritative wallet + mint state
-- AI binding and starter setup: server-backed agent creation workflow
+- selected starter roster, lead companion, draft name, growth focus, doctrine choice, and step UI state: shared progression plus route local state
+- starter agent creation result: server-backed agent creation workflow
+- optional wallet connection: wallet stores
+- optional ownership result: server-authoritative wallet and mint state
 
 ## Supporting APIs And Data
 
-- wallet connect flow from `walletStore`
 - future create-agent API workflow
-- agent shell metadata source
+- starter roster metadata source
+- optional wallet flow from wallet stores
 
 ## Failure States
 
-- mint succeeds but the route does not create a usable agent state
-- AI binding fails silently after mint
-- the user leaves without understanding whether Terminal is unlocked
-- wallet gating interrupts the ceremony and feels like a separate product
+- creation appears complete but does not produce a usable agent state
+- player cannot tell which selected character becomes the lead
+- AI binding fails silently
+- user leaves without understanding whether Terminal is unlocked
+- wallet flow interrupts the ceremony and feels like a separate product
 
 ## Read These First
 
+- `docs/design-docs/steam-ready-game-reset.md`
+- `docs/design-docs/steam-ship-blueprint.md`
+- `docs/design-docs/starter-roster-loop.md`
 - `docs/product-specs/create-agent.md`
-- `docs/design-docs/six-surface-game-loop.md`
 - `docs/product-specs/terminal.md`

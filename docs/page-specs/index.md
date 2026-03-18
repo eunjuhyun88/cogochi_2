@@ -6,10 +6,11 @@ Purpose:
 
 ## Read Order
 
-1. `docs/SYSTEM_INTENT.md`
-2. Relevant `docs/product-specs/*.md`
-3. Relevant page spec below
-4. Generated maps or deeper design docs only if still needed
+1. `docs/design-docs/steam-ready-game-reset.md`
+2. `docs/design-docs/steam-ship-blueprint.md`
+3. Relevant `docs/product-specs/*.md`
+4. Relevant page spec below
+5. Generated maps or deeper design docs only if still needed
 
 ## Page Specs
 

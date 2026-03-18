@@ -19,6 +19,7 @@
   const connected = $derived($isWalletConnected);
   const liveP = $derived($livePrices);
   const activePath = $derived($page.url.pathname);
+  const isHome = $derived(activePath === '/');
 
   let _lastFetchedToken = '';
 
@@ -99,24 +100,29 @@
   );
 </script>
 
-<nav id="nav">
+<nav id="nav" class:home-header={isHome}>
   <div class="nav-main">
     <a class="nav-logo" href={buildDeepLink('/')} aria-label="Home">
       <span class="nav-logo-main">Cogochi</span>
     </a>
 
-    <div class="nav-sep"></div>
+    {#if !isHome}
+      <div class="nav-sep"></div>
 
-    <div class="selected-ticker">
-      <span class="st-pair">{gState.pair}</span>
-      <span class="st-price">${selectedPriceText}</span>
-    </div>
+      <div class="selected-ticker">
+        <span class="st-pair">{gState.pair}</span>
+        <span class="st-price">${selectedPriceText}</span>
+      </div>
 
-    <div class="nav-sep"></div>
+      <div class="nav-sep"></div>
+    {:else}
+      <div class="nav-sep"></div>
+    {/if}
 
     {#each DESKTOP_NAV_SURFACES as item}
       <a
         class="nav-tab-desktop"
+        class:home-tab={isHome}
         class:active={isActive(item.id)}
         title={`${item.label} · ${item.description}`}
         aria-label={`${item.label}: ${item.description}`}
@@ -129,22 +135,24 @@
   </div>
 
   <div class="nav-right">
-    <div class="score-badge">
-      <span class="score-label">SCORE</span>
-      <span class="score-value">{Math.round(gState.score)}</span>
-    </div>
+    {#if !isHome}
+      <div class="score-badge">
+        <span class="score-label">SCORE</span>
+        <span class="score-value">{Math.round(gState.score)}</span>
+      </div>
 
-    <a
-      class="settings-btn"
-      title="Settings"
-      aria-label="Settings"
-      href={buildDeepLink('/settings')}
-    >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-      </svg>
-    </a>
+      <a
+        class="settings-btn"
+        title="Settings"
+        aria-label="Settings"
+        href={buildDeepLink('/settings')}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </a>
+    {/if}
 
     {#if connected}
       <div class="profile-dropdown-wrap">
@@ -188,11 +196,15 @@
     flex-wrap: nowrap;
     align-items: center;
     height: var(--sc-header-h);
-    padding: 0 var(--sc-sp-3);
+    padding: 0 var(--sc-sp-4);
     font-family: var(--sc-font-body);
     color: var(--sc-text-0);
     backdrop-filter: blur(18px);
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  .home-header {
+    padding: 0 var(--sc-sp-6);
   }
 
   #nav::after {
@@ -233,9 +245,13 @@
 
   .nav-logo-main {
     font-family: var(--sc-font-display);
-    font-size: 1.35rem;
-    letter-spacing: 0.08em;
+    font-size: 1.72rem;
+    letter-spacing: 0.07em;
     text-shadow: 0 0 10px rgba(255, 118, 181, 0.1);
+  }
+
+  .home-header .nav-logo-main {
+    font-size: 1.9rem;
   }
 
   .nav-sep {
@@ -256,13 +272,13 @@
   }
   .st-pair {
     font-family: var(--sc-font-pixel);
-    font-size: var(--sc-fs-2xs);
+    font-size: var(--sc-fs-sm);
     color: var(--sc-text-3);
-    letter-spacing: 1px;
+    letter-spacing: 0.06em;
   }
   .st-price {
     font-family: var(--sc-font-pixel);
-    font-size: var(--sc-fs-sm);
+    font-size: var(--sc-fs-md);
     color: var(--sc-text-0);
   }
 
@@ -270,11 +286,11 @@
   .nav-tab-desktop {
     font-family: var(--sc-font-body);
     font-weight: 700;
-    font-size: var(--sc-fs-2xs);
-    letter-spacing: 0.12em;
+    font-size: var(--sc-fs-base);
+    letter-spacing: 0.06em;
     color: var(--sc-text-3);
-    padding: 0 var(--sc-sp-3);
-    height: 28px;
+    padding: 0 20px;
+    height: 46px;
     display: flex;
     align-items: center;
     border: 1px solid rgba(255, 217, 122, 0.08);
@@ -287,6 +303,12 @@
     position: relative;
     text-decoration: none;
     margin-right: 6px;
+  }
+
+  .nav-tab-desktop.home-tab {
+    font-size: var(--sc-fs-md);
+    height: 48px;
+    padding: 0 22px;
   }
   .nav-tab-desktop:last-of-type { border-right: none; }
   .nav-tab-desktop:hover {
@@ -318,19 +340,19 @@
 
   .score-badge {
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-2xs);
+    font-size: var(--sc-fs-base);
     background: rgba(255, 217, 122, 0.06);
     color: #fff0ca;
     border: 1px solid rgba(255, 217, 122, 0.12);
     border-radius: 999px;
-    padding: var(--sc-sp-1) var(--sc-sp-2);
-    letter-spacing: 0.12em;
+    padding: 8px 14px;
+    letter-spacing: 0.08em;
     display: flex;
     align-items: center;
     gap: var(--sc-sp-1);
   }
   .score-value {
-    font-size: var(--sc-fs-xs);
+    font-size: var(--sc-fs-md);
     color: var(--sc-text-0);
     font-weight: 700;
   }
@@ -360,13 +382,13 @@
   .wallet-btn {
     font-family: var(--sc-font-body);
     font-weight: 700;
-    font-size: var(--sc-fs-2xs);
+    font-size: var(--sc-fs-base);
     background: linear-gradient(135deg, #ff76b5, #ffd6e5 44%, #c8f06f);
     color: #0f1520;
     border: 1px solid rgba(255, 217, 122, 0.34);
     border-radius: 999px;
-    padding: var(--sc-sp-1) var(--sc-sp-3);
-    min-height: var(--sc-touch-sm, 36px);
+    padding: 0 18px;
+    min-height: 46px;
     cursor: pointer;
     letter-spacing: 0.06em;
     transition: all var(--sc-duration-fast);
@@ -384,7 +406,7 @@
     color: #dff8bd;
     border: 1px solid rgba(186, 240, 106, 0.2);
     box-shadow: none;
-    font-size: var(--sc-fs-2xs);
+    font-size: var(--sc-fs-base);
   }
   .wallet-dot {
     width: 5px; height: 5px;
@@ -419,7 +441,7 @@
   .dropdown-item {
     font-family: var(--sc-font-body);
     font-weight: 600;
-    font-size: var(--sc-fs-2xs);
+    font-size: var(--sc-fs-sm);
     letter-spacing: 0.04em;
     color: var(--sc-text-1);
     background: none;
@@ -463,13 +485,13 @@
     .score-badge { display: none; }
     .nav-tab-desktop {
       padding: 0 var(--sc-sp-2);
-      font-size: var(--sc-fs-2xs);
-      letter-spacing: 0.5px;
+      font-size: var(--sc-fs-sm);
+      letter-spacing: 0.06em;
     }
     .nav-logo {
       gap: 6px;
     }
-    .nav-logo-main { font-size: var(--sc-fs-sm); }
+    .nav-logo-main { font-size: var(--sc-fs-base); }
     .nav-right { gap: var(--sc-sp-1); }
   }
 
@@ -491,7 +513,7 @@
       gap: 0;
     }
     .nav-logo-main {
-      font-size: var(--sc-fs-sm);
+      font-size: var(--sc-fs-md);
       letter-spacing: 1.5px;
     }
     .nav-right {
@@ -504,7 +526,7 @@
       min-height: var(--sc-touch-sm, 36px);
     }
     .wallet-btn {
-      padding: var(--sc-sp-1) var(--sc-sp-3);
+      padding: var(--sc-sp-1_5) var(--sc-sp-3);
       border-radius: var(--sc-radius-md);
     }
   }
@@ -521,7 +543,7 @@
       gap: 0;
     }
     .nav-logo-main {
-      font-size: var(--sc-fs-xs);
+      font-size: var(--sc-fs-base);
       letter-spacing: 1px;
     }
     .wallet-btn {

@@ -1,21 +1,28 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import { isWalletConnected } from '$lib/stores/walletStore';
-  import { openWalletModal } from '$lib/stores/walletModalStore';
+  import { onMount } from 'svelte';
   import { gameState } from '$lib/stores/gameState';
   import { livePrices } from '$lib/stores/priceStore';
   import HomeBackground from '../components/home/HomeBackground.svelte';
+  import {
+    agentJourneyStore,
+    currentJourneyGrowthFocus,
+    JOURNEY_SHELL_OPTIONS,
+    starterRoster,
+    type AgentShellId,
+  } from '$lib/stores/agentJourneyStore';
   import {
     buildAgentLink,
     buildBattleLink,
     buildCreateLink,
     buildTerminalLink,
   } from '$lib/utils/deepLinks';
-  import { MAIN_CAST_SHEETS } from '$lib/data/mainCastAssets';
 
-  const connected = $derived($isWalletConnected);
   const gs = $derived($gameState);
   const prices = $derived($livePrices);
+  const journey = $derived($agentJourneyStore);
+  const pinnedCrew = $derived($starterRoster);
+  const growthFocus = $derived($currentJourneyGrowthFocus);
 
   const selectedToken = $derived(gs.pair.split('/')[0] || 'BTC');
   const selectedPrice = $derived(prices[selectedToken] || 0);
@@ -27,6 +34,10 @@
         })
       : 'Loading...'
   );
+
+  let featuredIndex = $state(0);
+  const featuredShell = $derived(JOURNEY_SHELL_OPTIONS[featuredIndex % JOURNEY_SHELL_OPTIONS.length]);
+  const starterCount = $derived(pinnedCrew.length);
 
   function nav(href: string) {
     goto(href);
@@ -40,17 +51,33 @@
     goto(buildTerminalLink());
   }
 
+  function toggleStarter(shellId: AgentShellId) {
+    agentJourneyStore.toggleStarterRoster(shellId);
+    const nextIndex = JOURNEY_SHELL_OPTIONS.findIndex((option) => option.id === shellId);
+    if (nextIndex >= 0) {
+      featuredIndex = nextIndex;
+    }
+  }
+
   function openAgentOrWallet() {
-    if (connected) {
-      goto(buildAgentLink());
+    if (!journey.minted) {
+      goto(buildCreateLink());
       return;
     }
-    openWalletModal();
+    goto(buildAgentLink());
   }
+
+  onMount(() => {
+    const timer = window.setInterval(() => {
+      featuredIndex = (featuredIndex + 1) % JOURNEY_SHELL_OPTIONS.length;
+    }, 1600);
+
+    return () => window.clearInterval(timer);
+  });
 </script>
 
 <svelte:head>
-  <title>Cogochi — Create, Train, Deploy</title>
+  <title>Cogochi — Train, Prove, Grow</title>
 </svelte:head>
 
 <HomeBackground />
@@ -58,68 +85,87 @@
 <main class="home">
   <section class="hero-grid">
     <div class="hero-copy">
-      <p class="eyebrow">Create. Train. Deploy. Prove.</p>
-      <h1>Mint the agent. Train the brain.</h1>
+      <p class="eyebrow">Draft. Raise. Train. Prove. Rent.</p>
+      <h1>Draft the crew. Raise the lead.</h1>
       <p class="subtitle">
-        Start by creating your character-agent. Train its doctrine in Terminal, unlock the World run,
-        resolve whale encounters in Battle, and grow proof inside Agent.
+        Pin three starters, choose the lead, train it in Terminal, and prove the build in Arena.
       </p>
 
       <div class="live-line" aria-label="Current market context">
         <span class="live-chip">{gs.pair}</span>
         <span class="live-chip">{selectedPriceText}</span>
-        <span class="live-chip">Stage 1 entry</span>
+        <span class="live-chip">{starterCount}/3 pinned</span>
       </div>
 
       <div class="cta-row">
-        <button class="cta-primary" type="button" onclick={openCreate}>Create My Agent</button>
-        <button class="cta-secondary" type="button" onclick={openTerminal}>Open Terminal</button>
-        <button class="cta-tertiary" type="button" onclick={() => nav(buildBattleLink())}>Open Battle</button>
+        <button class="cta-primary" type="button" onclick={openCreate}>
+          {journey.minted ? 'Continue Mission' : 'Start Mission'}
+        </button>
+        <button class="cta-secondary" type="button" onclick={openTerminal}>Resume Training</button>
+        <button class="cta-tertiary" type="button" onclick={() => nav(buildBattleLink())}>Enter Arena</button>
       </div>
     </div>
 
     <aside class="companion-bay">
       <div class="bay-header">
         <div>
-          <p class="bay-kicker">Standby / Hangar</p>
-          <h2>Duckee Green // Stage 1</h2>
+          <p class="bay-kicker">Starter roster</p>
+          <h2>{featuredShell.label} // on rotation</h2>
         </div>
-        <span class="bay-stage">Terminal first</span>
+        <span class="bay-stage">{starterCount}/3 pinned</span>
       </div>
 
-      <div class="bay-meta">
-        <span class="bay-meta-pill">Character-agent</span>
-        <span class="bay-meta-pill">Brain console</span>
-        <span class="bay-meta-pill">World staged</span>
-        <span class="bay-meta-pill">Bond {Math.round(gs.score)}</span>
-      </div>
+      <p class="bay-helper">
+        Pin three starters here. The lead gets chosen in Create and trained in Terminal.
+      </p>
 
       <div class="bay-visual">
-        <img class="bay-portrait" src={MAIN_CAST_SHEETS.duckeeGreen} alt="Duckee Green companion sprite" />
+        <img class="bay-portrait" src={featuredShell.sheet} alt={`${featuredShell.label} starter sprite`} />
         <div class="bay-visual-caption">
-          <span>Active companion</span>
-          <strong>Ready for {gs.pair}</strong>
+          <span>Rotating candidate</span>
+          <strong>{featuredShell.title}</strong>
         </div>
       </div>
 
-      <div class="bay-stats">
-        <div class="stat-card">
-          <span class="stat-label">Bond</span>
-          <strong>{Math.round(gs.score)}</strong>
+      <div class="roster-grid" aria-label="Starter roster selection">
+        {#each JOURNEY_SHELL_OPTIONS as option}
+          <button
+            class="roster-card"
+            class:selected={journey.starterRosterIds.includes(option.id)}
+            type="button"
+            onclick={() => toggleStarter(option.id)}
+          >
+            <img src={option.sheet} alt={option.label} />
+            <span>{option.label}</span>
+          </button>
+        {/each}
+      </div>
+
+      <div class="bay-detail-grid">
+        <div class="pinned-row">
+          <span class="pinned-label">Pinned crew</span>
+          <div class="pinned-list">
+            {#each pinnedCrew as crew}
+              <span class="pinned-chip">{crew.label}</span>
+            {/each}
+          </div>
         </div>
-        <div class="stat-card">
-          <span class="stat-label">Matches</span>
-          <strong>{gs.matchN}</strong>
-        </div>
-        <div class="stat-card">
-          <span class="stat-label">Battle</span>
-          <strong>{gs.wins}/{Math.max(gs.matchN, 1)}</strong>
+
+        <div class="bay-summary">
+          <div class="summary-card">
+            <span class="summary-label">Lead</span>
+            <strong>{journey.shellLabel}</strong>
+          </div>
+          <div class="summary-card">
+            <span class="summary-label">Growth</span>
+            <strong>{growthFocus.label}</strong>
+          </div>
         </div>
       </div>
 
       <div class="bay-footer">
         <button class="footer-action" type="button" onclick={openAgentOrWallet}>
-          {connected ? 'Open Agent' : 'Connect Wallet'}
+          {journey.minted ? 'Open Agent HQ' : 'Choose Growth Path'}
         </button>
       </div>
     </aside>
@@ -140,10 +186,10 @@
 
   .hero-grid {
     display: grid;
-    width: min(1140px, 100%);
-    margin: clamp(16px, 4vh, 36px) auto 0;
-    grid-template-columns: minmax(0, 1fr) minmax(340px, 420px);
-    gap: clamp(24px, 3vw, 40px);
+    width: min(1220px, 100%);
+    margin: clamp(20px, 4.6vh, 44px) auto 0;
+    grid-template-columns: minmax(0, 1fr) minmax(440px, 520px);
+    gap: clamp(28px, 3.6vw, 52px);
     align-items: start;
   }
 
@@ -161,11 +207,11 @@
     position: relative;
     isolation: isolate;
     overflow: visible;
-    max-width: 620px;
-    padding: 18px 0 14px;
+    max-width: 700px;
+    padding: 28px 0 20px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 22px;
   }
 
   .hero-copy::before {
@@ -188,8 +234,8 @@
   .eyebrow {
     margin: 0;
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-2xs);
-    letter-spacing: 0.16em;
+    font-size: var(--sc-fs-md);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--sc-accent-2);
   }
@@ -197,12 +243,12 @@
   h1 {
     margin: 0;
     font-family: var(--sc-font-display);
-    font-size: clamp(2.2rem, 4.4vw, 3.8rem);
+    font-size: clamp(3.4rem, 6.2vw, 5.9rem);
     line-height: 0.96;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     color: var(--sc-text-0);
-    max-width: 9ch;
+    max-width: 8ch;
     text-shadow:
       0 3px 0 rgba(0, 0, 0, 0.34),
       0 0 18px rgba(173, 202, 124, 0.14);
@@ -210,39 +256,46 @@
 
   .subtitle {
     margin: 0;
-    max-width: 42ch;
+    max-width: 40ch;
     font-family: var(--sc-font-body);
-    font-size: clamp(0.95rem, 1.08vw, 1.03rem);
-    line-height: 1.5;
+    font-size: clamp(1.18rem, 1.45vw, 1.42rem);
+    line-height: 1.58;
     color: var(--sc-text-1);
     letter-spacing: 0.01em;
   }
 
   .live-line,
   .cta-row,
-  .bay-stats {
+  .bay-summary {
     display: grid;
     gap: var(--sc-sp-2);
   }
 
+  .bay-detail-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(156px, 180px);
+    gap: 12px;
+    align-items: start;
+  }
+
   .live-line {
-    grid-template-columns: repeat(auto-fit, minmax(110px, max-content));
+    grid-template-columns: repeat(auto-fit, minmax(132px, max-content));
   }
 
   .live-chip,
   .bay-stage {
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-2xs);
-    letter-spacing: 0.08em;
+    font-size: var(--sc-fs-md);
+    letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
   .live-chip {
-    min-height: 28px;
+    min-height: 42px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0 var(--sc-sp-3);
+    padding: 0 18px;
     border-radius: 999px;
     border: 1px solid rgba(173, 202, 124, 0.14);
     background:
@@ -272,12 +325,13 @@
   .cta-secondary,
   .cta-tertiary,
   .footer-action {
-    min-height: 42px;
-    padding: 0 var(--sc-sp-4);
-    border-radius: 16px;
+    min-height: 58px;
+    padding: 0 22px;
+    border-radius: 18px;
     cursor: pointer;
     white-space: nowrap;
     font-family: var(--sc-font-body);
+    font-size: var(--sc-fs-lg);
     font-weight: 700;
     letter-spacing: 0.01em;
   }
@@ -303,7 +357,7 @@
   .cta-tertiary {
     border: none;
     background: transparent;
-    color: var(--sc-text-2);
+    color: var(--sc-text-1);
     padding-inline: 0;
     min-height: auto;
     justify-self: start;
@@ -326,13 +380,13 @@
 
   .companion-bay {
     width: 100%;
-    max-width: 420px;
+    max-width: 500px;
     justify-self: end;
-    border-radius: 28px;
-    padding: 18px;
+    border-radius: 30px;
+    padding: 28px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
     position: relative;
     overflow: hidden;
   }
@@ -340,7 +394,7 @@
   .companion-bay::before {
     content: '';
     position: absolute;
-    inset: 12px;
+    inset: 14px;
     border-radius: 24px;
     border: 1px solid rgba(173, 202, 124, 0.08);
     pointer-events: none;
@@ -357,9 +411,9 @@
   .bay-kicker {
     margin: 0 0 6px;
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-2xs);
+    font-size: var(--sc-fs-md);
     color: var(--sc-text-3);
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
@@ -372,42 +426,30 @@
   }
 
   .bay-header h2 {
-    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+    font-size: clamp(1.8rem, 2.5vw, 2.35rem);
   }
 
   .bay-stage {
-    padding: 7px 12px;
+    padding: 8px 14px;
     border-radius: 999px;
     background: rgba(173, 202, 124, 0.08);
     color: #edf4df;
     border: 1px solid rgba(173, 202, 124, 0.16);
   }
 
-  .bay-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .bay-meta-pill {
-    display: inline-flex;
-    align-items: center;
-    min-height: 26px;
-    padding: 0 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(173, 202, 124, 0.12);
-    background: rgba(12, 20, 30, 0.72);
-    color: var(--sc-text-2);
-    font-family: var(--sc-font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+  .bay-helper {
+    margin: 0;
+    font-family: var(--sc-font-body);
+    font-size: 1.14rem;
+    line-height: 1.6;
+    color: var(--sc-text-1);
+    max-width: 30ch;
   }
 
   .bay-visual {
     position: relative;
-    min-height: 188px;
-    border-radius: 20px;
+    min-height: 218px;
+    border-radius: 22px;
     overflow: hidden;
     background:
       linear-gradient(180deg, rgba(14, 21, 33, 0.9), rgba(8, 14, 22, 0.97)),
@@ -417,7 +459,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 18px 18px 54px;
+    padding: 20px 20px 46px;
   }
 
   .bay-visual::before {
@@ -433,7 +475,7 @@
   }
 
   .bay-portrait {
-    width: min(100%, 178px);
+    width: min(100%, 190px);
     image-rendering: pixelated;
     filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.42));
     position: relative;
@@ -442,8 +484,8 @@
 
   .bay-visual-caption {
     position: absolute;
-    left: 16px;
-    right: 16px;
+    left: 18px;
+    right: 18px;
     bottom: 14px;
     display: flex;
     align-items: end;
@@ -461,44 +503,135 @@
 
   .bay-visual-caption span {
     color: var(--sc-text-3);
-    font-size: 0.7rem;
+    font-size: var(--sc-fs-base);
   }
 
   .bay-visual-caption strong {
     color: #fff1d8;
-    font-size: 0.78rem;
+    font-size: var(--sc-fs-md);
     text-align: right;
   }
 
-  .bay-stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .roster-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
   }
 
-  .stat-card {
+  .roster-card {
+    border-radius: 18px;
+    border: 1px solid rgba(173, 202, 124, 0.1);
+    background: rgba(12, 19, 28, 0.74);
+    min-height: 122px;
+    padding: 16px 12px;
+    display: grid;
+    place-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition:
+      transform var(--sc-duration-fast) var(--sc-ease),
+      border-color var(--sc-duration-fast) var(--sc-ease),
+      background var(--sc-duration-fast) var(--sc-ease);
+  }
+
+  .roster-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(173, 202, 124, 0.24);
+    background: rgba(14, 23, 34, 0.92);
+  }
+
+  .roster-card.selected {
+    border-color: rgba(173, 202, 124, 0.3);
+    background:
+      linear-gradient(180deg, rgba(173, 202, 124, 0.14), rgba(12, 19, 28, 0.86));
+    box-shadow: inset 0 0 0 1px rgba(173, 202, 124, 0.08);
+  }
+
+  .roster-card img {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.34));
+  }
+
+  .roster-card span {
+    font-family: var(--sc-font-body);
+    font-size: var(--sc-fs-base);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--sc-text-1);
+    text-align: center;
+  }
+
+  .pinned-row {
+    display: grid;
+    gap: 8px;
+  }
+
+  .pinned-label {
+    font-family: var(--sc-font-mono);
+    font-size: var(--sc-fs-md);
+    color: var(--sc-text-3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .pinned-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .pinned-chip {
+    min-height: 38px;
+    padding: 0 12px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(173, 202, 124, 0.14);
+    background: rgba(9, 15, 23, 0.82);
+    color: #edf4df;
+    font-family: var(--sc-font-mono);
+    font-size: var(--sc-fs-base);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .bay-summary {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .summary-card {
     border-radius: 16px;
-    padding: 10px 12px;
+    padding: 16px;
     background: rgba(12, 19, 28, 0.8);
     border: 1px solid rgba(173, 202, 124, 0.1);
     display: grid;
-    gap: 2px;
+    gap: 4px;
   }
 
-  .stat-label {
+  .summary-label {
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-2xs);
-  }
-
-  .stat-label {
+    font-size: var(--sc-fs-md);
     color: var(--sc-text-3);
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
   }
 
-  .stat-card strong {
+  .summary-card strong {
     font-family: var(--sc-font-display);
-    font-size: 1.08rem;
+    font-size: var(--sc-fs-xl);
     color: #fff2ce;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
+    line-height: 1.05;
+  }
+
+  .companion-bay .footer-action {
+    min-height: 56px;
   }
 
   @media (max-width: 1100px) {
@@ -540,7 +673,7 @@
     }
 
     h1 {
-      font-size: clamp(1.7rem, 9vw, 2.6rem);
+      font-size: clamp(2.3rem, 10vw, 3.4rem);
       max-width: none;
     }
 
@@ -550,9 +683,14 @@
 
     .bay-header,
     .bay-footer,
-    .bay-stats {
+    .bay-summary,
+    .bay-detail-grid {
       grid-template-columns: 1fr;
       display: grid;
+    }
+
+    .roster-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .bay-visual-caption {

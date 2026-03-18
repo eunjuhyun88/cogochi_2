@@ -1,8 +1,10 @@
 <script lang="ts">
+  import MissionFlowShell from '../../components/mission/MissionFlowShell.svelte';
   import WarRoom from '../../components/terminal/WarRoom.svelte';
   import ChartPanel from '../../components/arena/ChartPanel.svelte';
   import VerdictBanner from '../../components/terminal/VerdictBanner.svelte';
   import IntelPanel from '../../components/terminal/IntelPanel.svelte';
+  import StrategyVariantWorkbench from '../../components/agent/StrategyVariantWorkbench.svelte';
   import TokenDropdown from '../../components/shared/TokenDropdown.svelte';
   import CopyTradeModal from '../../components/modals/CopyTradeModal.svelte';
   import { AGDEFS } from '$lib/data/agents';
@@ -32,12 +34,31 @@
   $: tickerSegments = tickerText.split(' | ').filter(Boolean);
   import { gameState } from '$lib/stores/gameState';
   import { livePrices } from '$lib/stores/priceStore';
+  import { agentJourneyStore, currentJourneyGrowthFocus, readinessProgress } from '$lib/stores/agentJourneyStore';
   import { hydrateQuickTrades, openTradeCount } from '$lib/stores/quickTradeStore';
   import { activeSignalCount } from '$lib/stores/trackedSignalStore';
   import { copyTradeStore } from '$lib/stores/copyTradeStore';
   import { formatTimeframeLabel } from '$lib/utils/timeframe';
   import { alertEngine } from '$lib/services/alertEngine';
   import { onMount, onDestroy, tick } from 'svelte';
+
+  let journey = $agentJourneyStore;
+  let growthFocus = $currentJourneyGrowthFocus;
+  let journeyReadyCount = $readinessProgress;
+  let terminalLeadLabel = journey.minted ? journey.agentName : journey.shellLabel;
+  let terminalMissionTitle = journey.minted ? `Build ${journey.agentName}.` : 'Build the lead.';
+  let terminalMissionSummary = journey.minted
+    ? `${journey.shellLabel} is on a ${growthFocus.label} path. Run multiple builds here and keep only the one that clearly wins.`
+    : 'Choose a lead and growth path in Create, then come back here to run the first build.';
+
+  $: journey = $agentJourneyStore;
+  $: growthFocus = $currentJourneyGrowthFocus;
+  $: journeyReadyCount = $readinessProgress;
+  $: terminalLeadLabel = journey.minted ? journey.agentName : journey.shellLabel;
+  $: terminalMissionTitle = journey.minted ? `Build ${journey.agentName}.` : 'Build the lead.';
+  $: terminalMissionSummary = journey.minted
+    ? `${journey.shellLabel} is on a ${growthFocus.label} path. Run multiple builds here and keep only the one that clearly wins.`
+    : 'Choose a lead and growth path in Create, then come back here to run the first build.';
 
   // ── Panel resize state ──
   let leftW = 280;       // War Room width
@@ -1409,10 +1430,26 @@
   }
 </script>
 
-<div class="terminal-shell">
-  <div class="term-stars" aria-hidden="true"></div>
-  <div class="term-stars term-stars-soft" aria-hidden="true"></div>
-  <div class="term-grain" aria-hidden="true"></div>
+<div class="terminal-route-shell">
+  <MissionFlowShell
+    step="train"
+    title={terminalMissionTitle}
+    summary={terminalMissionSummary}
+    metrics={[
+      { label: 'Lead', value: terminalLeadLabel },
+      { label: 'Growth', value: growthFocus.label },
+      { label: 'Readiness', value: `${journeyReadyCount}/3` },
+    ]}
+  />
+  <StrategyVariantWorkbench
+    compact
+    title="Run builds before the next proof run."
+    subtitle="Backtest and simulate multiple setups for the same lead. The goal is simple: find the build that actually improves."
+  />
+  <div class="terminal-shell">
+    <div class="term-stars" aria-hidden="true"></div>
+    <div class="term-stars term-stars-soft" aria-hidden="true"></div>
+    <div class="term-grain" aria-hidden="true"></div>
   {#if isMobile}
     <button type="button" class="density-toggle" on:click={toggleDensityMode} title="정보 밀도 전환">
       {densityLabel}
@@ -1930,12 +1967,22 @@
     {/if}
   </div>
   {/if}
+  </div>
 </div>
 
 <!-- Copy Trade Modal (shared across all layouts) -->
 <CopyTradeModal />
 
 <style>
+  .terminal-route-shell {
+    position: relative;
+    height: 100%;
+    min-height: calc(100dvh - var(--sc-header-h, 56px) - var(--sc-bottom-bar-h, 28px));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
   .terminal-shell {
     --term-bg: #0a1a0d;
     --term-bg2: #0f2614;
@@ -1960,11 +2007,11 @@
     --cyan: #9fd5cb;
     --blk: #0a1a0d;
 
-    position: absolute;
-    inset: 0;
-    width: auto;
+    position: relative;
+    width: 100%;
     height: auto;
-    min-height: 0;
+    flex: 1;
+    min-height: 560px;
     overflow: hidden;
     overflow-x: clip;
     overscroll-behavior: none;
@@ -1975,6 +2022,8 @@
       radial-gradient(110% 72% at 15% 0%, rgba(232, 150, 125, 0.1) 0%, rgba(232, 150, 125, 0) 58%),
       radial-gradient(96% 68% at 88% 6%, rgba(135, 220, 190, 0.14) 0%, rgba(135, 220, 190, 0) 62%),
       linear-gradient(180deg, var(--term-bg2) 0%, var(--term-bg) 72%);
+    display: flex;
+    flex-direction: column;
   }
   .terminal-shell::before {
     content: '';
@@ -2211,13 +2260,30 @@
     display: grid;
     grid-template-columns: 280px 4px 1fr 4px 300px; /* overridden by inline style */
     grid-template-rows: 1fr auto;
-    height: 100%;
-    padding-top: 50px;
+    flex: 1;
+    min-height: 0;
+    height: auto;
+    padding-top: 16px;
     box-sizing: border-box;
     overflow: hidden;
     overflow-x: clip;
     background: linear-gradient(180deg, var(--term-panel) 0%, var(--term-panel-2) 100%);
     box-shadow: inset 0 0 0 1px var(--term-border-soft);
+  }
+  .terminal-mobile,
+  .terminal-tablet {
+    flex: 1;
+    min-height: 0;
+  }
+
+  @media (max-width: 768px) {
+    .terminal-route-shell {
+      min-height: calc(100svh - var(--sc-header-h-mobile, 44px) - var(--sc-mobile-nav-h, 64px));
+    }
+
+    .terminal-shell {
+      min-height: 0;
+    }
   }
   .ticker-bar {
     grid-column: 1 / -1;

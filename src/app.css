@@ -18,7 +18,7 @@ html, body {
     linear-gradient(180deg, #040811 0%, #09101b 42%, #0b1320 100%);
   color: var(--sc-text-0);
   font-family: var(--sc-font-body);
-  font-size: var(--sc-fs-sm);
+  font-size: var(--sc-fs-base);
   line-height: var(--sc-lh-normal);
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;

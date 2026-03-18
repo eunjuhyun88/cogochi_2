@@ -17,6 +17,7 @@ export const STORAGE_KEYS = {
   notificationsSeeded: 'stockclaw_notifications_seeded_v1',
   activeGames: 'stockclaw_active_games',
   agentJourney: 'cogochi_agent_journey_v1',
+  agentVariants: 'cogochi_agent_variants_v1',
 } as const;
 
 /** Keys safe to clear on user-initiated data reset (excludes session-only flags) */

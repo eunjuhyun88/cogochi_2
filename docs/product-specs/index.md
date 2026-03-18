@@ -2,20 +2,28 @@
 
 This folder contains the canonical surface specs referenced by `docs/README.md` and `context-kit.json`.
 
-## Surface Specs
+## Release Surface Mapping
 
-| Surface label | Canonical file | Notes |
+| Release surface | Canonical file(s) | Notes |
 | --- | --- | --- |
-| `home` | `docs/product-specs/home.md` | first-action path and product promise |
-| `create-agent` | `docs/product-specs/create-agent.md` | mint + AI bind + initial setup |
-| `terminal` | `docs/product-specs/terminal.md` | brain console and readiness gate |
-| `world` | `docs/product-specs/world.md` | BTC-history world map and traversal |
-| `battle` | `docs/product-specs/arena.md` | legacy file path; canonical surface label is `Battle` |
-| `agent` | `docs/product-specs/agents.md` | legacy file path; canonical surface label is `Agent` |
-| `signals-community` | `docs/product-specs/signals.md` | secondary public/community route, not primary IA |
-| `passport-legacy` | `docs/product-specs/passport.md` | legacy implementation slice being absorbed into `Agent` |
-| `community` | `docs/product-specs/community.md` | supporting social layer |
-| `api` | `docs/product-specs/api.md` | contracts and integration boundaries |
+| `Home` | `docs/product-specs/home.md` | first-action path and product promise |
+| `Mission` | `docs/product-specs/create-agent.md`, `docs/product-specs/terminal.md`, `docs/product-specs/arena.md` | current implementation still spans multiple routes |
+| `Agent HQ` | `docs/product-specs/agents.md`, `docs/product-specs/passport.md` | legacy `Lab` and `Passport` slices are being absorbed here |
+| `Market` | `docs/product-specs/signals.md` | current implementation still lives under `/signals` |
+| `API and support` | `docs/product-specs/api.md`, `docs/product-specs/community.md` | contracts and supporting social layer |
+
+## Legacy Route Bridge
+
+| Route or slice | Current spec | Release reading |
+| --- | --- | --- |
+| `/create` | `docs/product-specs/create-agent.md` | `Mission / Create` |
+| `/terminal` | `docs/product-specs/terminal.md` | `Mission / Train` |
+| `/world` | `docs/product-specs/world.md` | internal mission content, not top-level release IA |
+| `/arena*` | `docs/product-specs/arena.md` | `Mission / Arena` |
+| `/agent` | `docs/product-specs/agents.md` | `Agent HQ / Overview` |
+| `/lab` | page specs only | `Agent HQ / Training` |
+| `/passport` | `docs/product-specs/passport.md` | `Agent HQ / Record` |
+| `/signals` | `docs/product-specs/signals.md` | `Market` |
 
 ## Page Specs
 

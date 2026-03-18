@@ -3,49 +3,63 @@
 Purpose:
 - Repo-local condensed brief for product intent and architectural invariants.
 - Read this before opening larger design docs.
-- Use it to keep `StockClaw` terminal intelligence and `Cogochi` character progression inside one product model.
+- Use it to keep StockClaw market intelligence and Cogochi character progression inside one coherent game loop.
 
 Primary source:
-- `docs/design-docs/six-surface-game-loop.md`
+- `docs/design-docs/steam-ready-game-reset.md`
 
 Supporting sources:
+- `docs/design-docs/unified-product-model.md`
 - `docs/design-docs/arena-domain-model.md`
 - `docs/design-docs/learning-loop.md`
 
+## Current Release Target
+
+The shipping mental model is:
+- `Home`
+- `Mission`
+- `Agent HQ`
+- `Market`
+
+This is intentionally simpler than the broader six-surface model.
+
+Legacy route bridge:
+- `/create`, `/terminal`, `/world`, and `/arena*` belong to `Mission`
+- `/agent`, `/lab`, and `/passport` belong to `Agent HQ`
+- `/signals` remains the current implementation path for `Market`
+
 ## Product Thesis
 
-STOCKCLAW is a character-anchored trading system.
+STOCKCLAW is a character-anchored market game.
 
-Users do not just read signals. They:
-- create an agent
-- connect and train its brain in `Terminal`
-- deploy it into `World`
-- resolve encounters in `Battle`
-- grow, share, and record it in `Agent`
+Users do not just browse signals. They:
+- create or resume an agent
+- train its judgment in `Terminal`
+- prove it in `Arena`
+- grow its identity, memory, and record over time
 
-The product must feel like one loop, not a dashboard plus a separate tamagotchi game.
+The product must feel like one playable journey, not a dashboard plus a separate pet game.
 
-## Final Surface Model
+## Release Surface Model
 
 - `Home`
-  - explains the full loop quickly and routes into the first meaningful action
-- `Create Agent`
-  - shell selection, minting, AI binding, and starter setup
-- `Terminal`
-  - brain console, doctrine, validation, world readiness
-- `World`
-  - BTC-history map, traversal, era state, encounter triggers
-- `Battle`
-  - whale encounter, rounds, intervention, result, reflection
-- `Agent`
-  - merged growth hub for record, training view, proof, share, and rental
+  - explains the fantasy quickly and routes into the next meaningful action
+- `Mission`
+  - owns setup, training, and playable encounter progression
+- `Agent HQ`
+  - owns growth, memory, proof, and review
+- `Market`
+  - owns public signal discovery and external proof context
 
 Implementation bridge:
-- `Create Agent` maps to target route `/create` and is not shipped yet.
-- `World` maps to target route `/world` and is not shipped yet.
-- `Battle` currently maps to `/arena`.
-- `Agent` will merge the current `/lab` and `/passport` responsibilities.
-- `/signals` remains secondary and is not part of the primary six-surface IA.
+- `Mission / Create` maps to `/create`
+- `Mission / Train` maps to `/terminal`
+- `Mission / Arena` maps to `/arena`
+- `/world` is not a top-level release promise
+- `Agent HQ / Overview` maps to `/agent`
+- `Agent HQ / Training` maps to `/lab`
+- `Agent HQ / Record` maps to `/passport`
+- `Market` currently maps to `/signals`
 
 ## Non-Negotiable Invariants
 
@@ -55,7 +69,7 @@ Implementation bridge:
 
 2. Character ownership must have operational meaning.
    - A character is not just a collectible skin.
-   - It must anchor specialization, training history, and deployable agent identity.
+   - It must anchor specialization, training history, and deployable identity.
 
 3. Progression must be evidence-bound.
    - Trading outcomes, backtests, and learning records drive advancement.
@@ -65,13 +79,13 @@ Implementation bridge:
    - Game progression should make trading, training, and specialization more motivating.
    - It must not drift into a detached idle system with fake value.
 
-5. `World` and `Terminal` stay separate.
-   - `World` is the main play map.
-   - `Terminal` is the brain console and readiness gate.
+5. The release journey must stay simpler than the full domain model.
+   - Not every internal mode deserves top-level navigation.
+   - `World` may remain as internal content without becoming a primary release surface.
 
 6. Durable actions must produce legible records.
    - Product actions should be understandable as user behavior, system behavior, and future learning data.
-   - World, Battle, Terminal, and Agent flows must remain compatible with proof and memory systems.
+   - Mission, Arena, Terminal, and Agent flows must remain compatible with proof and memory systems.
 
 7. Create Agent is a strong first-run ceremony.
    - Minting, AI binding, and starter setup belong in one guided flow.
@@ -80,52 +94,43 @@ Implementation bridge:
    - Do not land new behavior by copying changes into sibling clone folders.
    - New work happens once in the canonical tree.
 
-9. Server-authoritative domains stay server-authoritative.
-   - Ownership, holdings, rental state, quick trades, tracked signals, and durable history cannot rely on client-local truth.
-   - Local storage is cache, offline support, or optimistic staging only.
+9. First-session success matters more than feature inventory.
+   - The player should reach a completed Arena result quickly.
+   - Onboarding should end in proof, not endless setup.
 
-10. `priceStore` is the canonical live-price owner on the client.
-   - Route or feature stores may consume live prices.
-   - They should not redefine market truth.
+10. Server-authoritative domains stay server-authoritative.
+    - Ownership, holdings, rental state, quick trades, tracked signals, and durable history cannot rely on client-local truth.
+    - Local storage is cache, offline support, or optimistic staging only.
 
-11. Route state is transient.
-   - Route state owns view mode, local selections, temporary UI state, and flow control.
-   - It should not become a hidden persistence or replication layer.
+11. `priceStore` is the canonical live-price owner on the client.
+    - Route or feature stores may consume live prices.
+    - They should not redefine market truth.
 
-12. Archive is history, not authority.
-   - Old audits and archived plans explain how the code got here.
-   - They do not override newer canonical docs.
+12. Route state is transient.
+    - Route state owns view mode, local selections, temporary UI state, and flow control.
+    - It should not become a hidden persistence or replication layer.
+
+13. Archive is history, not authority.
+    - Old audits and archived plans explain how the code got here.
+    - They do not override newer canonical docs.
 
 ## Surface Intent
 
 ### Home
-- Explain the full loop in one screen:
-  - create an agent
-  - train it in Terminal
-  - deploy it into World
-  - fight in Battle
-  - grow it in Agent
-- Do not force deep setup before the user understands the value exchange.
+- Explain the fantasy, current state, and next action in one screen.
+- Do not force setup before the value exchange is understood.
 
-### Create Agent
-- First-run activation ceremony.
-- Must end with one usable result: an agent that can enter `Terminal`.
+### Mission
+- Own the forward-moving playable loop.
+- Internal steps can be separate routes, but the player should read them as one continuous flow.
 
-### Terminal
-- Brain console and readiness gate.
-- Must make setup completion explicit enough to unlock `World`.
+### Agent HQ
+- Show growth, training options, and durable proof in one hub.
+- Absorb selected responsibilities from the current `Lab` and `Passport` routes.
 
-### World
-- Main play surface.
-- Must reinterpret chart context as traversable world state, not as a full trading workstation.
-
-### Battle
-- Encounter-only focused surface.
-- Should sharpen doctrine and proof, not become isolated arcade filler.
-
-### Agent
-- Growth, proof, trainer card, share, and rental hub.
-- Absorbs selected responsibilities from the current `Lab` and `Passport` routes.
+### Market
+- Show public discovery, signals, and context.
+- Stay secondary to the main progression loop.
 
 ## Architecture Heuristics
 
@@ -138,9 +143,10 @@ Implementation bridge:
 
 ## When To Open The Larger Docs
 
-- Open `docs/design-docs/six-surface-game-loop.md` when you need the final target IA and player loop.
-- Open `docs/design-docs/unified-product-model.md` when you need domain objects, progression, proof, or monetization context behind the six-surface IA.
-- Open `docs/design-docs/arena-domain-model.md` when you need the local Arena/Arena War semantic model.
+- Open `docs/design-docs/steam-ready-game-reset.md` when you need the current release-shaping journey.
+- Open `docs/design-docs/unified-product-model.md` when you need domain objects, progression, proof, or monetization context behind the release IA.
+- Open `docs/design-docs/six-surface-game-loop.md` when you need broader world context or earlier route separation.
+- Open `docs/design-docs/arena-domain-model.md` when you need the local Arena and Arena War semantic model.
 - Open `docs/design-docs/learning-loop.md` when you need ORPO, RAG, Passport contribution, or boundary-learning semantics.
 - Open `docs/references/active/FRONTEND_REFACTOR_EXECUTION_DESIGN_2026-03-06.md` when you need the current structural baseline for refactor work.
 - Open surface-specific docs from `docs/README.md` only after this intent brief matches the task.

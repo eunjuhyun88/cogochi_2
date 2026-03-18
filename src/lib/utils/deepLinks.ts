@@ -90,11 +90,12 @@ export function buildBattleLink(params: DeepLinkParams = {}): string {
 }
 
 export function buildLabLink(params: DeepLinkParams = {}): string {
-  return buildDeepLink('/lab', params);
+  return buildAgentLink({ tab: 'train', ...params });
 }
 
 export function buildPassportLink(tab?: string): string {
-  return buildDeepLink('/passport', tab ? { tab } : {});
+  const normalizedTab = tab === 'train' || tab === 'learning' ? 'train' : 'record';
+  return buildAgentLink({ tab: normalizedTab });
 }
 
 export function buildArenaLink(mode?: 'quick' | 'war' | 'tournament'): string {

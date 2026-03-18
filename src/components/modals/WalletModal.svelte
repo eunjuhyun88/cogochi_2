@@ -713,11 +713,11 @@
         </div>
 
         {#if state.connected}
-          <a class="btn-primary passport-link" href="/passport" on:click={handleClose}>VIEW PASSPORT</a>
+          <a class="btn-primary passport-link" href="/agent?tab=record" on:click={handleClose}>OPEN AGENT HQ</a>
           <button class="btn-ghost" type="button" on:click={handleDisconnect}>LOG OUT & DISCONNECT</button>
         {:else}
           <button class="btn-primary" type="button" on:click={() => setWalletModalStep('wallet-select')}>CONNECT WALLET</button>
-          <a class="btn-ghost passport-link" href="/passport" on:click={handleClose}>OPEN PASSPORT</a>
+          <a class="btn-ghost passport-link" href="/agent?tab=record" on:click={handleClose}>OPEN AGENT HQ</a>
         {/if}
       </div>
     {/if}

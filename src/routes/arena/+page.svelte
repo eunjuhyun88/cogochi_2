@@ -1,5 +1,7 @@
 <script lang="ts">
   import '$lib/styles/arena-tone.css';
+  import MissionFlowShell from '../../components/mission/MissionFlowShell.svelte';
+  import { agentJourneyStore, currentJourneyGrowthFocus } from '$lib/stores/agentJourneyStore';
   import { gameState } from '$lib/stores/gameState';
   import { recordAgentMatch } from '$lib/stores/agentData';
   import { AGDEFS, SOURCES } from '$lib/data/agents';
@@ -36,7 +38,23 @@
   import MissionControlView from '../../components/arena/views/MissionControlView.svelte';
   import CardDuelView from '../../components/arena/views/CardDuelView.svelte';
 
+  let walletOk = $isWalletConnected;
+  let journey = $agentJourneyStore;
+  let growthFocus = $currentJourneyGrowthFocus;
+  let arenaLeadLabel = journey.minted ? journey.agentName : 'Unbound lead';
+  let arenaMissionTitle = journey.minted ? `Prove ${journey.agentName}.` : 'Prove the run.';
+  let arenaMissionSummary = journey.minted
+    ? `${journey.shellLabel} enters Arena on a ${growthFocus.label} path. Clear one proof run, then send the result forward to Agent HQ.`
+    : 'Lock a mode, commit to a stance, and clear one playable proof run.';
+
   $: walletOk = $isWalletConnected;
+  $: journey = $agentJourneyStore;
+  $: growthFocus = $currentJourneyGrowthFocus;
+  $: arenaLeadLabel = journey.minted ? journey.agentName : 'Unbound lead';
+  $: arenaMissionTitle = journey.minted ? `Prove ${journey.agentName}.` : 'Prove the run.';
+  $: arenaMissionSummary = journey.minted
+    ? `${journey.shellLabel} enters Arena on a ${growthFocus.label} path. Clear one proof run, then send the result forward to Agent HQ.`
+    : 'Lock a mode, commit to a stance, and clear one playable proof run.';
 
   $: state = $gameState;
   $: modeLabel = state.arenaMode;
@@ -1727,6 +1745,17 @@
 </script>
 
 <div class="arena-page arena-space-theme">
+  <MissionFlowShell
+    step="arena"
+    title={arenaMissionTitle}
+    summary={arenaMissionSummary}
+    metrics={[
+      { label: 'Lead', value: arenaLeadLabel },
+      { label: 'Growth', value: growthFocus.label },
+      { label: 'LP', value: String(state.lp) },
+    ]}
+  />
+
   <!-- Wallet Gate Overlay (temporarily disabled for dev) -->
   {#if false && !walletOk}
     <div class="wallet-gate">

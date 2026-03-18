@@ -4,7 +4,7 @@ Legacy file path:
 - `docs/product-specs/agents.md`
 
 Canonical surface label:
-- `Agent`
+- `Agent HQ`
 
 Purpose:
 - Short product spec for the merged agent hub: growth, training record, trainer card, sharing, and rental state.
@@ -15,7 +15,7 @@ Inspect one owned agent as a living asset: growth, record, training state, share
 
 ## Surface Role In The Merged Product
 
-`Agent` is the merged hub that absorbs the old `Lab` and `Passport` responsibilities.
+`Agent HQ` is the merged hub that absorbs the old `Lab` and `Passport` responsibilities.
 
 The user should be able to:
 - inspect stage, record, HP flow, and whale history
@@ -46,7 +46,7 @@ The user should be able to:
 2. Inspect its stage, record, doctrine, and retained memory.
 3. Review training state or reflection history.
 4. Inspect trainer card, share state, and rental readiness.
-5. Decide whether to return to `Terminal`, `World`, or `Battle`.
+5. Decide whether to return to `Mission` for the next run.
 
 ## Product Constraints
 
@@ -56,6 +56,7 @@ The user should be able to:
 - Progression should come from evidence, not idle grind.
 - Standby presence should increase attachment and clarity, not create meaningless pet-maintenance chores.
 - Agent identity, proof, and rental state should remain readable for future agents and humans.
+- It should create replay desire by making the last run's consequence legible and the next upgrade tempting.
 
 ## Target IA
 
@@ -67,6 +68,7 @@ The user should be able to:
 
 ## Supporting Docs
 
+- `docs/design-docs/steam-ship-blueprint.md`
 - `docs/design-docs/six-surface-game-loop.md`
 - `docs/design-docs/unified-product-model.md`
 - `docs/page-specs/agents-page.md`

@@ -7,6 +7,7 @@
   import { activeSignalCount } from '$lib/stores/trackedSignalStore';
   import { matchHistoryStore, winRate } from '$lib/stores/matchHistoryStore';
   import { goto } from '$app/navigation';
+  import { buildAgentLink } from '$lib/utils/deepLinks';
 
   type PageContext = 'terminal' | 'arena' | 'passport' | 'oracle' | 'signals' | 'live' | 'home' | 'lab';
 
@@ -42,7 +43,7 @@
       all.push({
         icon: '📊',
         text: `${pos} open position${pos > 1 ? 's' : ''} · ${pnlVal >= 0 ? '+' : ''}${pnlVal.toFixed(1)}%`,
-        href: '/passport',
+        href: buildAgentLink({ tab: 'record' }),
         color: pnlVal >= 0 ? '#00ff88' : '#ff2d55',
         show: true,
       });
@@ -63,7 +64,7 @@
       all.push({
         icon: last.win ? '🏆' : '💀',
         text: `Last: ${last.win ? 'WIN' : 'LOSS'} #${last.matchN} · ${last.lp >= 0 ? '+' : ''}${last.lp} LP`,
-        href: '/passport',
+        href: buildAgentLink({ tab: 'record' }),
         color: last.win ? '#00ff88' : '#ff2d55',
         show: true,
       });

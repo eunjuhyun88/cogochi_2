@@ -1,0 +1,125 @@
+Original prompt: 애플 uiux 엔지니어, gtm 엔지니어로써 다시한번 재점검 하고 설계하자. 스팀에서 사람들이 이걸실제로 쓸수있는 수준의 게임이 되어야해 이모든걸종합해서 스팀에 올릴정도를 만들어줘
+
+2026-03-18
+- Added Steam-facing canonical docs for release IA, ship blueprint, and updated product/page specs.
+- Updated top-level nav and home copy toward `Mission / Agent / Market`.
+- Added shared `MissionFlowShell` component and started wiring it into `/create`, `/terminal`, and `/arena`.
+- TODO: verify the new mission shell does not break Terminal or Arena layout on desktop/mobile.
+- TODO: capture fresh screenshots for home, create, terminal, and arena after the shared shell lands cleanly.
+- Refined `MissionFlowShell` to a lower, denser header so it reads like a stage rail instead of a second hero.
+- Simplified `/create` by removing the duplicate hero panel and moving the 4-step chips into the main builder card. Current screenshot: `output/mission-shell-create-v2/shot-0.png`.
+- Shortened `/arena` mission copy so the mode cards stay dominant in the first fold. Current screenshot: `output/mission-shell-arena-v2/shot-0.png`.
+- Fixed `/terminal` route shell sizing with viewport-based minimum height so the chart panel no longer collapses. Canvas capture height improved from 282px to 433px, but full-page layout capture is still limited by the current web-game screenshot client clipping to canvas.
+- Validation: `npm run build` passed. `npm run check` passed with `0 errors / 47 warnings` (existing repo warning debt only).
+- TODO: capture a true full-page `/terminal` screenshot with a non-canvas-clipping browser flow and then tune the top chrome if it still feels heavy.
+- Added canonical roster-first journey doc `docs/design-docs/starter-roster-loop.md` and rewired home/create page specs around `draft crew -> choose lead -> growth path -> train -> arena -> rent later`.
+- Extended `src/lib/stores/agentJourneyStore.ts` to track starter roster selection, growth focus, and activation data for a multi-character entry flow.
+- Refactored `/` into a rotating starter roster showcase with 8 selectable characters, up to 3 pinned starters, and a clearer Steam-facing fantasy: draft, raise, train, prove, rent later.
+- Refactored `/create` into a 4-step lead-selection flow: `Crew / Identity / Growth / Brain`, with wallet intentionally treated as optional so the first fun loop is not blocked.
+- Design decision: wallet is no longer positioned as a first-session blocker. The product now reads more like a Steam strategy companion game and less like a wallet-first dashboard.
+- Validation: `npm run build` passed after the roster-first refactor. `npm run check -- --fail-on-warnings=false` still reports `0 errors / 47 warnings` from existing arena/shared debt only.
+- Browser verification:
+  - Home: `output/home-roster-steam-v4/shot-0.png`
+  - Create: `output/create-roster-steam-v2/shot-0.png`
+  - Console errors seen in both captures were existing `401 Unauthorized` and `500 Internal Server Error` responses, not new page-crash exceptions.
+- TODO: carry the same journey language into `/terminal`, `/world`, and `/arena` so the player feels a single mission loop instead of separate tools.
+- TODO: merge Agent / Lab / Passport into a true `Agent HQ` surface after the mission loop feels stable.
+- Replaced the temporary `/agent` bridge with a real `Agent HQ` surface built around three tabs: `Overview / Train / Record`.
+- `Agent HQ` now reads from the mission journey state and post-mission proof stores, so the page is framed around one lead, one crew, readiness gates, proof history, and future release/rental prep.
+- Updated visible legacy entry points toward the new hub:
+  - `buildLabLink()` now targets `/agent?tab=train`
+  - `buildPassportLink()` now targets `/agent?tab=record`
+  - context banner trade/result jumps now land in Agent HQ record view
+  - wallet modal and `/holdings` redirect now point to Agent HQ instead of Passport
+  - home feature copy now uses `Agent HQ` language instead of `Passport`
+- Validation:
+  - `npm run build` passed
+  - `npm run check -- --fail-on-warnings=false` passed with `0 errors / 47 warnings` (existing arena/shared warning debt only)
+- Browser verification:
+  - Agent HQ overview: `output/agent-hq-overview/shot-0.png`
+  - Agent HQ train: `output/agent-hq-train/shot-0.png`
+  - Agent HQ record: `output/agent-hq-record/shot-0.png`
+  - Console errors remained the same existing `401 Unauthorized` and `500 Internal Server Error` backend responses.
+- Added a second Agent HQ UI pass to compress the hero, shrink the spotlight, and make the first content row visible inside the initial viewport.
+- Browser verification after the compression pass:
+  - Agent HQ overview v3: `output/agent-hq-overview-v3/shot-0.png`
+  - Agent HQ train v3: `output/agent-hq-train-v3/shot-0.png`
+  - Agent HQ record v3: `output/agent-hq-record-v3/shot-0.png`
+- TODO: decide whether `/lab` and `/passport` should stay as legacy deep-dive pages or become hard redirects into `Agent HQ`.
+- Added a dedicated strategy-variant layer via `src/lib/stores/agentVariantStore.ts` so one lead agent can now hold multiple setup versions with:
+  - duplicate version
+  - active version selection
+  - backtest run
+  - simulation run
+  - promote-live
+- Added reusable UI surface `src/components/agent/StrategyVariantWorkbench.svelte` and mounted it in:
+  - `src/routes/terminal/+page.svelte`
+  - `src/routes/agent/+page.svelte` (`Train` tab)
+- Product effect: the core loop now reads as `configure -> backtest -> simulate -> compare -> promote`, instead of only `train -> arena`.
+- Validation:
+  - `npm run build` passed
+  - `npm run check -- --fail-on-warnings=false` passed with `0 errors / 47 warnings` (same existing arena/shared warning debt)
+  - Browser verification:
+    - Agent HQ Train with strategy lab visible: `output/variant-agent-train/shot-0.png`
+    - Console errors remained the same existing `401 Unauthorized` and `500 Internal Server Error`
+- Gotcha:
+  - Full-page `/terminal` capture is still awkward in this repo because the existing web-game client clips to the chart canvas and the workspace does not currently expose a local `playwright` module for a custom full-page capture script.
+- TODO:
+  - Add a proper result-history strip so version-to-version deltas persist beyond the latest run.
+  - Surface the promoted live variant more explicitly in `Record`, not just `Train`.
+  - Decide whether `Terminal` should keep the heavy war-room chrome above the new strategy lab or yield more first-fold space to variants and comparisons.
+- UI pass: compressed `Agent HQ > Train` so the hero now reads like a training status bar instead of a landing banner.
+- UI pass: `StrategyVariantWorkbench` in Agent HQ now runs in compact mode with a 4-action command bar (`Clone / Backtest / Simulate / Promote`) and flatter variant cards.
+- Product effect: the first fold now shows the real loop sooner: compare versions, run them, then go to Arena only after a clear winner exists.
+- Validation:
+  - `npm run build` passed
+  - `npm run check -- --fail-on-warnings=false` passed with `0 errors / 47 warnings` (same existing arena/shared repo warning debt)
+- Browser verification:
+  - Agent HQ Train compact pass: `output/variant-agent-train-v3/shot-0.png`
+  - Console errors remained the same existing `401 Unauthorized` / `500 Internal Server Error` backend responses
+- TODO:
+  - Apply the same command-bar / compact-summary treatment to `Terminal` so the training loop feels identical across both surfaces.
+  - Add a lightweight version history rail in `Record` so promoted winners are visible outside the Train tab.
+- Copy pass:
+  - tightened `Agent HQ > Train` hero copy so it now reads as a direct experiment loop instead of product marketing
+  - shortened Strategy Lab labels (`Active build`, `Change vs live`, `Live build`) and empty states
+  - shortened Terminal mission copy so the screen reads like a build lab, not a dashboard
+- Validation:
+  - `npm run build` passed
+  - `npm run check -- --fail-on-warnings=false` passed with the same existing `0 errors / 47 warnings`
+- Typography pass:
+  - increased global token font scale in `src/lib/styles/tokens.css`
+  - raised default body text size in `src/app.css`
+  - enlarged header nav/ticker/button typography in `src/components/layout/Header.svelte`
+  - enlarged mission shell labels and step text in `src/components/mission/MissionFlowShell.svelte`
+  - enlarged Agent HQ chips, helper copy, and tab secondary text in `src/routes/agent/+page.svelte`
+  - enlarged Strategy Lab labels, buttons, chips, and metric pills in `src/components/agent/StrategyVariantWorkbench.svelte`
+- Browser verification:
+  - Agent HQ Train typography pass: `output/agent-train-type-pass/shot-0.png`
+- UI consistency pass:
+  - normalized `Home` label/chip/button sizes in `src/routes/+page.svelte`
+  - removed remaining tiny hardcoded home text for eyebrow, live chips, starter roster labels, pinned chips, and stat cards
+  - normalized `Create` label/body/button scale in `src/routes/create/+page.svelte`
+  - aligned wizard step chips, roster pills, helper copy, and CTA sizing so the screen reads in one typographic rhythm
+- Browser verification:
+  - Home size-balance pass: `output/home-type-balance-pass/shot-0.png`
+  - Create size-balance pass: `output/create-type-balance-pass/shot-0.png`
+- Accessibility scale pass:
+  - increased the low-end global type tokens again so real desktop browser rendering no longer collapses into micro text
+  - enlarged desktop header logo, ticker, nav tabs, score badge, and connect wallet CTA
+  - enlarged home hero eyebrow/body copy, live chips, CTA buttons, right-side roster card, rotation caption, roster tiles, and stat cards
+- Browser verification:
+  - Home scale pass v2: `output/home-type-balance-pass-v2/shot-0.png`
+- Home structure reset:
+  - simplified the home header by removing home-only ticker/score/settings clutter and enlarging the remaining primary nav
+  - replaced the small starter-roster pills with one readable helper paragraph
+  - removed redundant pinned stat card and replaced the bottom strip with a clearer `Lead / Growth` summary
+  - kept the terminal-chart tone but made the first fold read like a landing screen instead of a dense dashboard
+- Browser verification:
+  - Home UIUX reset pass: `output/home-uiux-reset-pass/shot-0.png`
+- Home refinement pass 2:
+  - tightened the hero copy into a shorter line so the first fold reads faster
+  - reorganized the right-hand roster footer into a two-column detail grid (`Pinned crew` + `Lead/Growth`) to reduce vertical stacking
+  - kept the simplified home header and larger nav treatment from the reset pass
+- Browser verification:
+  - Home UIUX refine pass 2: `output/home-uiux-refine-pass-2/shot-0.png`

@@ -4,84 +4,86 @@ Route scope:
 - `/`
 
 Purpose:
-- Define the landing-page contract as it exists now, while making the six-surface migration target explicit.
+- Define the landing-page contract as it exists now while aligning it to the Steam-first release IA.
 
 ## Primary User Job
 
-- Understand the product promise from the hero without leaving the page.
-- Explore one feature path quickly and understand the next eligible action from the hero CTA group.
+- Understand the fantasy from the hero without reading a manual.
+- Browse a living cast and pin a starter crew.
+- Choose the next mission step in one click.
 
 ## Core Flow
 
-1. Hero intro animates in and logs a `hero_view` funnel event.
-2. User explores the feature rail:
-   - desktop swaps hero detail content in place
-   - mobile opens a feature bottom sheet instead of swapping the desktop pane
-3. Primary CTA always takes the user to `/terminal`.
-4. Secondary CTA either opens wallet connect or enters `/arena`, depending on current wallet state.
-5. Connected-wallet state is reflected directly in the hero CTA area.
+1. Hero loads with one clear positioning message.
+2. Right-side cast rail cycles through many candidate characters.
+3. User can pin up to 3 starters for the next mission.
+4. Primary CTA routes to `/create` as the start of `Mission`.
+5. Secondary CTA routes to `/terminal` for returning players.
+6. Arena CTA is available only as a valid next step, not as the only meaningful action.
+7. Wallet actions, if present, remain secondary to the mission flow.
+
+## Current Route Contract
+
+- Primary CTA: `Start Mission`
+- Secondary CTA: `Resume Training`
+- Conditional CTA: `Enter Arena`
+- Right-side support block: rotating cast showcase, starter selection, and lightweight progress
+- The route should feel like an editorial landing page, not a feature rail or dashboard
 
 ## Target Migration Contract
 
-When the route is migrated to the final IA:
+As the release IA hardens:
 
-1. Primary CTA moves from `/terminal` to `/create`.
-2. Hero copy explains the loop in this order:
-   - create an agent
-   - train it in `Terminal`
-   - deploy it into `World`
-   - resolve encounters in `Battle`
-   - grow and publish proof in `Agent`
-3. Secondary CTA stops acting like a wallet gate and becomes a loop-explainer or progression-explainer action.
-4. Returning-user CTA may route to the next eligible surface based on durable progression state.
+1. Home should become a progression-aware continue screen.
+2. The primary CTA should route to the next eligible mission step, not a static route forever.
+3. Wallet or ownership depth should remain optional for Steam Early Access.
+4. Market and public proof should stay off the first-decision path.
 
 ## Guardrails
 
-- Do not block the primary Terminal path on wallet connection.
-- Desktop wheel capture inside the hero must disable when reduced-motion is preferred and stop once the hero is out of view.
-- Mobile bottom-sheet content and desktop hero-detail content must stay semantically aligned.
-- Funnel events must reflect the real CTA and feature interactions, not an outdated signup/demo story.
-- Migration should not reintroduce a fake demo/signup funnel or a dense market-workstation first impression.
+- Do not let wallet connect become the first or loudest action.
+- Do not reintroduce duplicate surface cards below the hero.
+- Do not split the page into multiple equal-weight hero panels.
+- Keep desktop and mobile hierarchy aligned: message first, next action second, current agent third.
+- Home should not read like a terminal shortcut or finance dashboard.
 
 ## Key UI Blocks
 
-- animated hero and positioning copy
-- feature rail with desktop detail swap
-- mobile feature bottom sheet
-- primary CTA to `/terminal`
-- secondary CTA for wallet connect or `/arena`
-- wallet/address status chip when already connected
-- loop explanation blocks for ownership, readiness, deployment, and proof
+- hero message
+- market context chips
+- mission CTA row
+- rotating cast showcase
+- starter crew selector
+- compact agent progress cards
+- optional wallet action in the agent support panel
 
 ## State Authority
 
-- selected feature and mobile sheet: route local
-- wallet connection and short address: `walletStore`
-- profile summary used in hero chrome: `userProfileStore`
-- funnel instrumentation: client analytics events
-- future progression-aware CTA routing: durable agent progression state, not hero-local flags
+- hero CTA ordering and temporary layout state: route local
+- current agent status: shared progression and game state stores
+- starter roster selection: shared progression store
+- wallet connection and modal state: wallet stores
+- future progress-aware CTA routing: durable mission progression state
 
 ## Supporting APIs And Data
 
-- route handoff targets: `/terminal`, `/arena`
-- wallet modal / connect flow from `walletStore`
-- hero content and funnel names from `components/home/homeData`
+- route handoff targets: `/create`, `/terminal`, `/arena`
+- current agent and score state from shared game stores
+- starter roster state from shared progression stores
+- wallet modal flow from wallet stores
 
 ## Failure States
 
-- docs describe signup/demo states that the route no longer exposes
-- wallet connect appears as the first or only action
-- mobile bottom sheet traps interaction or diverges from desktop feature detail
-- hero wheel capture keeps intercepting scroll outside the intended section
-- Home still reads like a direct Terminal shortcut after the IA migration is meant to land
+- Home still behaves like a route directory instead of a start screen
+- Wallet connect visually outranks `Start Mission`
+- Arena is entered before the player understands what a run is
+- The right-side cast area becomes a static mascot card instead of a living roster draft
+- First-time players cannot explain what happens after clicking the primary CTA
 
 ## Read These First
 
-- `docs/SYSTEM_INTENT.md`
+- `docs/design-docs/steam-ready-game-reset.md`
+- `docs/design-docs/steam-ship-blueprint.md`
+- `docs/design-docs/starter-roster-loop.md`
+- `docs/product-specs/home.md`
 - `docs/PRODUCT_SENSE.md`
-- `docs/product-specs/index.md`
-
-## Applied Source Inputs
-
-- `2026-03-01__STOCKCLAW_PRD_A01.md`
-- `2026-02-20__STOCKCLAW_UserJourney_Lifecycle_v1.docx`

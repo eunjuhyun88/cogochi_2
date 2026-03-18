@@ -5,21 +5,24 @@ Purpose:
 
 ## Primary User Job
 
-Finish creation with one result: a world-trackable agent that can enter `Terminal`.
+Finish creation with one result: a usable starter agent that can enter `Terminal` and complete the first mission.
 
 ## Target Flow
 
 1. Choose character shell.
 2. Name the agent.
-3. Connect wallet.
-4. Mint or activate ownership.
-5. Bind AI/model source.
-6. Save starter temperament/setup.
-7. Enter `Terminal`.
+3. Choose one starter doctrine or temperament.
+4. Bind AI or starter brain source.
+5. Save starter setup.
+6. Enter `Terminal`.
+7. Offer optional wallet or ownership upgrade later, not as the first gate.
 
 ## Product Constraints
 
-- Minting and AI setup should be one flow, not separate top-level products.
+- The creation flow should feel like a game ceremony, not account setup.
+- Wallet connection must not block first-session value.
+- Ownership and mint semantics are optional depth for Steam Early Access.
+- Creation and AI setup should remain one flow, not separate products.
 - The output should be clear:
   - `Agent ID created`
   - `Stage 1 active`
@@ -32,6 +35,7 @@ Finish creation with one result: a world-trackable agent that can enter `Termina
 
 ## Supporting Docs
 
-- `docs/design-docs/six-surface-game-loop.md`
+- `docs/design-docs/steam-ship-blueprint.md`
+- `docs/design-docs/steam-ready-game-reset.md`
 - `docs/product-specs/home.md`
 - `docs/product-specs/terminal.md`

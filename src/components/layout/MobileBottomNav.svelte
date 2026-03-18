@@ -25,7 +25,11 @@
   );
 </script>
 
-<nav class="mobile-nav" aria-label="Primary mobile navigation">
+<nav
+  class="mobile-nav"
+  aria-label="Primary mobile navigation"
+  style={`grid-template-columns: repeat(${items.length}, minmax(0, 1fr));`}
+>
   {#each items as item (item.id)}
     <a
       class="mobile-nav-item"

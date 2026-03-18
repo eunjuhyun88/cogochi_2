@@ -8,7 +8,15 @@ import {
   buildWorldLink,
 } from '$lib/utils/deepLinks';
 
-export type AppSurfaceId = 'home' | 'create' | 'terminal' | 'world' | 'battle' | 'agent' | 'market';
+export type AppSurfaceId =
+  | 'home'
+  | 'mission'
+  | 'create'
+  | 'terminal'
+  | 'world'
+  | 'battle'
+  | 'agent'
+  | 'market';
 
 export interface AppSurface {
   id: AppSurfaceId;
@@ -27,10 +35,20 @@ const SURFACE_MAP: Record<AppSurfaceId, AppSurface> = {
     label: 'Home',
     shortLabel: 'HOME',
     mobileIcon: '⌂',
-    description: 'understand the loop and choose a first action',
+    description: 'understand the loop and choose the next action',
     homeDetail: 'start here',
     href: buildDeepLink('/'),
     activePatterns: ['/'],
+  },
+  mission: {
+    id: 'mission',
+    label: 'Mission',
+    shortLabel: 'MSN',
+    mobileIcon: '◎',
+    description: 'create, train, and prove the agent in one guided flow',
+    homeDetail: 'guided loop',
+    href: buildCreateLink(),
+    activePatterns: ['/create', '/terminal', '/world', '/arena', '/arena-war', '/arena-v2'],
   },
   create: {
     id: 'create',
@@ -56,19 +74,19 @@ const SURFACE_MAP: Record<AppSurfaceId, AppSurface> = {
     id: 'world',
     label: 'World',
     shortLabel: 'WRLD',
-    mobileIcon: '◎',
-    description: 'deploy the run and follow the chart-map',
-    homeDetail: 'deploy the run',
+    mobileIcon: '◌',
+    description: 'legacy mission mode for world traversal and scenario staging',
+    homeDetail: 'internal mission mode',
     href: buildWorldLink(),
     activePatterns: ['/world'],
   },
   battle: {
     id: 'battle',
-    label: 'Battle',
-    shortLabel: 'BTTL',
+    label: 'Arena',
+    shortLabel: 'ARNA',
     mobileIcon: '⚔',
-    description: 'resolve whale encounters under pressure',
-    homeDetail: 'resolve encounter',
+    description: 'resolve live encounters under pressure',
+    homeDetail: 'prove the run',
     href: buildBattleLink(),
     activePatterns: ['/arena', '/arena-war', '/arena-v2'],
   },
@@ -77,8 +95,8 @@ const SURFACE_MAP: Record<AppSurfaceId, AppSurface> = {
     label: 'Agent',
     shortLabel: 'AGENT',
     mobileIcon: '@',
-    description: 'grow proof, train memory, and manage release state',
-    homeDetail: 'prove and grow',
+    description: 'grow proof, train memory, and manage the agent hub',
+    homeDetail: 'grow and review',
     href: buildAgentLink(),
     activePatterns: ['/agent', '/lab', '/passport', '/agents'],
   },
@@ -88,33 +106,29 @@ const SURFACE_MAP: Record<AppSurfaceId, AppSurface> = {
     shortLabel: 'MKT',
     mobileIcon: '#',
     description: 'follow signals, proof, and public trust',
-    homeDetail: 'signals and proof',
+    homeDetail: 'public context',
     href: buildMarketLink(),
     activePatterns: ['/signals', '/market', '/oracle', '/creator'],
   },
 };
 
 export const DESKTOP_NAV_SURFACES = [
-  SURFACE_MAP.create,
-  SURFACE_MAP.terminal,
-  SURFACE_MAP.world,
+  SURFACE_MAP.mission,
   SURFACE_MAP.agent,
+  SURFACE_MAP.market,
 ] as const;
 
 export const MOBILE_NAV_SURFACES = [
   SURFACE_MAP.home,
-  SURFACE_MAP.create,
-  SURFACE_MAP.terminal,
-  SURFACE_MAP.world,
+  SURFACE_MAP.mission,
   SURFACE_MAP.agent,
+  SURFACE_MAP.market,
 ] as const;
 
 export const HOME_SURFACES = [
-  SURFACE_MAP.create,
-  SURFACE_MAP.terminal,
-  SURFACE_MAP.world,
-  SURFACE_MAP.battle,
+  SURFACE_MAP.mission,
   SURFACE_MAP.agent,
+  SURFACE_MAP.market,
 ] as const;
 
 export function getAppSurface(id: AppSurfaceId): AppSurface {
