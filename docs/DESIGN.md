@@ -30,6 +30,8 @@ Purpose:
    - Current structural refactor baseline.
 12. `docs/archive/historical/root-cleanup-2026-03-17/overall-architecture-design.md`
    - Older broad architecture analysis; useful only for rationale.
+13. `docs/workflows/README.md`
+   - Lightweight execution protocol for product shaping and UI passes.
 
 ## Design Principles
 
@@ -55,6 +57,7 @@ Purpose:
 - Stable object model or domain logic -> `docs/design-docs/unified-product-model.md`
 - Stable surface behavior or scope -> `docs/product-specs/*.md`
 - Active implementation sequence -> `docs/exec-plans/active/*.md`
+- Repeatable product/UI workflow -> `docs/workflows/*.md`
 - Stable route or state architecture -> `docs/FRONTEND.md`
 - Risk tracking -> `docs/QUALITY_SCORE.md` or `docs/exec-plans/tech-debt-tracker.md`
 
@@ -67,6 +70,7 @@ Purpose:
 - `docs/design-docs/unified-product-model.md`
 - `docs/design-docs/six-surface-game-loop.md`
 - `docs/design-docs/index.md`
+- `docs/workflows/README.md`
 - `docs/CONTEXT_ENGINEERING.md`
 - `docs/design-docs/arena-domain-model.md`
 - `docs/design-docs/learning-loop.md`

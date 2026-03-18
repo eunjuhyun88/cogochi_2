@@ -6,13 +6,11 @@
   import HomeBackground from '../components/home/HomeBackground.svelte';
   import {
     agentJourneyStore,
-    currentJourneyGrowthFocus,
     JOURNEY_SHELL_OPTIONS,
     starterRoster,
     type AgentShellId,
   } from '$lib/stores/agentJourneyStore';
   import {
-    buildAgentLink,
     buildBattleLink,
     buildCreateLink,
     buildTerminalLink,
@@ -22,7 +20,6 @@
   const prices = $derived($livePrices);
   const journey = $derived($agentJourneyStore);
   const pinnedCrew = $derived($starterRoster);
-  const growthFocus = $derived($currentJourneyGrowthFocus);
 
   const selectedToken = $derived(gs.pair.split('/')[0] || 'BTC');
   const selectedPrice = $derived(prices[selectedToken] || 0);
@@ -57,14 +54,6 @@
     if (nextIndex >= 0) {
       featuredIndex = nextIndex;
     }
-  }
-
-  function openAgentOrWallet() {
-    if (!journey.minted) {
-      goto(buildCreateLink());
-      return;
-    }
-    goto(buildAgentLink());
   }
 
   onMount(() => {
@@ -141,32 +130,13 @@
         {/each}
       </div>
 
-      <div class="bay-detail-grid">
-        <div class="pinned-row">
-          <span class="pinned-label">Pinned crew</span>
-          <div class="pinned-list">
-            {#each pinnedCrew as crew}
-              <span class="pinned-chip">{crew.label}</span>
-            {/each}
-          </div>
+      <div class="pinned-row">
+        <span class="pinned-label">Pinned crew</span>
+        <div class="pinned-list">
+          {#each pinnedCrew as crew}
+            <span class="pinned-chip">{crew.label}</span>
+          {/each}
         </div>
-
-        <div class="bay-summary">
-          <div class="summary-card">
-            <span class="summary-label">Lead</span>
-            <strong>{journey.shellLabel}</strong>
-          </div>
-          <div class="summary-card">
-            <span class="summary-label">Growth</span>
-            <strong>{growthFocus.label}</strong>
-          </div>
-        </div>
-      </div>
-
-      <div class="bay-footer">
-        <button class="footer-action" type="button" onclick={openAgentOrWallet}>
-          {journey.minted ? 'Open Agent HQ' : 'Choose Growth Path'}
-        </button>
       </div>
     </aside>
   </section>
@@ -177,7 +147,7 @@
     position: relative;
     z-index: 1;
     min-height: 100%;
-    padding: var(--sc-sp-6) var(--sc-sp-4) var(--sc-sp-8);
+    padding: 20px 16px 40px;
     display: flex;
     flex-direction: column;
     gap: var(--sc-sp-3);
@@ -186,10 +156,11 @@
 
   .hero-grid {
     display: grid;
-    width: min(1220px, 100%);
-    margin: clamp(20px, 4.6vh, 44px) auto 0;
-    grid-template-columns: minmax(0, 1fr) minmax(440px, 520px);
-    gap: clamp(28px, 3.6vw, 52px);
+    width: min(1040px, 100%);
+    margin: 8px auto 0;
+    min-height: calc(100dvh - var(--sc-header-h) - 56px);
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+    gap: clamp(18px, 2.2vw, 28px);
     align-items: start;
   }
 
@@ -207,11 +178,12 @@
     position: relative;
     isolation: isolate;
     overflow: visible;
-    max-width: 700px;
-    padding: 24px 0 18px;
+    max-width: 560px;
+    padding: 4px 0;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 14px;
+    justify-content: center;
   }
 
   .hero-copy::before {
@@ -234,7 +206,7 @@
   .eyebrow {
     margin: 0;
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-base);
+    font-size: 13px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--sc-accent-2);
@@ -243,12 +215,12 @@
   h1 {
     margin: 0;
     font-family: var(--sc-font-display);
-    font-size: clamp(2.7rem, 4.8vw, 4.7rem);
+    font-size: clamp(1.95rem, 3.5vw, 3.35rem);
     line-height: 0.96;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     color: var(--sc-text-0);
-    max-width: 10.5ch;
+    max-width: 8.6ch;
     text-shadow:
       0 3px 0 rgba(0, 0, 0, 0.34),
       0 0 18px rgba(173, 202, 124, 0.14);
@@ -256,46 +228,38 @@
 
   .subtitle {
     margin: 0;
-    max-width: 44ch;
+    max-width: 34ch;
     font-family: var(--sc-font-body);
-    font-size: clamp(1.06rem, 1.2vw, 1.2rem);
-    line-height: 1.58;
+    font-size: clamp(0.95rem, 1vw, 1.04rem);
+    line-height: 1.5;
     color: var(--sc-text-1);
     letter-spacing: 0.01em;
   }
 
   .live-line,
-  .cta-row,
-  .bay-summary {
+  .cta-row {
     display: grid;
     gap: var(--sc-sp-2);
   }
 
-  .bay-detail-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(156px, 180px);
-    gap: 12px;
-    align-items: start;
-  }
-
   .live-line {
-    grid-template-columns: repeat(auto-fit, minmax(132px, max-content));
+    grid-template-columns: repeat(auto-fit, minmax(118px, max-content));
   }
 
   .live-chip,
   .bay-stage {
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-base);
+    font-size: var(--sc-fs-xs);
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
   .live-chip {
-    min-height: 38px;
+    min-height: 30px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0 16px;
+    padding: 0 12px;
     border-radius: 999px;
     border: 1px solid rgba(173, 202, 124, 0.14);
     background:
@@ -312,8 +276,7 @@
 
   .cta-primary,
   .cta-secondary,
-  .cta-tertiary,
-  .footer-action {
+  .cta-tertiary {
     transition:
       transform var(--sc-duration-fast) var(--sc-ease),
       border-color var(--sc-duration-fast) var(--sc-ease),
@@ -323,15 +286,14 @@
 
   .cta-primary,
   .cta-secondary,
-  .cta-tertiary,
-  .footer-action {
-    min-height: 54px;
-    padding: 0 18px;
-    border-radius: 18px;
+  .cta-tertiary {
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 14px;
     cursor: pointer;
     white-space: nowrap;
     font-family: var(--sc-font-body);
-    font-size: var(--sc-fs-md);
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.01em;
   }
@@ -346,8 +308,7 @@
       0 0 24px rgba(173, 202, 124, 0.14);
   }
 
-  .cta-secondary,
-  .footer-action {
+  .cta-secondary {
     border: 1px solid rgba(173, 202, 124, 0.16);
     background:
       linear-gradient(180deg, rgba(13, 21, 31, 0.86), rgba(9, 15, 23, 0.88));
@@ -365,8 +326,7 @@
 
   .cta-primary:hover,
   .cta-secondary:hover,
-  .cta-tertiary:hover,
-  .footer-action:hover {
+  .cta-tertiary:hover {
     transform: translateY(-2px);
     border-color: rgba(173, 202, 124, 0.3);
     box-shadow: 0 0 18px rgba(173, 202, 124, 0.12);
@@ -380,13 +340,14 @@
 
   .companion-bay {
     width: 100%;
-    max-width: 500px;
+    max-width: 380px;
     justify-self: end;
-    border-radius: 30px;
-    padding: 24px;
+    align-self: center;
+    border-radius: 22px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     position: relative;
     overflow: hidden;
   }
@@ -394,14 +355,13 @@
   .companion-bay::before {
     content: '';
     position: absolute;
-    inset: 14px;
-    border-radius: 24px;
+    inset: 12px;
+    border-radius: 20px;
     border: 1px solid rgba(173, 202, 124, 0.08);
     pointer-events: none;
   }
 
-  .bay-header,
-  .bay-footer {
+  .bay-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -411,7 +371,7 @@
   .bay-kicker {
     margin: 0 0 6px;
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-base);
+    font-size: 12px;
     color: var(--sc-text-3);
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -426,11 +386,11 @@
   }
 
   .bay-header h2 {
-    font-size: clamp(1.55rem, 2vw, 1.95rem);
+    font-size: clamp(1.14rem, 1.4vw, 1.44rem);
   }
 
   .bay-stage {
-    padding: 6px 12px;
+    padding: 4px 9px;
     border-radius: 999px;
     background: rgba(173, 202, 124, 0.08);
     color: #edf4df;
@@ -440,16 +400,16 @@
   .bay-helper {
     margin: 0;
     font-family: var(--sc-font-body);
-    font-size: 1.04rem;
-    line-height: 1.6;
+    font-size: 0.9rem;
+    line-height: 1.45;
     color: var(--sc-text-1);
-    max-width: 30ch;
+    max-width: 27ch;
   }
 
   .bay-visual {
     position: relative;
-    min-height: 196px;
-    border-radius: 22px;
+    min-height: 138px;
+    border-radius: 18px;
     overflow: hidden;
     background:
       linear-gradient(180deg, rgba(14, 21, 33, 0.9), rgba(8, 14, 22, 0.97)),
@@ -459,7 +419,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 18px 18px 42px;
+    padding: 10px 10px 30px;
   }
 
   .bay-visual::before {
@@ -475,7 +435,7 @@
   }
 
   .bay-portrait {
-    width: min(100%, 168px);
+    width: min(100%, 116px);
     image-rendering: pixelated;
     filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.42));
     position: relative;
@@ -484,9 +444,9 @@
 
   .bay-visual-caption {
     position: absolute;
-    left: 18px;
-    right: 18px;
-    bottom: 14px;
+    left: 14px;
+    right: 14px;
+    bottom: 10px;
     display: flex;
     align-items: end;
     justify-content: space-between;
@@ -502,14 +462,14 @@
   .bay-visual-caption span {
     color: var(--sc-text-3);
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-sm);
+    font-size: var(--sc-fs-xs);
     letter-spacing: 0.08em;
   }
 
   .bay-visual-caption strong {
     color: #fff1d8;
     font-family: var(--sc-font-body);
-    font-size: var(--sc-fs-md);
+    font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.02em;
     text-align: right;
@@ -518,15 +478,15 @@
   .roster-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
+    gap: 6px;
   }
 
   .roster-card {
-    border-radius: 18px;
+    border-radius: 16px;
     border: 1px solid rgba(173, 202, 124, 0.1);
     background: rgba(12, 19, 28, 0.74);
-    min-height: 108px;
-    padding: 14px 10px;
+    min-height: 74px;
+    padding: 8px 6px;
     display: grid;
     place-items: center;
     gap: 6px;
@@ -551,8 +511,8 @@
   }
 
   .roster-card img {
-    width: 44px;
-    height: 44px;
+    width: 28px;
+    height: 28px;
     object-fit: contain;
     image-rendering: pixelated;
     filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.34));
@@ -560,7 +520,7 @@
 
   .roster-card span {
     font-family: var(--sc-font-body);
-    font-size: var(--sc-fs-sm);
+    font-size: 11px;
     font-weight: 600;
     line-height: 1.3;
     letter-spacing: 0.01em;
@@ -571,12 +531,12 @@
 
   .pinned-row {
     display: grid;
-    gap: 8px;
+    gap: 6px;
   }
 
   .pinned-label {
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-base);
+    font-size: 12px;
     color: var(--sc-text-3);
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -585,12 +545,12 @@
   .pinned-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
   }
 
   .pinned-chip {
-    min-height: 34px;
-    padding: 0 10px;
+    min-height: 26px;
+    padding: 0 8px;
     border-radius: 999px;
     display: inline-flex;
     align-items: center;
@@ -598,48 +558,15 @@
     background: rgba(9, 15, 23, 0.82);
     color: #edf4df;
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-sm);
+    font-size: 11px;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-  }
-
-  .bay-summary {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .summary-card {
-    border-radius: 16px;
-    padding: 16px;
-    background: rgba(12, 19, 28, 0.8);
-    border: 1px solid rgba(173, 202, 124, 0.1);
-    display: grid;
-    gap: 4px;
-  }
-
-  .summary-label {
-    font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-base);
-    color: var(--sc-text-3);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  .summary-card strong {
-    font-family: var(--sc-font-display);
-    font-size: var(--sc-fs-lg);
-    color: #fff2ce;
-    letter-spacing: 0.03em;
-    line-height: 1.05;
-  }
-
-  .companion-bay .footer-action {
-    min-height: 50px;
   }
 
   @media (max-width: 1100px) {
     .hero-grid {
       width: 100%;
+      min-height: auto;
       margin-top: 0;
       grid-template-columns: 1fr;
       align-items: start;
@@ -662,7 +589,7 @@
 
   @media (max-width: 768px) {
     .home {
-      padding: var(--sc-sp-4) var(--sc-sp-3) var(--sc-sp-8);
+      padding: 16px 12px 32px;
     }
 
     .hero-copy::before {
@@ -685,9 +612,7 @@
     }
 
     .bay-header,
-    .bay-footer,
-    .bay-summary,
-    .bay-detail-grid {
+    .pinned-row {
       grid-template-columns: 1fr;
       display: grid;
     }

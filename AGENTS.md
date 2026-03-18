@@ -21,6 +21,28 @@ This file defines mandatory execution rules for all coding agents in this reposi
    - `npm run ctx:checkpoint -- --work-id "<W-ID>" --surface "<surface>" --objective "<objective>"`
 9. Do not start edits on `main`. Work must run on a `codex/<task-name>` branch.
 
+## Mandatory Product / UX Workflow
+1. For any task that changes player flow, IA, core loop meaning, or UI hierarchy, read `docs/workflows/README.md`.
+2. Use the smallest fitting workflow before broad edits:
+   - fuzzy request -> `docs/workflows/brainstorm-template.md`
+   - scoped implementation -> `docs/workflows/game-plan-template.md`
+   - screen cleanup -> `docs/workflows/ui-pass-template.md`
+3. Do not jump from vague product direction to multi-file edits without first stating:
+   - player fantasy
+   - loop position
+   - screen job
+   - success test
+4. For UI work, default order is:
+   - layout ratio
+   - information hierarchy
+   - text and CTA clarity
+   - density reduction
+   - screenshot verification
+5. For loop work, default order is:
+   - `Choose -> Configure -> Backtest -> Simulate -> Modify -> Run again -> Prove`
+   - if a change does not strengthen one step in that loop, challenge it before implementing
+6. Stable workflow learnings must be promoted into canonical docs, not left only in chat.
+
 ## Mandatory Branch/Sync Policy
 1. `main` is always protected:
    - No direct push to `main`

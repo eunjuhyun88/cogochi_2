@@ -64,8 +64,8 @@
     position: relative;
     z-index: 12;
     display: grid;
-    gap: 10px;
-    padding: 14px 18px 12px;
+    gap: 8px;
+    padding: 12px 16px 10px;
     border-bottom: 1px solid rgba(232, 150, 125, 0.14);
     background:
       linear-gradient(180deg, rgba(9, 14, 23, 0.92), rgba(10, 16, 24, 0.82)),
@@ -77,20 +77,20 @@
   .mission-flow-shell__copy {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 14px;
+    gap: 12px;
     align-items: end;
   }
 
   .mission-flow-shell__heading {
     display: grid;
-    gap: 4px;
-    max-width: 42rem;
+    gap: 3px;
+    max-width: 36rem;
   }
 
   .mission-flow-shell__eyebrow {
     margin: 0;
     font-family: var(--sc-font-mono, 'IBM Plex Mono', monospace);
-    font-size: var(--sc-fs-xs);
+    font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgba(232, 150, 125, 0.78);
@@ -99,7 +99,7 @@
   h1 {
     margin: 0;
     font-family: var(--sc-font-display, 'Bebas Neue', sans-serif);
-    font-size: clamp(1.3rem, 1.8vw, 1.72rem);
+    font-size: clamp(1.12rem, 1.45vw, 1.45rem);
     line-height: 0.92;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -109,8 +109,8 @@
   p {
     margin: 0;
     font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: 0.96rem;
-    line-height: 1.45;
+    font-size: 0.9rem;
+    line-height: 1.4;
     color: rgba(240, 237, 228, 0.74);
   }
 
@@ -122,8 +122,8 @@
   }
 
   .mission-flow-shell__metric {
-    min-width: 100px;
-    padding: 8px 10px;
+    min-width: 92px;
+    padding: 7px 9px;
     border-radius: 12px;
     border: 1px solid rgba(173, 202, 124, 0.18);
     background: rgba(9, 14, 22, 0.46);
@@ -141,18 +141,18 @@
 
   .mission-flow-shell__metric strong {
     font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: 1rem;
+    font-size: 0.92rem;
     color: rgba(248, 243, 232, 0.96);
   }
 
   .mission-flow-shell__steps {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    gap: 8px;
   }
 
   .mission-flow-shell__step {
-    padding: 10px 12px;
+    padding: 9px 10px;
     border-radius: 14px;
     border: 1px solid rgba(240, 237, 228, 0.08);
     background: rgba(9, 14, 22, 0.36);
@@ -189,7 +189,7 @@
 
   .mission-flow-shell__label {
     font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: 0.98rem;
+    font-size: 0.92rem;
     font-weight: 600;
     color: rgba(248, 243, 232, 0.98);
   }

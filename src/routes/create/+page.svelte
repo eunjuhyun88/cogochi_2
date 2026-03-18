@@ -451,7 +451,7 @@
 <style>
   .create-page {
     min-height: 100%;
-    padding: var(--sc-sp-6) var(--sc-sp-4) calc(var(--sc-sp-8) + var(--sc-bottom-bar-h));
+    padding: 20px 16px calc(36px + var(--sc-bottom-bar-h));
     display: grid;
     gap: var(--sc-sp-3);
     background:
@@ -463,7 +463,7 @@
   .builder-card,
   .preview-card,
   .summary-card {
-    border-radius: 24px;
+    border-radius: 22px;
     border: 1px solid rgba(173, 202, 124, 0.14);
     background: linear-gradient(180deg, rgba(13, 20, 18, 0.94), rgba(10, 16, 15, 0.97));
     box-shadow: 0 20px 56px rgba(0, 0, 0, 0.24);
@@ -471,7 +471,7 @@
 
   .summary-card,
   .builder-card {
-    padding: clamp(22px, 3vw, 30px);
+    padding: clamp(18px, 2.2vw, 24px);
   }
 
   .wizard-grid,
@@ -487,12 +487,12 @@
   }
 
   .wizard-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
     align-items: start;
   }
 
   .completion-grid {
-    grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.5fr);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
     align-items: stretch;
   }
 
@@ -529,7 +529,7 @@
     margin: 0;
     color: var(--sc-text-0);
     font-family: var(--sc-font-display);
-    font-size: clamp(1.45rem, 2vw, 2rem);
+    font-size: clamp(1.28rem, 1.7vw, 1.72rem);
     letter-spacing: 0.03em;
   }
 
@@ -552,8 +552,8 @@
   }
 
   .step-chip {
-    min-height: 66px;
-    padding: 14px 16px;
+    min-height: 58px;
+    padding: 12px 14px;
     border-radius: 18px;
     border: 1px solid rgba(173, 202, 124, 0.1);
     background: rgba(8, 16, 14, 0.56);
@@ -580,7 +580,7 @@
 
   .builder-card {
     display: grid;
-    gap: 18px;
+    gap: 16px;
   }
 
   .shell-grid,
@@ -616,13 +616,13 @@
   }
 
   .shell-card {
-    grid-template-columns: 84px minmax(0, 1fr);
+    grid-template-columns: 72px minmax(0, 1fr);
     align-items: center;
-    min-height: 152px;
+    min-height: 136px;
   }
 
   .shell-card img {
-    width: 84px;
+    width: 72px;
     aspect-ratio: 1;
     object-fit: contain;
     image-rendering: pixelated;
@@ -639,7 +639,7 @@
   }
 
   .preview-stage {
-    min-height: 220px;
+    min-height: 180px;
     border-radius: 18px;
     border: 1px solid rgba(173, 202, 124, 0.12);
     background:
@@ -651,7 +651,7 @@
   }
 
   .preview-stage img {
-    width: min(100%, 180px);
+    width: min(100%, 152px);
     aspect-ratio: 1;
     object-fit: contain;
     image-rendering: pixelated;
@@ -707,7 +707,7 @@
   .metric-card,
   .identity-card,
   .crew-banner {
-    padding: 18px;
+    padding: 16px;
   }
 
   .wallet-card {
@@ -787,12 +787,12 @@
   }
 
   .preview-card {
-    padding: 20px;
+    padding: 18px;
     display: grid;
     align-content: start;
-    gap: 16px;
+    gap: 14px;
     position: sticky;
-    top: 16px;
+    top: 8px;
   }
 
   .preview-meta-grid {
@@ -915,7 +915,7 @@
 
   @media (max-width: 768px) {
     .create-page {
-      padding: var(--sc-sp-4) var(--sc-sp-3) var(--sc-sp-8);
+      padding: 16px 12px 32px;
     }
 
     .step-strip,

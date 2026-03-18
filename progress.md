@@ -123,3 +123,22 @@ Original prompt: 애플 uiux 엔지니어, gtm 엔지니어로써 다시한번 �
   - kept the simplified home header and larger nav treatment from the reset pass
 - Browser verification:
   - Home UIUX refine pass 2: `output/home-uiux-refine-pass-2/shot-0.png`
+- Layout normalization pass:
+  - restored desktop page scrolling in `src/routes/+layout.svelte` for non-fixed routes
+  - reduced header height and oversized desktop nav/button sizing in `src/components/layout/Header.svelte`
+  - compressed `MissionFlowShell` so stage chrome stops dominating first fold height
+  - reduced home hero/panel ratio and starter-roster card density in `src/routes/+page.svelte`
+  - reduced create wizard/preview card scale and sticky preview weight in `src/routes/create/+page.svelte`
+- Current objective:
+  - verify that home and create no longer clip vertically on desktop and that large-card overflow feels controlled instead of oversized
+- Scroll behavior correction:
+  - restored fixed app-height container in `src/routes/+layout.svelte` so page-level scrolling works again on desktop
+  - kept fixed-viewport behavior only for terminal/arena/world style routes
+- Home simplification pass:
+  - removed duplicated `Lead / Growth` summary cards and the extra footer CTA from the right roster panel
+  - compressed the roster panel so the home first fold fits closer to one page without relying on inner-panel scrolling
+- Browser verification:
+  - Home after ratio + simplification: `output/uiux-home-audit-v4/shot-0.png`
+  - Create after global scroll restoration: `output/uiux-create-audit-v2/shot-0.png`
+- Console state during browser checks:
+  - existing backend `401 Unauthorized` and `500 Internal Server Error` responses remain; no new frontend crash was introduced by the layout pass

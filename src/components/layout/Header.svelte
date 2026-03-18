@@ -196,7 +196,7 @@
     flex-wrap: nowrap;
     align-items: center;
     height: var(--sc-header-h);
-    padding: 0 var(--sc-sp-4);
+    padding: 0 12px;
     font-family: var(--sc-font-body);
     color: var(--sc-text-0);
     backdrop-filter: blur(18px);
@@ -204,7 +204,7 @@
   }
 
   .home-header {
-    padding: 0 var(--sc-sp-6);
+    padding: 0 14px;
   }
 
   #nav::after {
@@ -245,13 +245,13 @@
 
   .nav-logo-main {
     font-family: var(--sc-font-display);
-    font-size: 1.72rem;
+    font-size: 1.42rem;
     letter-spacing: 0.07em;
     text-shadow: 0 0 10px rgba(255, 118, 181, 0.1);
   }
 
   .home-header .nav-logo-main {
-    font-size: 1.9rem;
+    font-size: 1.5rem;
   }
 
   .nav-sep {
@@ -272,13 +272,13 @@
   }
   .st-pair {
     font-family: var(--sc-font-pixel);
-    font-size: var(--sc-fs-sm);
+    font-size: var(--sc-fs-xs);
     color: var(--sc-text-3);
     letter-spacing: 0.06em;
   }
   .st-price {
     font-family: var(--sc-font-pixel);
-    font-size: var(--sc-fs-md);
+    font-size: var(--sc-fs-base);
     color: var(--sc-text-0);
   }
 
@@ -286,11 +286,11 @@
   .nav-tab-desktop {
     font-family: var(--sc-font-body);
     font-weight: 700;
-    font-size: var(--sc-fs-base);
+    font-size: 13px;
     letter-spacing: 0.06em;
     color: var(--sc-text-3);
-    padding: 0 20px;
-    height: 46px;
+    padding: 0 15px;
+    height: 38px;
     display: flex;
     align-items: center;
     border: 1px solid rgba(255, 217, 122, 0.08);
@@ -306,9 +306,9 @@
   }
 
   .nav-tab-desktop.home-tab {
-    font-size: var(--sc-fs-md);
-    height: 48px;
-    padding: 0 22px;
+    font-size: 14px;
+    height: 40px;
+    padding: 0 16px;
   }
   .nav-tab-desktop:last-of-type { border-right: none; }
   .nav-tab-desktop:hover {
@@ -334,25 +334,25 @@
     margin-left: var(--sc-sp-2);
     display: flex;
     align-items: center;
-    gap: var(--sc-sp-2);
+    gap: 6px;
     flex-shrink: 0;
   }
 
   .score-badge {
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-base);
+    font-size: 13px;
     background: rgba(255, 217, 122, 0.06);
     color: #fff0ca;
     border: 1px solid rgba(255, 217, 122, 0.12);
     border-radius: 999px;
-    padding: 8px 14px;
+    padding: 7px 12px;
     letter-spacing: 0.08em;
     display: flex;
     align-items: center;
     gap: var(--sc-sp-1);
   }
   .score-value {
-    font-size: var(--sc-fs-md);
+    font-size: 15px;
     color: var(--sc-text-0);
     font-weight: 700;
   }
@@ -382,13 +382,13 @@
   .wallet-btn {
     font-family: var(--sc-font-body);
     font-weight: 700;
-    font-size: var(--sc-fs-base);
+    font-size: 13px;
     background: linear-gradient(135deg, #ff76b5, #ffd6e5 44%, #c8f06f);
     color: #0f1520;
     border: 1px solid rgba(255, 217, 122, 0.34);
     border-radius: 999px;
-    padding: 0 18px;
-    min-height: 46px;
+    padding: 0 14px;
+    min-height: 38px;
     cursor: pointer;
     letter-spacing: 0.06em;
     transition: all var(--sc-duration-fast);
@@ -406,7 +406,7 @@
     color: #dff8bd;
     border: 1px solid rgba(186, 240, 106, 0.2);
     box-shadow: none;
-    font-size: var(--sc-fs-base);
+    font-size: 13px;
   }
   .wallet-dot {
     width: 5px; height: 5px;
@@ -485,13 +485,13 @@
     .score-badge { display: none; }
     .nav-tab-desktop {
       padding: 0 var(--sc-sp-2);
-      font-size: var(--sc-fs-sm);
+      font-size: 13px;
       letter-spacing: 0.06em;
     }
     .nav-logo {
       gap: 6px;
     }
-    .nav-logo-main { font-size: var(--sc-fs-base); }
+    .nav-logo-main { font-size: 1.1rem; }
     .nav-right { gap: var(--sc-sp-1); }
   }
 

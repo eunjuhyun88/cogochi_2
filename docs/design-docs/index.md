@@ -23,3 +23,4 @@ Purpose:
 
 Rule:
 - If a dated working design becomes durable, summarize its stable parts into canonical docs.
+- If a product or UI execution pattern becomes repeatable, summarize it into `docs/workflows/*.md` instead of duplicating it in ad-hoc plans.

@@ -85,10 +85,10 @@
   --sc-fs-base: 16px;
   --sc-fs-md: 18px;
   --sc-fs-lg: 20px;
-  --sc-fs-xl: 24px;
-  --sc-fs-2xl: 28px;
-  --sc-fs-3xl: 36px;
-  --sc-fs-4xl: 46px;
+  --sc-fs-xl: 22px;
+  --sc-fs-2xl: 26px;
+  --sc-fs-3xl: 34px;
+  --sc-fs-4xl: 42px;
 
   /* ── TYPOGRAPHY: Line Heights ── */
   --sc-lh-tight: 1.2;
@@ -145,7 +145,7 @@
   --sc-duration-slow: 350ms;
 
   /* ── LAYOUT ── */
-  --sc-header-h: 64px;
+  --sc-header-h: 58px;
   --sc-header-h-mobile: 44px;
   --sc-bottom-bar-h: 28px;
   --sc-tab-strip-h: 34px;

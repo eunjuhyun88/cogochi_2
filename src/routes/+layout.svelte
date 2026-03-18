@@ -18,6 +18,16 @@
 
   const isTerminal = derived(page, $p => $p.url.pathname.startsWith('/terminal'));
   const isHome = derived(page, $p => $p.url.pathname === '/');
+  const isFixedViewportRoute = derived(page, $p => {
+    const path = $p.url.pathname;
+    return (
+      path.startsWith('/terminal') ||
+      path.startsWith('/arena') ||
+      path.startsWith('/arena-war') ||
+      path.startsWith('/arena-v2') ||
+      path.startsWith('/world')
+    );
+  });
 
   // Hide global BottomBar on mobile (unneeded chrome on small screens)
   // - Terminal routes ≤1024px: terminal has its own bottom nav
@@ -170,7 +180,7 @@
 <div id="app">
   <Header />
   <P0Banner />
-  <div id="main-content" class:terminal-route={$isTerminal}>
+  <div id="main-content" class:fixed-viewport-route={$isFixedViewportRoute}>
     {@render children()}
   </div>
   {#if showBottomBar}
@@ -194,21 +204,26 @@
     display: flex;
     flex-direction: column;
     height: 100dvh;
-    min-height: 100vh;
-    padding-top: var(--sc-header-h, 44px);
-    overflow: hidden;
+    min-height: 100dvh;
+    padding-top: var(--sc-header-h, 58px);
+    overflow-x: clip;
     position: relative;
   }
   #main-content {
-    flex: 1;
-    overflow: hidden;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
     position: relative;
+    scrollbar-gutter: stable;
+  }
+  #main-content.fixed-viewport-route {
+    overflow: hidden;
   }
 
   /* 769-1024px: compact one-line header (44px) */
   @media (max-width: 1024px) {
     #app {
-      height: 100svh;
       min-height: 100svh;
     }
   }
@@ -223,7 +238,7 @@
       -webkit-overflow-scrolling: touch;
       overscroll-behavior-y: contain;
     }
-    #main-content.terminal-route {
+    #main-content.fixed-viewport-route {
       overflow: hidden;
       overscroll-behavior: none;
     }

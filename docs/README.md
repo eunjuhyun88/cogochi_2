@@ -18,6 +18,7 @@ Purpose:
 
 - Active implementation target: current git worktree rooted at this repository
 - `docs/design-docs/` contains stable design beliefs and release-shaping product models
+- `docs/workflows/` contains lightweight product/UI execution workflows derived from the repo's collaboration style
 - `docs/product-specs/` contains canonical surface specs
 - `docs/page-specs/` contains page-level contracts
 - `docs/exec-plans/` contains active and completed execution plans
@@ -40,6 +41,7 @@ Purpose:
   - `docs/FE_STATE_MAP.md`
   - `ARCHITECTURE.md`
 - Working docs:
+  - `docs/workflows/`
   - `docs/product-specs/`
   - `docs/page-specs/`
   - `docs/exec-plans/`
@@ -70,6 +72,7 @@ Purpose:
 | route or state ownership | `docs/FRONTEND.md` | `docs/FE_STATE_MAP.md`, `docs/API_CONTRACT.md` |
 | page behavior | `docs/page-specs/index.md` | target page spec |
 | implementation plan | `docs/PLANS.md` | relevant `docs/exec-plans/active/*.md` |
+| product or UI execution protocol | `docs/workflows/README.md` | relevant workflow template |
 | stable design decision | `docs/decisions/README.md` | target decision record |
 
 ## Root Docs Policy
