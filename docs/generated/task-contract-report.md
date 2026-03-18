@@ -1,6 +1,6 @@
 # Task Contract Report
 
-- Current branch: `codex/terminal-uiux-gtm-ship-20260317`
+- Current branch: `codex/journey-gates-20260317`
 - Active dir: `docs/task-contracts/active`
 - Completed dir: `docs/task-contracts/completed`
 - Require contract on feature branches: `no`
@@ -12,7 +12,7 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | `docs/task-contracts/active/branch-cleanup-split-2026-03-17.md` | `codex/terminal-uiux-gtm-wip` | `branch-hygiene` | `workflow` | 5/5 | `ready` | ok |
 | `docs/task-contracts/active/codex-terminal-uiux-gtm-wip.md` | `codex/terminal-uiux-gtm-wip` | `home` | `implementation` | 6/6 | `ready` | ok |
-| `docs/task-contracts/active/docs-root-authority-cleanup-2026-03-17.md` | `codex/terminal-uiux-gtm-wip` | `docs` | `documentation` | 5/5 | `ready` | ok |
+| `docs/task-contracts/active/create-agent-flow-2026-03-17.md` | `codex/create-agent-flow-20260317` | `terminal` | `implementation` | 0/4 | `active` | ok |
 
 ## Completed Contracts
 

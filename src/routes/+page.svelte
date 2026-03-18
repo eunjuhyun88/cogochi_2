@@ -208,10 +208,10 @@
     isolation: isolate;
     overflow: visible;
     max-width: 700px;
-    padding: 28px 0 20px;
+    padding: 24px 0 18px;
     display: flex;
     flex-direction: column;
-    gap: 22px;
+    gap: 18px;
   }
 
   .hero-copy::before {
@@ -234,7 +234,7 @@
   .eyebrow {
     margin: 0;
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-md);
+    font-size: var(--sc-fs-base);
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--sc-accent-2);
@@ -243,12 +243,12 @@
   h1 {
     margin: 0;
     font-family: var(--sc-font-display);
-    font-size: clamp(3.4rem, 6.2vw, 5.9rem);
+    font-size: clamp(2.7rem, 4.8vw, 4.7rem);
     line-height: 0.96;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     color: var(--sc-text-0);
-    max-width: 8ch;
+    max-width: 10.5ch;
     text-shadow:
       0 3px 0 rgba(0, 0, 0, 0.34),
       0 0 18px rgba(173, 202, 124, 0.14);
@@ -256,9 +256,9 @@
 
   .subtitle {
     margin: 0;
-    max-width: 40ch;
+    max-width: 44ch;
     font-family: var(--sc-font-body);
-    font-size: clamp(1.18rem, 1.45vw, 1.42rem);
+    font-size: clamp(1.06rem, 1.2vw, 1.2rem);
     line-height: 1.58;
     color: var(--sc-text-1);
     letter-spacing: 0.01em;
@@ -285,17 +285,17 @@
   .live-chip,
   .bay-stage {
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-md);
+    font-size: var(--sc-fs-base);
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
 
   .live-chip {
-    min-height: 42px;
+    min-height: 38px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0 18px;
+    padding: 0 16px;
     border-radius: 999px;
     border: 1px solid rgba(173, 202, 124, 0.14);
     background:
@@ -325,13 +325,13 @@
   .cta-secondary,
   .cta-tertiary,
   .footer-action {
-    min-height: 58px;
-    padding: 0 22px;
+    min-height: 54px;
+    padding: 0 18px;
     border-radius: 18px;
     cursor: pointer;
     white-space: nowrap;
     font-family: var(--sc-font-body);
-    font-size: var(--sc-fs-lg);
+    font-size: var(--sc-fs-md);
     font-weight: 700;
     letter-spacing: 0.01em;
   }
@@ -383,10 +383,10 @@
     max-width: 500px;
     justify-self: end;
     border-radius: 30px;
-    padding: 28px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
     position: relative;
     overflow: hidden;
   }
@@ -411,7 +411,7 @@
   .bay-kicker {
     margin: 0 0 6px;
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-md);
+    font-size: var(--sc-fs-base);
     color: var(--sc-text-3);
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -426,11 +426,11 @@
   }
 
   .bay-header h2 {
-    font-size: clamp(1.8rem, 2.5vw, 2.35rem);
+    font-size: clamp(1.55rem, 2vw, 1.95rem);
   }
 
   .bay-stage {
-    padding: 8px 14px;
+    padding: 6px 12px;
     border-radius: 999px;
     background: rgba(173, 202, 124, 0.08);
     color: #edf4df;
@@ -440,7 +440,7 @@
   .bay-helper {
     margin: 0;
     font-family: var(--sc-font-body);
-    font-size: 1.14rem;
+    font-size: 1.04rem;
     line-height: 1.6;
     color: var(--sc-text-1);
     max-width: 30ch;
@@ -448,7 +448,7 @@
 
   .bay-visual {
     position: relative;
-    min-height: 218px;
+    min-height: 196px;
     border-radius: 22px;
     overflow: hidden;
     background:
@@ -459,7 +459,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 20px 46px;
+    padding: 18px 18px 42px;
   }
 
   .bay-visual::before {
@@ -475,7 +475,7 @@
   }
 
   .bay-portrait {
-    width: min(100%, 190px);
+    width: min(100%, 168px);
     image-rendering: pixelated;
     filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.42));
     position: relative;
@@ -496,37 +496,40 @@
 
   .bay-visual-caption span,
   .bay-visual-caption strong {
-    font-family: var(--sc-font-mono);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
   }
 
   .bay-visual-caption span {
     color: var(--sc-text-3);
-    font-size: var(--sc-fs-base);
+    font-family: var(--sc-font-mono);
+    font-size: var(--sc-fs-sm);
+    letter-spacing: 0.08em;
   }
 
   .bay-visual-caption strong {
     color: #fff1d8;
+    font-family: var(--sc-font-body);
     font-size: var(--sc-fs-md);
+    font-weight: 700;
+    letter-spacing: 0.02em;
     text-align: right;
   }
 
   .roster-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
+    gap: 10px;
   }
 
   .roster-card {
     border-radius: 18px;
     border: 1px solid rgba(173, 202, 124, 0.1);
     background: rgba(12, 19, 28, 0.74);
-    min-height: 122px;
-    padding: 16px 12px;
+    min-height: 108px;
+    padding: 14px 10px;
     display: grid;
     place-items: center;
-    gap: 8px;
+    gap: 6px;
     cursor: pointer;
     transition:
       transform var(--sc-duration-fast) var(--sc-ease),
@@ -548,8 +551,8 @@
   }
 
   .roster-card img {
-    width: 52px;
-    height: 52px;
+    width: 44px;
+    height: 44px;
     object-fit: contain;
     image-rendering: pixelated;
     filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.34));
@@ -557,7 +560,7 @@
 
   .roster-card span {
     font-family: var(--sc-font-body);
-    font-size: var(--sc-fs-base);
+    font-size: var(--sc-fs-sm);
     font-weight: 600;
     line-height: 1.3;
     letter-spacing: 0.01em;
@@ -573,7 +576,7 @@
 
   .pinned-label {
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-md);
+    font-size: var(--sc-fs-base);
     color: var(--sc-text-3);
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -586,8 +589,8 @@
   }
 
   .pinned-chip {
-    min-height: 38px;
-    padding: 0 12px;
+    min-height: 34px;
+    padding: 0 10px;
     border-radius: 999px;
     display: inline-flex;
     align-items: center;
@@ -595,7 +598,7 @@
     background: rgba(9, 15, 23, 0.82);
     color: #edf4df;
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-base);
+    font-size: var(--sc-fs-sm);
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
@@ -616,7 +619,7 @@
 
   .summary-label {
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-md);
+    font-size: var(--sc-fs-base);
     color: var(--sc-text-3);
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -624,14 +627,14 @@
 
   .summary-card strong {
     font-family: var(--sc-font-display);
-    font-size: var(--sc-fs-xl);
+    font-size: var(--sc-fs-lg);
     color: #fff2ce;
     letter-spacing: 0.03em;
     line-height: 1.05;
   }
 
   .companion-bay .footer-action {
-    min-height: 56px;
+    min-height: 50px;
   }
 
   @media (max-width: 1100px) {
@@ -673,7 +676,7 @@
     }
 
     h1 {
-      font-size: clamp(2.3rem, 10vw, 3.4rem);
+      font-size: clamp(2.1rem, 9vw, 3rem);
       max-width: none;
     }
 

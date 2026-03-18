@@ -79,16 +79,16 @@
   --sc-font-retro: 'VT323', monospace;
 
   /* ── TYPOGRAPHY: Font Sizes (WCAG: min 9px) ── */
-  --sc-fs-2xs: 12px;
-  --sc-fs-xs: 13px;
-  --sc-fs-sm: 15px;
-  --sc-fs-base: 17px;
-  --sc-fs-md: 19px;
-  --sc-fs-lg: 22px;
-  --sc-fs-xl: 26px;
-  --sc-fs-2xl: 32px;
-  --sc-fs-3xl: 40px;
-  --sc-fs-4xl: 52px;
+  --sc-fs-2xs: 11px;
+  --sc-fs-xs: 12px;
+  --sc-fs-sm: 14px;
+  --sc-fs-base: 16px;
+  --sc-fs-md: 18px;
+  --sc-fs-lg: 20px;
+  --sc-fs-xl: 24px;
+  --sc-fs-2xl: 28px;
+  --sc-fs-3xl: 36px;
+  --sc-fs-4xl: 46px;
 
   /* ── TYPOGRAPHY: Line Heights ── */
   --sc-lh-tight: 1.2;
@@ -145,7 +145,7 @@
   --sc-duration-slow: 350ms;
 
   /* ── LAYOUT ── */
-  --sc-header-h: 68px;
+  --sc-header-h: 64px;
   --sc-header-h-mobile: 44px;
   --sc-bottom-bar-h: 28px;
   --sc-tab-strip-h: 34px;

@@ -37,6 +37,8 @@ Source of truth remains store implementations plus canonical state-authority doc
 | `pnlStore` | derived/support | pnl summaries and derived display state | Depends on durable trade/outcome data. |
 | `battleFeedStore` | route/session transient | live battle feed | Runtime-only presentation state. |
 | `agentData` | derived/support | agent stats and learning presentation layer | Should not silently redefine server truth. |
+| `agentJourneyStore` | route/session transient | mint-to-world journey state and onboarding progression | Owns local activation flow until server-backed durable agent identity is introduced. |
+| `agentVariantStore` | route/session transient | agent doctrine variants, validation runs, and promotion staging | Variant experimentation state stays local until a durable release pipeline exists. |
 | `warRoomStore` | route/session transient | war-room discussion state | Runtime coordination state. |
 | `dbStore` | derived/support | localStorage CRUD helpers and table adapters | Utility persistence layer for local fallback tables; not durable server truth. |
 | `hydration` | derived/support | orchestrates initial store hydration | Not domain truth itself. |
