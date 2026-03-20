@@ -1,7 +1,15 @@
 import { writable } from 'svelte/store';
 import { AIMON_DEX } from '../data/aimonDex';
+import { applyGrowthLaneToLoadout } from '../data/growthLanes';
 import { createStarterAgents } from '../data/agentSeeds';
-import type { BattleResult, OwnedAgent, RetrievalPolicy, RosterState, TrainingLoadout } from '../types';
+import type {
+  BattleResult,
+  GrowthLaneId,
+  OwnedAgent,
+  RetrievalPolicy,
+  RosterState,
+  TrainingLoadout
+} from '../types';
 
 const STORAGE_KEY = 'cogochi.roster.v2';
 const LEGACY_STORAGE_KEY = 'aimon.player.progress.v1';
@@ -77,13 +85,15 @@ function loadState(): RosterState {
     const agents = Array.isArray(parsed?.agents)
       ? parsed.agents.map((agent: Partial<OwnedAgent>, index: number) => normalizeAgent(agent, index))
       : defaultState().agents;
+    const expandedAgents = agents.length >= 12 ? agents : defaultState().agents;
 
     return {
-      agents,
+      agents: expandedAgents,
       selectedAgentId:
-        typeof parsed?.selectedAgentId === 'string' && agents.some((agent: OwnedAgent) => agent.id === parsed.selectedAgentId)
+        typeof parsed?.selectedAgentId === 'string' &&
+        expandedAgents.some((agent: OwnedAgent) => agent.id === parsed.selectedAgentId)
           ? parsed.selectedAgentId
-          : agents[0]?.id ?? null
+          : expandedAgents[0]?.id ?? null
     };
   } catch {
     return defaultState();
@@ -136,6 +146,19 @@ export function updateAgentConfiguration(
           ...agent.loadout.retrievalPolicy,
           ...patch.retrievalPolicy
         }
+      },
+      updatedAt: now
+    }))
+  );
+}
+
+export function applyGrowthLane(agentId: string, laneId: GrowthLaneId): void {
+  rosterStore.update((state) =>
+    updateAgentById(state, agentId, (agent, now) => ({
+      ...agent,
+      loadout: {
+        ...agent.loadout,
+        ...applyGrowthLaneToLoadout(agent.loadout, laneId)
       },
       updatedAt: now
     }))

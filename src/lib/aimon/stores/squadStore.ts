@@ -81,3 +81,23 @@ export function setSquadTacticPreset(tacticPreset: SquadTacticPreset): void {
     }
   }));
 }
+
+export function setActiveSquadMemberIds(agentIds: string[]): void {
+  squadStore.update((state) => {
+    const rosterAgents = get(rosterStore).agents;
+    const nextIds = agentIds.filter((id) => rosterAgents.some((agent) => agent.id === id)).slice(0, 4);
+
+    return {
+      ...state,
+      activeSquad: {
+        ...state.activeSquad,
+        memberAgentIds: nextIds,
+        roleMap: buildSquadRoleMap(nextIds, rosterAgents)
+      }
+    };
+  });
+}
+
+export function clearActiveSquad(): void {
+  setActiveSquadMemberIds([]);
+}

@@ -64,7 +64,7 @@
     justify-content: space-between;
     gap: 8px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .dex-no {
@@ -100,7 +100,7 @@
   .meta p {
     margin: 0;
     color: var(--text-1);
-    font-size: 12px;
+    font-size: 15px;
     line-height: 1.45;
   }
 
@@ -116,7 +116,7 @@
   .card-actions a {
     display: inline-flex;
     align-items: center;
-    min-height: 34px;
+    min-height: 40px;
     padding: 0 12px;
     border-radius: 999px;
     border: 1px solid rgba(255,255,255,0.1);
@@ -124,7 +124,7 @@
     color: var(--text-0);
     text-decoration: none;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.08em;
   }
 </style>

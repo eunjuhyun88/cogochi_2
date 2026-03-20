@@ -1,5 +1,6 @@
 import { AIMON_DEX, DEFAULT_TEAM_DEX_IDS } from './aimonDex';
 import { DEFAULT_BASE_MODEL_ID } from './baseModels';
+import { applyGrowthLaneToLoadout, getDefaultGrowthLaneId } from './growthLanes';
 import { getTrainingProfile } from './trainingProfiles';
 import type {
   AgentConfidenceStyle,
@@ -16,6 +17,14 @@ import type {
   ToolKind,
   TrainingLoadout
 } from '../types';
+
+interface StarterAgentSeed {
+  speciesId: string;
+  name: string;
+  seedXp: number;
+  bond: number;
+  tag: string;
+}
 
 const ROLE_BY_TYPE: Record<AiMonType, AgentRole> = {
   Momentum: 'EXECUTOR',
@@ -73,8 +82,8 @@ function buildRolePrompt(entry: AiMonDexEntry, role: AgentRole): string {
 
 function createLoadout(entry: AiMonDexEntry, role: AgentRole): TrainingLoadout {
   const profile = getTrainingProfile(entry.id);
-
-  return {
+  const growthLaneId = getDefaultGrowthLaneId(entry.id);
+  const seededLoadout: TrainingLoadout = {
     systemPrompt: `You are ${entry.name}, an owned Cogochi evaluation agent. Respond with concise market reasoning and structured outputs.`,
     rolePrompt: buildRolePrompt(entry, role),
     policyPrompt: profile.behavior,
@@ -83,6 +92,7 @@ function createLoadout(entry: AiMonDexEntry, role: AgentRole): TrainingLoadout {
     riskTolerance: role === 'RISK' ? 0.22 : role === 'EXECUTOR' ? 0.62 : 0.45,
     confidenceStyle: getConfidenceStyle(entry.type),
     horizon: getHorizon(entry.type),
+    growthLaneId,
     retrievalPolicy: {
       topK: 3,
       recencyWeight: 0.15,
@@ -99,25 +109,64 @@ function createLoadout(entry: AiMonDexEntry, role: AgentRole): TrainingLoadout {
     readout: profile.readout,
     behaviorNote: profile.behavior
   };
+
+  return {
+    ...seededLoadout,
+    ...applyGrowthLaneToLoadout(seededLoadout, growthLaneId)
+  };
 }
 
-export function createOwnedAgentFromSpecies(entry: AiMonDexEntry, index: number, seedXp = 0): OwnedAgent {
+function buildStarterPool(): StarterAgentSeed[] {
+  return [
+    { speciesId: 'trendlet', name: 'Trendlet Nova', seedXp: 128, bond: 16, tag: 'ignition' },
+    { speciesId: 'trendlet', name: 'Trendlet Rush', seedXp: 88, bond: 9, tag: 'surge' },
+    { speciesId: 'trendlet', name: 'Trendlet Vale', seedXp: 34, bond: 3, tag: 'apex' },
+    { speciesId: 'trendlet', name: 'Trendlet Halo', seedXp: 12, bond: 1, tag: 'flare' },
+    { speciesId: 'reverto', name: 'Reverto Arc', seedXp: 118, bond: 14, tag: 'rebound' },
+    { speciesId: 'reverto', name: 'Reverto Shade', seedXp: 78, bond: 8, tag: 'counter' },
+    { speciesId: 'reverto', name: 'Reverto Mint', seedXp: 26, bond: 2, tag: 'range' },
+    { speciesId: 'reverto', name: 'Reverto Loom', seedXp: 10, bond: 1, tag: 'coil' },
+    { speciesId: 'flowling', name: 'Flowling Tide', seedXp: 122, bond: 18, tag: 'liquidity' },
+    { speciesId: 'flowling', name: 'Flowling Loom', seedXp: 82, bond: 7, tag: 'whale' },
+    { speciesId: 'flowling', name: 'Flowling Peak', seedXp: 36, bond: 3, tag: 'current' },
+    { speciesId: 'flowling', name: 'Flowling Crest', seedXp: 14, bond: 1, tag: 'sweep' },
+    { speciesId: 'deribit', name: 'Deribit Volt', seedXp: 132, bond: 12, tag: 'shock' },
+    { speciesId: 'deribit', name: 'Deribit Clash', seedXp: 94, bond: 8, tag: 'break' },
+    { speciesId: 'deribit', name: 'Deribit Rift', seedXp: 42, bond: 4, tag: 'strike' },
+    { speciesId: 'deribit', name: 'Deribit Vane', seedXp: 18, bond: 2, tag: 'edge' },
+    { speciesId: 'sentra', name: 'Sentra Echo', seedXp: 116, bond: 17, tag: 'crowd' },
+    { speciesId: 'sentra', name: 'Sentra Bloom', seedXp: 68, bond: 10, tag: 'mood' },
+    { speciesId: 'sentra', name: 'Sentra Veil', seedXp: 22, bond: 2, tag: 'pulse' },
+    { speciesId: 'sentra', name: 'Sentra Prism', seedXp: 8, bond: 1, tag: 'glow' },
+    { speciesId: 'macrobit', name: 'Macrobit Crown', seedXp: 138, bond: 20, tag: 'cycle' },
+    { speciesId: 'macrobit', name: 'Macrobit Forge', seedXp: 86, bond: 9, tag: 'anchor' },
+    { speciesId: 'macrobit', name: 'Macrobit Ember', seedXp: 28, bond: 3, tag: 'regime' },
+    { speciesId: 'macrobit', name: 'Macrobit Atlas', seedXp: 16, bond: 1, tag: 'hold' }
+  ];
+}
+
+export function createOwnedAgentFromSpecies(
+  entry: AiMonDexEntry,
+  index: number,
+  seedXp = 0,
+  overrides: Partial<OwnedAgent> = {}
+): OwnedAgent {
   const role = ROLE_BY_TYPE[entry.type];
-  const id = `starter-${String(index + 1).padStart(2, '0')}-${entry.id}`;
+  const id = overrides.id ?? `starter-${String(index + 1).padStart(2, '0')}-${entry.id}`;
   const now = Date.now();
 
   return {
     id,
     speciesId: entry.id,
-    name: entry.name,
+    name: overrides.name ?? entry.name,
     archetypeId: entry.id,
     baseModelId: DEFAULT_BASE_MODEL_ID,
     role,
     status: 'READY' satisfies AgentStatus,
     level: 1 + Math.floor(seedXp / 60),
     xp: seedXp,
-    bond: 0,
-    specializationTags: [entry.type, role, getTrainingProfile(entry.id).archetype],
+    bond: overrides.bond ?? 0,
+    specializationTags: overrides.specializationTags ?? [entry.type, role, getTrainingProfile(entry.id).archetype],
     loadout: createLoadout(entry, role),
     memoryBankId: `memory-${id}`,
     record: {
@@ -133,11 +182,31 @@ export function createOwnedAgentFromSpecies(entry: AiMonDexEntry, index: number,
       memoryCapacityBonus: 0
     },
     createdAt: now,
-    updatedAt: now
+    updatedAt: now,
+    ...overrides
   };
 }
 
-export function createStarterAgents(dexIds: string[] = AIMON_DEX.map((entry) => entry.id), seedXpBySpecies: Record<string, number> = {}): OwnedAgent[] {
+export function createStarterAgents(
+  dexIds: string[] | undefined = undefined,
+  seedXpBySpecies: Record<string, number> = {}
+): OwnedAgent[] {
+  if (!dexIds) {
+    return buildStarterPool()
+      .map((seed, index) => {
+        const entry = AIMON_DEX.find((item) => item.id === seed.speciesId);
+        if (!entry) return null;
+
+        return createOwnedAgentFromSpecies(entry, index, seed.seedXp, {
+          id: `starter-${String(index + 1).padStart(2, '0')}-${seed.speciesId}-${seed.tag}`,
+          name: seed.name,
+          bond: seed.bond,
+          specializationTags: [entry.type, ROLE_BY_TYPE[entry.type], seed.tag]
+        });
+      })
+      .filter((agent): agent is OwnedAgent => Boolean(agent));
+  }
+
   return dexIds
     .map((dexId) => AIMON_DEX.find((entry) => entry.id === dexId))
     .filter((entry): entry is AiMonDexEntry => Boolean(entry))

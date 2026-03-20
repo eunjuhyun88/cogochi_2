@@ -2,6 +2,8 @@
 
 Last updated: 2026-03-06
 
+The progression assumptions in this file inherit from [MASTER_GAME_SPEC.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/MASTER_GAME_SPEC.md).
+
 ## 1. Progression Philosophy
 
 Cogochi progression should answer one question:

@@ -1,0 +1,18 @@
+[
+  {
+    "type": "console.error",
+    "text": "Failed to load resource: net::ERR_EMPTY_RESPONSE"
+  },
+  {
+    "type": "console.error",
+    "text": "Failed to load resource: net::ERR_CONNECTION_RESET"
+  },
+  {
+    "type": "console.error",
+    "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+  },
+  {
+    "type": "pageerror",
+    "text": "TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:4174/_app/immutable/entry/start.Bm2CEwbK.js"
+  }
+]

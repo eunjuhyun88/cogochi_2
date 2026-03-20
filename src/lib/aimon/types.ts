@@ -13,6 +13,9 @@ export type OrbKind = 'LONG' | 'SHORT' | 'RISK' | 'NEUTRAL';
 export type TeamSide = 'player' | 'enemy';
 export type BattleOutcome = 'WIN' | 'LOSS' | 'DRAW';
 export type AgentAction = 'LONG' | 'SHORT' | 'FLAT';
+export type BattleLane = 'LOWER' | 'MID' | 'UPPER';
+export type BattleZoneKind = 'SUPPORT' | 'RESISTANCE' | 'LONG_LIQ' | 'SHORT_LIQ' | 'BREAKOUT' | 'STORM';
+export type BattleObjectiveKind = 'BREAKOUT_PUSH' | 'RANGE_HOLD' | 'LIQUIDITY_HUNT' | 'MACRO_DEFENSE';
 
 export type AgentRole = 'SCOUT' | 'ANALYST' | 'RISK' | 'EXECUTOR';
 export type AgentStatus = 'READY' | 'TRAINING' | 'QUEUED' | 'IN_MATCH' | 'RECOVERING';
@@ -39,6 +42,13 @@ export type MatchMode = 'PVE_BENCHMARK' | 'GHOST_DUEL' | 'ASYNC_PVP';
 export type AgentConfidenceStyle = 'CONSERVATIVE' | 'BALANCED' | 'AGGRESSIVE';
 export type AgentHorizon = 'SCALP' | 'INTRADAY' | 'SWING';
 export type SquadTacticPreset = 'BALANCED' | 'TREND' | 'DEFENSIVE' | 'EXPERIMENTAL';
+export type GrowthLaneId =
+  | 'SIGNAL_HUNTER'
+  | 'RISK_GUARDIAN'
+  | 'PATTERN_ORACLE'
+  | 'MOMENTUM_RIDER'
+  | 'BREAKER'
+  | 'STABILITY_CORE';
 export type RuntimeInferenceMode = 'HEURISTIC' | 'OLLAMA' | 'OPENAI_COMPAT';
 export type FailureMode =
   | 'REGIME_MISMATCH'
@@ -121,6 +131,7 @@ export interface TrainingLoadout {
   riskTolerance: number;
   confidenceStyle: AgentConfidenceStyle;
   horizon: AgentHorizon;
+  growthLaneId?: GrowthLaneId;
   retrievalPolicy: RetrievalPolicy;
   outputSchemaVersion: string;
   retrainingPath: string;
@@ -793,6 +804,110 @@ export interface SignalInteractionEvent {
   at: number;
 }
 
+export interface ChartBackdropCandle {
+  id: string;
+  x: number;
+  openY: number;
+  closeY: number;
+  highY: number;
+  lowY: number;
+  bullish: boolean;
+}
+
+export interface ChartBattleBackdrop {
+  symbol: string;
+  timeframe: string;
+  regime: MarketRegime;
+  candles: ChartBackdropCandle[];
+  trendTilt: number;
+  currentPriceLabel: string;
+}
+
+export interface ChartBattleZone {
+  id: string;
+  kind: BattleZoneKind;
+  label: string;
+  lane: BattleLane;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  state: 'ACTIVE' | 'PRIMED' | 'BROKEN';
+  value: number;
+}
+
+export interface ChartBattleObjective {
+  id: string;
+  kind: BattleObjectiveKind;
+  label: string;
+  detail: string;
+  progress: number;
+  target: number;
+  x: number;
+  y: number;
+}
+
+export interface ChartBattleUnit {
+  instanceId: string;
+  ownedAgentId: string;
+  team: TeamSide;
+  name: string;
+  role: AgentRole | null;
+  action: AgentAction;
+  confidence: number;
+  memoryBoost: number;
+  stance: 'IDLE' | 'READY' | 'CASTING' | 'HIT' | 'GUARD' | 'FOCUSED';
+  x: number;
+  y: number;
+  readout: string;
+  targetZoneId?: string;
+}
+
+export interface ChartBattleProjectile {
+  id: string;
+  ownerId: string;
+  team: TeamSide;
+  kind: OrbKind;
+  x: number;
+  y: number;
+  size: number;
+  trail: boolean;
+}
+
+export interface ChartBattleHazard {
+  id: string;
+  kind: 'LIQUIDATION' | 'VOLATILITY' | 'NEWS';
+  label: string;
+  lane: BattleLane;
+  x: number;
+  y: number;
+  severity: number;
+}
+
+export interface BattleInterventionCard {
+  id: string;
+  kind: 'FOCUS_TAP' | 'MEMORY_PULSE' | 'RISK_VETO' | 'RETARGET';
+  label: string;
+  description: string;
+  enabled: boolean;
+  charges: number;
+}
+
+export interface ChartBattleScene {
+  id: string;
+  phase: BattlePhase;
+  eventBanner: string;
+  backdrop: ChartBattleBackdrop;
+  zones: ChartBattleZone[];
+  objectives: ChartBattleObjective[];
+  friendlyUnits: ChartBattleUnit[];
+  rivalUnits: ChartBattleUnit[];
+  projectiles: ChartBattleProjectile[];
+  hazards: ChartBattleHazard[];
+  interventionCards: BattleInterventionCard[];
+  advantage: number;
+}
+
 export interface BattleResult {
   outcome: BattleOutcome;
   consensus: number;
@@ -815,12 +930,19 @@ export interface BattleState {
   orbs: SignalOrb[];
   consensus: number;
   focusTapCharges: number;
+  memoryPulseCharges: number;
+  riskVetoCharges: number;
+  retargetCharges: number;
+  memoryPulseUntil: number;
+  riskVetoUntil: number;
+  retargetUntil: number;
   round: number;
   running: boolean;
   eventBanner: string;
   interactions: SignalInteractionEvent[];
   retrievalFeed: BattleRetrievalFeedItem[];
   decisionFeed: AgentDecisionTrace[];
+  scene: ChartBattleScene | null;
   result: BattleResult | null;
   rewardsApplied: boolean;
 }

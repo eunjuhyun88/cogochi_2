@@ -19,6 +19,105 @@ Purpose: Cogochi 작업 중복을 막고, 작업 전/후 실제 변경 이력을
 
 ## Entries
 
+### W-20260318-0702-cogochi-codex
+
+- Start (KST): 2026-03-18 07:02
+- End (KST): 2026-03-18 07:02
+- Branch: `main`
+- Scope (planned):
+  - command deck 기반의 새 메인 플로우 구현
+  - 다중 캐릭터 선택 -> 성장 방향 선택 -> 학습 -> 전투 -> 임대 흐름의 첫 vertical slice 연결
+  - 홈/팀/랩/마켓 화면을 새 제품 구조에 맞게 리와이어
+- Overlap check (before work):
+  - 기존 dirty worktree 존재
+  - 사용자 변경은 건드리지 않고 Cogochi 내부 화면/상태 레이어만 확장
+- Changes (actual):
+  - `src/lib/aimon/data/growthLanes.ts` 추가
+  - starter stable을 24개 후보로 확장
+  - `src/routes/+page.svelte`를 rotating candidate wall + multi-select command deck으로 재작성
+  - `src/routes/team/+page.svelte`를 growth draft 화면으로 재작성
+  - `src/routes/lab/+page.svelte`에 active growth program과 training queue action 추가
+  - `src/routes/market/+page.svelte` 신규 추가
+  - `src/routes/+layout.svelte`, `src/lib/aimon/stores/gameStore.ts`, `src/lib/aimon/stores/rosterStore.ts`, `src/lib/aimon/stores/squadStore.ts`, `src/lib/aimon/data/agentSeeds.ts`, `src/lib/aimon/types.ts` 갱신
+  - `npm run check`, `npm run build` 통과
+- Diff vs plan:
+  - battle runtime 자체는 유지하고 front-door와 pre-battle growth flow에 집중
+- Commit / Push:
+  - pending
+- Status: DONE
+
+---
+
+### W-20260318-1500-cogochi-maxidoge-tone-restore
+
+- Start (KST): 2026-03-18 15:00
+- End (KST): 2026-03-18 15:25
+- Branch: `main`
+- Scope (planned):
+  - front-door IA와 카피가 지나치게 foundry/backtest 쪽으로 기울어진 부분을 되돌림
+  - `maxidoge` 게임 허브 톤을 복구하고 Lab만 실험실 역할로 재정렬
+- Overlap check (before work):
+  - 기존 rotating candidate wall, growth draft, lab, battle, market 기능은 유지
+  - 변경 범위는 상단 브랜딩과 홈/랩/마켓 카피 중심으로 제한
+- Changes (actual):
+  - `src/routes/+layout.svelte`에서 상단 브랜드를 `MAXIDOGE COMMAND` 톤으로 복구하고 nav를 `Deck / Roster / Team / Battle / Lab / Market` 구조로 재정렬
+  - `src/routes/+page.svelte`에서 홈 hero, CTA, flow strip, rotating pool, late-game market 카피를 다시 게임 허브 중심으로 조정
+  - `src/routes/lab/+page.svelte`에서 hero와 주요 섹션명을 `TRAINING LAB` 기준으로 재정의해 실험실 역할은 유지하되 앞단 게임성을 덮지 않도록 정리
+  - `src/routes/market/+page.svelte`에서 market을 후반 보상 레이어로 다시 설명
+  - 이후 추가로 `frontend/static/blockparty` 자산을 `Cogochi/static/blockparty`로 가져오고 `src/components/shared/MaxidogeBackground.svelte`를 추가
+  - `src/routes/+page.svelte`를 Maxidoge visual grammar 기준으로 재구성: war-room hero, feature rail, right-wall rotating pool, pack board
+  - `progress.md` 업데이트
+  - `npm run check`, `npm run build` 통과
+- Diff vs plan:
+  - 구조와 기능은 유지하고 메시지/IA만 되돌리는 선에서 마감
+- Commit / Push:
+  - pending
+- Status: DONE
+
+### W-20260318-0000-cogochi-codex
+
+- Start (KST): 2026-03-18 00:00
+- End (KST): 2026-03-18 00:00
+- Branch: `main`
+- Scope (planned):
+  - user가 제시한 대형 GDD와 현재 Cogochi 방향을 재점검
+  - Steam 출시 수준의 front-door/player-flow 기준으로 제품 구조 재정의
+  - main 화면의 다중 캐릭터 선택, 성장 계획, 학습, 플레이, 임대 흐름을 문서 정본에 반영
+- Overlap check (before work):
+  - 문서 중심 작업
+  - 현재 앱 코드와 route shell은 변경하지 않음
+- Changes (actual):
+  - `docs/STEAM_RELEASE_REFRAME.md` 신규 추가
+  - `docs/MASTER_GAME_SPEC.md`, `docs/PRODUCT_BLUEPRINT.md`, `docs/UIUX_SYSTEM.md`, `docs/INDEX.md`를 새 front-door 기준으로 정렬
+  - `docs/exec-plans/completed/2026-03-18-steam-release-reframe.md` 추가
+- Diff vs plan:
+  - 정책/배포 제약은 별도 트랙으로 분리하고 이번 작업에서는 제품/UX 구조 정리만 수행
+- Commit / Push:
+  - pending
+- Status: DONE
+
+### W-20260307-1553-cogochi-codex
+
+- Start (KST): 2026-03-07 15:53
+- End (KST): 2026-03-07 15:53
+- Branch: `main`
+- Scope (planned):
+  - battle를 chart-driven tactical scene으로 재정의
+  - chart -> battlefield translation, role skill mapping, scenario objectives, HUD, runtime scene model 문서화
+  - 기존 product/ui 문서를 새 battle 정본에 맞게 연결
+- Overlap check (before work):
+  - 문서 중심 작업
+  - 현재 battle 구현은 유지하고 source-of-truth만 먼저 확정
+- Changes (actual):
+  - `docs/CHART_BATTLE_SPEC.md` 신규 추가
+  - `docs/INDEX.md`, `docs/GAME_DESIGN.md`, `docs/UIUX_SYSTEM.md`, `docs/PRODUCT_BLUEPRINT.md`에서 새 battle 정본 참조 반영
+  - `docs/exec-plans/completed/2026-03-07-chart-battle-spec.md` 추가
+- Diff vs plan:
+  - 구현 변경은 포함하지 않고 설계 정본과 연결 문서까지만 처리
+- Commit / Push:
+  - pending
+- Status: DONE
+
 ### W-20260306-2057-cogochi-codex
 
 - Start (KST): 2026-03-06 20:57
@@ -278,6 +377,38 @@ Purpose: Cogochi 작업 중복을 막고, 작업 전/후 실제 변경 이력을
   - `npm run check`, `npm run build` 통과
 - Diff vs plan:
   - bundle은 per-agent가 아니라 per-match 구조로 잡아 `matchResult.datasetBundleId` 단일 참조를 유지
+- Commit / Push:
+  - pending
+- Status: DONE
+
+---
+
+### W-20260307-0430-cogochi-codex
+
+- Start (KST): 2026-03-07 04:30
+- End (KST): 2026-03-07 05:20
+- Branch: `main`
+- Scope (planned):
+  - 게임 본체 기준의 마스터 설계를 새 정본 문서로 통합
+  - 기존 product/game/battle/progression/ui 문서가 새 정본을 가리키게 정렬
+  - 다음 구현 우선순위를 게임 문법 기준으로 다시 고정
+- Overlap check (before work):
+  - 기존 문서가 기능별로 분산돼 있어 충돌보다 중복/우선순위 혼선이 더 큰 상태
+  - 코드 변경 없이 문서 정합성 위주로 진행
+- Changes (actual):
+  - `docs/MASTER_GAME_SPEC.md` 추가
+  - 게임 정의, 역할 2층 구조, 차트 전장 문법, 전투 액션 문법, RAG의 게임적 의미, 성장, UI, 구현 단계까지 통합 정리
+  - 레퍼런스 이미지가 요구하는 `기술 이름`, `락온/스캔`, `다중 타깃`, `청산 포식`, `승리 컷` 표현 계층을 `MASTER_GAME_SPEC`의 전투 문법과 match presentation mode에 추가
+  - `docs/BATTLE_RUNTIME_PRESENTATION_SPEC.md` 추가
+  - `scenario -> market -> AI intent -> action plan -> scene event -> presentation beat` 하이브리드 런타임 구조와 데이터 계약 정리
+  - `docs/core/` 폴더 추가
+  - 핵심 문서 5개를 `docs/core/` 안에 실제 본문 복사본으로 배치
+  - shortcut 래퍼를 제거하고 `core/README.md`, `core/INDEX.md`만 남김
+  - `docs/INDEX.md`, `docs/PRODUCT_BLUEPRINT.md`, `docs/GAME_DESIGN.md`, `docs/CHART_BATTLE_SPEC.md`, `docs/UIUX_SYSTEM.md`, `docs/PROGRESSION_MODEL.md`가 새 마스터 스펙을 참조하도록 갱신
+  - `docs/INDEX.md`, `docs/MASTER_GAME_SPEC.md`가 새 battle runtime spec을 가리키도록 갱신
+  - `docs/exec-plans/completed/2026-03-07-master-game-spec.md` 추가
+- Diff vs plan:
+  - 구현 계약서까지 다시 쓰지는 않고 게임 정체성과 전장 문법을 우선 고정
 - Commit / Push:
   - pending
 - Status: DONE

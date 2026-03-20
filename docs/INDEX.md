@@ -4,11 +4,21 @@ This directory is the repo-local system of record.
 
 Start here after [AGENTS.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/AGENTS.md).
 
+Fast path for only the essential docs:
+
+- [core/README.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/core/README.md)
+- [core/INDEX.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/core/INDEX.md)
+
 ## Product
 
+- [MASTER_GAME_SPEC.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/MASTER_GAME_SPEC.md)
+- [MAXIDOGE_COGOCHI_FINAL_STRUCTURE.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/MAXIDOGE_COGOCHI_FINAL_STRUCTURE.md)
+- [STEAM_RELEASE_REFRAME.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/STEAM_RELEASE_REFRAME.md)
 - [PROJECT_CONTEXT.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/PROJECT_CONTEXT.md)
 - [PRODUCT_BLUEPRINT.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/PRODUCT_BLUEPRINT.md)
 - [GAME_DESIGN.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/GAME_DESIGN.md)
+- [CHART_BATTLE_SPEC.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/CHART_BATTLE_SPEC.md)
+- [BATTLE_RUNTIME_PRESENTATION_SPEC.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/BATTLE_RUNTIME_PRESENTATION_SPEC.md)
 - [PROGRESSION_MODEL.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/PROGRESSION_MODEL.md)
 - [UIUX_SYSTEM.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/UIUX_SYSTEM.md)
 
@@ -36,7 +46,7 @@ Start here after [AGENTS.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/AGENTS.
 
 ## Read Patterns
 
-- New product task: `PROJECT_CONTEXT -> PRODUCT_BLUEPRINT -> relevant design doc`
+- New product task: `MAXIDOGE_COGOCHI_FINAL_STRUCTURE -> MASTER_GAME_SPEC -> BATTLE_RUNTIME_PRESENTATION_SPEC -> PROJECT_CONTEXT -> PRODUCT_BLUEPRINT -> relevant design doc`
 - AI runtime task: `AGENT_SYSTEM_DESIGN -> AI_RUNTIME_TRAINING_SPEC -> AI_IMPLEMENTATION_CONTRACTS`
 - Context and repo hygiene task: `CONTEXT_ENGINEERING -> PLANS -> QUALITY_SCORE -> RELIABILITY`
 

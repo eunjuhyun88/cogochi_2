@@ -1,7 +1,8 @@
 import { get, writable } from 'svelte/store';
 import { createEvalScenario } from '../data/evalScenarios';
-import { advanceBattleState, applyFocusTap, createInitialBattleState } from '../engine/battleEngine';
+import { advanceBattleState, applyFocusTap, applyMemoryPulse, applyRetarget, applyRiskVeto, createInitialBattleState } from '../engine/battleEngine';
 import { buildBenchmarkRunManifest } from '../services/benchmarkManifestService';
+import { compileChartBattleScene } from '../services/chartBattleScene';
 import { buildAgentContextPacket, buildAgentDecisionContext } from '../services/contextAssembler';
 import { buildDatasetFromEval } from '../services/datasetBuilder';
 import { buildEvalMatchResult } from '../services/evalService';
@@ -36,6 +37,15 @@ function buildState(): BattleState {
 }
 
 export const battleStore = writable<BattleState>(buildState());
+
+function attachScene(state: BattleState): BattleState {
+  const match = get(matchStore);
+  const scenario = match.activeScenario ?? createEvalScenario(match.selectedScenarioId);
+  return {
+    ...state,
+    scene: compileChartBattleScene(state, scenario)
+  };
+}
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
@@ -79,6 +89,9 @@ function hydrateBattleIntel(state: BattleState): BattleState {
   const runtime = get(runtimeStore).config;
   const activeScenario = match.activeScenario ?? createEvalScenario(match.selectedScenarioId);
   const scenarioStartAt = activeScenario.scenarioStartAt;
+  const memoryPulseActive = state.memoryPulseUntil > Date.now();
+  const retargetActive = state.retargetUntil > Date.now();
+  const riskVetoActive = state.riskVetoUntil > Date.now();
   const retrievalFeed: BattleState['retrievalFeed'] = [];
   const decisionFeed: BattleState['decisionFeed'] = [];
   const squadLabels = state.playerTeam
@@ -103,7 +116,8 @@ function hydrateBattleIntel(state: BattleState): BattleState {
       scenarioStartAt
     });
 
-    const memoryScore = retrieved.length > 0 ? retrieved.reduce((sum, item) => sum + item.totalScore, 0) / retrieved.length : 0;
+    const baseMemoryScore = retrieved.length > 0 ? retrieved.reduce((sum, item) => sum + item.totalScore, 0) / retrieved.length : 0;
+    const memoryScore = clamp(baseMemoryScore + (memoryPulseActive ? 0.16 : 0), 0, 1);
     const confidenceBias =
       agent.loadout.confidenceStyle === 'AGGRESSIVE'
         ? 0.05
@@ -116,7 +130,8 @@ function hydrateBattleIntel(state: BattleState): BattleState {
         agent.level * 0.018 +
         memoryScore * 0.32 +
         confidenceBias +
-        agent.loadout.enabledDataSourceIds.length * 0.01,
+        agent.loadout.enabledDataSourceIds.length * 0.01 +
+        (retargetActive ? 0.04 : 0),
       0.35,
       0.95
     );
@@ -169,7 +184,13 @@ function hydrateBattleIntel(state: BattleState): BattleState {
 
   const topFeed = retrievalFeed[0];
   const topDecision = decisionFeed[0];
-  const eventBanner =
+  const activeCommands = [
+    memoryPulseActive ? 'Memory Pulse' : null,
+    riskVetoActive ? 'Risk Veto' : null,
+    retargetActive ? 'Retarget' : null
+  ].filter((value): value is string => Boolean(value));
+  const livePrefix = activeCommands.length > 0 ? `${activeCommands.join(' · ')} active` : null;
+  const tacticalBanner =
     state.interactions.length > 0 || (!topFeed && !topDecision) || state.phase === 'RESULT'
       ? state.eventBanner
       : `Decide · ${activeSquad.tacticPreset} · ${topDecision?.agentName ?? topFeed.agentName}: ${topDecision?.action ?? 'FLAT'} · ${topFeed.retrievedMemories[0]?.title ?? topFeed.readout}`;
@@ -179,7 +200,7 @@ function hydrateBattleIntel(state: BattleState): BattleState {
     playerTeam,
     retrievalFeed,
     decisionFeed,
-    eventBanner
+    eventBanner: livePrefix ? `${livePrefix} · ${tacticalBanner}` : tacticalBanner
   };
 }
 
@@ -253,11 +274,11 @@ export async function startBattle(): Promise<void> {
   beginLegacyMatch();
   const baseState = hydrateBattleIntel(buildState());
   const primedState = hydrateBattleIntel(await primeRuntimeDecisionFeed(baseState));
-  battleStore.set(primedState);
+  battleStore.set(attachScene(primedState));
   timer = setInterval(() => {
     battleStore.update((state) => {
       const prepared = hydrateBattleIntel(state);
-      const next = hydrateBattleIntel(advanceBattleState(prepared, Date.now()));
+      const next = attachScene(hydrateBattleIntel(advanceBattleState(prepared, Date.now())));
       syncMatchPhase(next.phase);
       if (next.result && !next.rewardsApplied) {
         const rosterAgents = get(rosterStore).agents;
@@ -343,5 +364,14 @@ export function stopBattle(): void {
 }
 
 export function focusTap(instanceId: string): void {
-  battleStore.update((state) => applyFocusTap(state, instanceId, Date.now()));
+  battleStore.update((state) => attachScene(hydrateBattleIntel(applyFocusTap(state, instanceId, Date.now()))));
+}
+
+export function useIntervention(kind: 'MEMORY_PULSE' | 'RISK_VETO' | 'RETARGET'): void {
+  battleStore.update((state) => {
+    const now = Date.now();
+    if (kind === 'MEMORY_PULSE') return attachScene(hydrateBattleIntel(applyMemoryPulse(state, now)));
+    if (kind === 'RISK_VETO') return attachScene(hydrateBattleIntel(applyRiskVeto(state, now)));
+    return attachScene(hydrateBattleIntel(applyRetarget(state, now)));
+  });
 }

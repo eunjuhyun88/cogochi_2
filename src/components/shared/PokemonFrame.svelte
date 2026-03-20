@@ -14,36 +14,43 @@
 
 <style>
   .poke-frame {
-    border: 3px solid #314265;
-    border-radius: 10px;
-    background: #131c32;
     position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(173, 204, 208, 0.12);
+    border-radius: 24px;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+      rgba(8, 18, 27, 0.84);
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(18px);
   }
 
   .poke-frame.dark {
-    border-color: #24324e;
-    background: #0c1528;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+      rgba(8, 18, 27, 0.92);
   }
 
   .poke-frame.accent {
-    border-color: #ff9a5f;
-    background: #19152b;
+    border-color: rgba(223, 161, 129, 0.3);
+    background:
+      linear-gradient(180deg, rgba(223, 161, 129, 0.08), rgba(255, 255, 255, 0)),
+      rgba(10, 18, 26, 0.9);
   }
 
   .poke-inner {
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 5px;
+    position: relative;
     height: 100%;
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
   }
 
   .poke-frame::before {
     content: '';
     position: absolute;
-    inset: 1px;
-    border-radius: 7px;
-    border-top: 1px solid rgba(255,255,255,0.08);
-    border-left: 1px solid rgba(255,255,255,0.05);
+    inset: 0;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
     pointer-events: none;
   }
-</style>
-
+ </style>

@@ -1,16 +1,22 @@
 # Cogochi Product Blueprint
 
-Last updated: 2026-03-06
+Last updated: 2026-03-18
+
+The top-level product definition now lives in [MASTER_GAME_SPEC.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/MASTER_GAME_SPEC.md).
+The release-facing flow reframe lives in [STEAM_RELEASE_REFRAME.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/STEAM_RELEASE_REFRAME.md).
+The final convergence decision between Cogochi structure and Maxidoge tone now lives in [MAXIDOGE_COGOCHI_FINAL_STRUCTURE.md](/Users/ej/Downloads/maxidoge-clones/Cogochi/docs/MAXIDOGE_COGOCHI_FINAL_STRUCTURE.md).
+This file remains a concise summary layer.
 
 ## One-Line Definition
 
-Cogochi is an AI agent raising and evaluation game where the player owns agent instances, tunes their prompts, data sources, and memory, builds a squad, and wins through better preparation.
+Cogochi is an AI squad-raising game where the player recruits several agents, chooses how each one should grow, trains them on signal patterns, proves them in short chart battles, and eventually promotes the best ones into prestige or rentable assets.
 
 ## Player Fantasy
 
 The player should feel:
 
 - `this is my agent`
+- `this is the squad I assembled`
 - `I trained its memory and policy this way`
 - `my squad won because of my setup`
 
@@ -18,7 +24,7 @@ If the game feels like selecting anonymous units from a dex, the product is off-
 
 ## Core Loop
 
-`base model -> owned agent -> data and memory setup -> prompt/retraining -> squad -> eval match -> reflection -> progression`
+`discover agents -> select several -> assign growth lanes -> train -> deploy in battle -> reflect -> promote or rent later`
 
 ## Product Pillars
 
@@ -53,6 +59,7 @@ Required implications:
 - roster and detail screens are first-class
 - growth must be visible outside battle
 - the game still makes sense when not inside the arena
+- when battle does appear, it should read as a chart-driven tactical scene rather than a static dashboard
 
 ### 4. Memory Is A System, Not Flavor
 
@@ -64,13 +71,25 @@ Required implications:
 - retrieved memory is visible at decision time
 - match results write back into future behavior
 
+### 5. The Front Door Is Character Selection
+
+The game must open with living characters and immediate choice, not with a static dashboard.
+
+Required implications:
+
+- the home screen shows many candidate agents at once
+- the right side of the main screen can rotate through dozens of candidates over time
+- multi-select happens directly from home
+- the player chooses who to grow before they enter battle
+
 ## Current Information Architecture
 
-- `/` -> Agent Ops Hub
-- `/roster` -> Owned Agents
-- `/battle` -> Eval Battle
-- `/team` -> Squad Builder
-- `/lab` -> Agent Lab
+- `/` -> Command Deck and Recruitment Wall
+- `/roster` -> Stable and Bench
+- `/team` -> Mission Prep
+- `/battle` -> Signal Mission
+- `/lab` -> Training Foundry
+- `/market` -> Rental Exchange
 
 ## Domain Model Target
 
@@ -113,10 +132,17 @@ The result package that feeds reflection and progression back into the roster.
 - `playerStore.ts` is still carrying too much
 - internal `aimon` namespace is a technical leftover, not a product naming decision
 
+Main gap versus release target:
+
+- current front door is still too much like a roster dashboard
+- candidate discovery and multi-select are not yet first-class
+- growth planning is not yet a dedicated step between selection and battle
+- rental should be an unlock, not a front-door surface
+
 ## Next Build Priorities
 
-1. Introduce true `OwnedAgent`, `MemoryBank`, and `TrainingRun` data
-2. Split `playerStore` into player/roster/squad/lab/match stores
-3. Turn battle into a readable evaluation console
-4. Add agent detail route and training controls
-5. Connect reflection and memory writeback to per-agent progression
+1. Rebuild `/` into a command deck with rotating candidate agents and a multi-select tray
+2. Add a growth-draft step between agent selection and battle entry
+3. Make the first battle happen faster and read as a short proof mission
+4. Show visible per-agent progression changes directly in reflection and home
+5. Gate market and rental behind progression instead of surfacing them immediately

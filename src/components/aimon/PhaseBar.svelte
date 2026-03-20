@@ -43,7 +43,7 @@
     border: 1px solid rgba(255,255,255,0.08);
     color: var(--text-2);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.08em;
   }
 
@@ -61,4 +61,3 @@
     letter-spacing: 1px;
   }
 </style>
-

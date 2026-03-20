@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 export interface GameState {
-  currentScreen: 'hub' | 'roster' | 'battle' | 'team' | 'lab';
+  currentScreen: 'hub' | 'roster' | 'battle' | 'team' | 'lab' | 'market';
   prototypeScope: {
     simulatorOnly: boolean;
     pveOnly: boolean;
@@ -15,7 +15,7 @@ const defaultState: GameState = {
   prototypeScope: {
     simulatorOnly: true,
     pveOnly: true,
-    speciesCount: 6,
+    speciesCount: 24,
     regimeCount: 2
   }
 };

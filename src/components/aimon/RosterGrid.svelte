@@ -50,11 +50,11 @@
               <span>READOUT</span>
               <strong>{agent.loadout.readout}</strong>
             </div>
+            <div class="card-foot">
+              <small>{agent.loadout.focusSkill}</small>
+              <span class="focus-link">Select</span>
+            </div>
           </button>
-
-          <div class="card-actions">
-            <a href={`/agent/${agent.id}`}>Open Console</a>
-          </div>
         </article>
       </PokemonFrame>
     {/if}
@@ -81,7 +81,6 @@
 
   .roster-card {
     display: grid;
-    gap: 12px;
     min-height: 240px;
     transition: transform 160ms ease, filter 160ms ease;
   }
@@ -92,28 +91,9 @@
     filter: brightness(1.03);
   }
 
-  .card-actions {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .card-actions a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 34px;
-    padding: 0 12px;
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: rgba(255,255,255,0.04);
-    color: var(--text-0);
-    text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-  }
-
   .card-head,
-  .meta {
+  .meta,
+  .card-foot {
     display: flex;
     justify-content: space-between;
     gap: 10px;
@@ -124,7 +104,7 @@
   .readout span {
     color: var(--text-2);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.08em;
   }
 
@@ -140,7 +120,7 @@
     border: 1px solid;
     border-radius: 999px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 0.06em;
   }
 
@@ -206,13 +186,13 @@
   .meta p {
     margin: 6px 0 0;
     color: var(--text-1);
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.35;
   }
 
   .type-pill {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.08em;
     text-align: right;
   }
@@ -224,8 +204,26 @@
 
   .readout strong {
     color: var(--text-0);
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.35;
+  }
+
+  .card-foot {
+    align-items: center;
+    padding-top: 2px;
+  }
+
+  .card-foot small,
+  .focus-link {
+    color: var(--text-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .focus-link {
+    color: var(--text-0);
   }
 
   @media (max-width: 720px) {

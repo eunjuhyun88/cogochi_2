@@ -22,6 +22,10 @@ const ENEMY_POSITIONS = [
 
 const PHASE_ORDER: BattlePhase[] = ['OPEN', 'EVIDENCE', 'DECISION', 'MARKET', 'RESULT'];
 
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
+}
+
 function pickEntry(id: string): AiMonDexEntry {
   return AIMON_DEX.find((entry) => entry.id === id) ?? AIMON_DEX[0];
 }
@@ -167,12 +171,19 @@ export function createInitialBattleState(playerAgents: OwnedAgent[], scenario?: 
     orbs: [],
     consensus: 50,
     focusTapCharges: 2,
+    memoryPulseCharges: 1,
+    riskVetoCharges: 1,
+    retargetCharges: 1,
+    memoryPulseUntil: 0,
+    riskVetoUntil: 0,
+    retargetUntil: 0,
     round: 1,
     running: true,
     eventBanner: `${scenarioLabel} · Team Synergy ${synergy.score}`,
     interactions: [],
     retrievalFeed: [],
     decisionFeed: [],
+    scene: null,
     result: null,
     rewardsApplied: false
   };
@@ -187,6 +198,76 @@ export function applyFocusTap(state: BattleState, instanceId: string, now: numbe
     playerTeam: state.playerTeam.map((agent) =>
       agent.instanceId === instanceId ? { ...agent, focusTapUntil: now + 5000 } : agent
     )
+  };
+}
+
+export function applyMemoryPulse(state: BattleState, now: number): BattleState {
+  if (state.phase !== 'EVIDENCE' || state.memoryPulseCharges <= 0) return state;
+
+  const target =
+    [...state.playerTeam].sort((left, right) => right.memoryScore - left.memoryScore || right.recentAccuracy - left.recentAccuracy)[0] ??
+    state.playerTeam[0];
+
+  return {
+    ...state,
+    memoryPulseCharges: state.memoryPulseCharges - 1,
+    memoryPulseUntil: now + 9_000,
+    eventBanner: `Memory Pulse · ${target?.name ?? 'Lead agent'} doctrine spike loaded`,
+    playerTeam: state.playerTeam.map((agent) =>
+      agent.instanceId === target?.instanceId
+        ? {
+            ...agent,
+            focusTapUntil: Math.max(agent.focusTapUntil, now + 3_500),
+            decisionHint: 'Memory Pulse active · reinforce recent doctrine recall.'
+          }
+        : agent
+    )
+  };
+}
+
+export function applyRiskVeto(state: BattleState, now: number): BattleState {
+  if (state.phase !== 'DECISION' || state.riskVetoCharges <= 0) return state;
+
+  const target = [...state.enemyTeam].sort((left, right) => right.recentAccuracy - left.recentAccuracy)[0];
+  if (!target) return state;
+
+  return {
+    ...state,
+    riskVetoCharges: state.riskVetoCharges - 1,
+    riskVetoUntil: now + 7_000,
+    consensus: clamp(state.consensus + 6, 0, 100),
+    eventBanner: `Risk Veto · ${target.name} execution window cancelled`,
+    enemyTeam: state.enemyTeam.map((agent) =>
+      agent.instanceId === target.instanceId
+        ? {
+            ...agent,
+            plannedAction: 'FLAT',
+            recentAccuracy: clamp(agent.recentAccuracy - 0.18, 0.2, 0.95),
+            currentTarget: 'Risk Vetoed'
+          }
+        : agent
+    ),
+    orbs: state.orbs.filter((orb) => orb.ownerId !== target.instanceId)
+  };
+}
+
+export function applyRetarget(state: BattleState, now: number): BattleState {
+  if (!['OPEN', 'EVIDENCE'].includes(state.phase) || state.retargetCharges <= 0) return state;
+
+  return {
+    ...state,
+    retargetCharges: state.retargetCharges - 1,
+    retargetUntil: now + 10_000,
+    consensus: clamp(state.consensus + 4, 0, 100),
+    eventBanner: 'Retarget · squad priority shifted to the live objective',
+    playerTeam: state.playerTeam.map((agent, index) => ({
+      ...agent,
+      currentTarget: 'Primary Objective',
+      position: {
+        x: clamp(agent.position.x + 3 + index * 0.4, 18, 36),
+        y: agent.position.y
+      }
+    }))
   };
 }
 

@@ -64,7 +64,7 @@
   .builder-head p {
     margin: 6px 0 0;
     color: var(--text-1);
-    font-size: 13px;
+    font-size: 16px;
   }
 
   .summary {
@@ -76,7 +76,7 @@
 
   .summary span {
     color: var(--text-2);
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .summary strong {
@@ -96,7 +96,7 @@
     background: rgba(0, 229, 255, 0.08);
     border: 1px solid rgba(0, 229, 255, 0.15);
     color: #b7ebff;
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .grid {

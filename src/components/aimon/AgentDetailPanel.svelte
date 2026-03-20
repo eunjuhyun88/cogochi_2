@@ -163,7 +163,7 @@
   .evolution-meta span {
     color: var(--text-2);
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: 0.08em;
   }
 
@@ -179,7 +179,7 @@
   .empty p:last-child {
     margin: 0;
     color: var(--text-1);
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.45;
   }
 
@@ -197,7 +197,7 @@
     border-radius: 999px;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.08);
-    font-size: 12px;
+    font-size: 14px;
   }
 
   .hero-badges .active {
@@ -256,7 +256,7 @@
 
   .stat-row strong,
   .evolution-meta strong {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .evolution-meta {
@@ -269,7 +269,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 42px;
+    min-height: 44px;
     padding: 0 14px;
     border-radius: 14px;
     border: 1px solid rgba(255,255,255,0.1);

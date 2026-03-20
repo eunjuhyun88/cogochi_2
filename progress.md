@@ -1,0 +1,36 @@
+Original prompt: 지금 다른데서 하는걸 확인해보고, 뭐할지 정해보자 지금 https://github.com/eunjuhyun88/Cogochi 이걸 적용하고있는데 원래색이랑 다르고 https://loox.app/lost-in-space 이걸하고싶었는데 톤앤매너 원래꺼가 다사라지고있어 중첩되거나 uiux에서 불필요한거 기능빼고 다 빼야해
+
+- 2026-03-17: Reduced shared chrome, home hub, agent console, roster, and battle page density to preserve Cogochi's agent-ops tone.
+- Current focus: the actual battle scene still does not read as the main gameplay surface quickly enough.
+- Next change: compress pre-arena UI further and widen / clarify the battle field itself.
+- 2026-03-17: Collapsed scenario setup into a foldout on the battle page and moved squad/rival cards below the field so the arena appears in the first viewport.
+- 2026-03-17: Ran the web-game Playwright client against `/battle`; screenshot confirmed the arena is now visible on the first screen with no runtime error artifact emitted.
+- 2026-03-17: Applied the battle-style hero treatment to the main hub so the top section matches the live-battle voice and structure.
+- 2026-03-17: Compressed the battle page again by replacing top fact cards with one status strip, merging retrieval/decision panels, and simplifying arena chrome into compact meta chips.
+- 2026-03-18: Increased the app-wide typography baseline after the UI read too small in practice. Current target is ~13px micro labels, ~16px body copy, and 44-46px primary button heights across hub, roster, team, battle, lab, market, and agent pages.
+- 2026-03-18: Reframed the product around trading-AI creation and repeated validation. Home now reads as Agent Foundry, Lab as the main backtest/simulation game loop, and Market as an endgame reward layer after proof.
+- 2026-03-18: Pulled the front-end tone back toward the earlier Maxidoge game fantasy. Restored Deck / Team / Battle / Lab framing at the top level, kept the rotating candidate wall on home, and moved heavy backtest-first messaging deeper into Lab instead of leading every screen.
+- 2026-03-18: Reworked the home screen using actual Maxidoge visual grammar instead of only copy. Added a dedicated cosmic background component, imported `blockparty` doge art into Cogochi static assets, and rebuilt `/` around a war-room style hero, feature rail, and right-wall rotating pool.
+- 2026-03-18: The first Maxidoge retrofit was still too busy. Reduced `/` again to a single-purpose front door: hero, right-wall rotating pool, and current-pack section only. Removed extra feature and late-game blocks so the page reads as one flow again.
+- 2026-03-19: Locked the final product structure in docs around `Home -> Setup -> Lab -> Arena -> Agent HQ -> Market`, with Cogochi logic intact and Maxidoge tone imported as a front-end layer rather than replacing the game loop.
+- 2026-03-19: Rebuilt `/team` into a real Setup / Growth Draft screen. It now locks lane, build preset, squad tactic, recommended benchmark, and role-slot visibility before the player enters Lab.
+- 2026-03-19: Tightened market readiness so listing is no longer `level/bond` only. Listing now requires proof quality too: Level 3+, Bond 10+, proof matches 5+, and 55%+ win rate.
+- 2026-03-19: Rebuilt `/market` into a late-game page with `Proofed Shelf` and `Incubation Queue`. Empty shelf is now explicit and intentional, with the page teaching that Market is downstream of Lab/Arena rather than competing with them.
+- 2026-03-19: Validation passed after the Setup + Market rewrite: `npm run check`, `npm run build`, and browser screenshot checks on `/team` and `/market`.
+- 2026-03-19: Latest visual QA artifacts:
+  - `/Users/ej/Downloads/maxidoge-clones/Cogochi/output/team-qa-static/shot-0.png`
+  - `/Users/ej/Downloads/maxidoge-clones/Cogochi/output/market-qa-static-2/shot-0.png`
+- 2026-03-19: Reframed `/agent/[id]` as `Agent HQ` instead of a generic training room. The top of the page now exposes listing readiness percentage, missing market gates, proof requirements, and the next unlock step before the deeper build editor.
+- 2026-03-19: Agent HQ validation passed as well. Latest artifact:
+  - `/Users/ej/Downloads/maxidoge-clones/Cogochi/output/agent-hq-qa/shot-0.png`
+- 2026-03-19: Updated `/lab` so the result pane now includes a `MARKET EFFECT` forecast. After a local backtest, the player can immediately see hard gate completion, quality lift, trust delta, fee forecast, and the first remaining proof blocker.
+- 2026-03-19: Extended `LocalBacktestSummary` with focus-agent metadata so Lab can tie benchmark output back to one concrete asset instead of showing abstract metrics only.
+- 2026-03-19: Lab validation passed after the forecast layer was added. Latest artifact:
+  - `/Users/ej/Downloads/maxidoge-clones/Cogochi/output/lab-market-effect-qa/shot-0.png`
+- 2026-03-19: Optimized the first viewport on `Home / Setup / Lab / Agent HQ` so the decision zone is denser: shorter hero copy, compressed flow strips, smaller top cards, and faster visible CTA/result surfaces.
+- 2026-03-19: Latest first-fold QA artifacts:
+  - `/Users/ej/Downloads/maxidoge-clones/Cogochi/output/home-fold-qa-2/shot-0.png`
+  - `/Users/ej/Downloads/maxidoge-clones/Cogochi/output/team-fold-qa-2/shot-0.png`
+  - `/Users/ej/Downloads/maxidoge-clones/Cogochi/output/lab-fold-qa/shot-0.png`
+  - `/Users/ej/Downloads/maxidoge-clones/Cogochi/output/agent-fold-qa/shot-0.png`
+- Next change: unify the top-level flow strips and navigation language so `Home / Setup / Lab / Arena / Agent HQ / Market` all share the same explicit step naming and no screen reintroduces longer explanatory copy above the fold.

@@ -5,11 +5,12 @@
   let { children } = $props();
 
   const links = [
-    { href: '/', label: 'Hub' },
+    { href: '/', label: 'Deck' },
     { href: '/roster', label: 'Roster' },
     { href: '/team', label: 'Team' },
     { href: '/battle', label: 'Battle' },
-    { href: '/lab', label: 'Lab' }
+    { href: '/lab', label: 'Lab' },
+    { href: '/market', label: 'Market' }
   ] as const;
 
   let pathname = $derived(page.url.pathname);
@@ -23,12 +24,13 @@
 
 <div class="app-shell">
   <header class="topbar">
-    <div class="brand-block">
-      <a class="brand" href="/">AI MON: SIGNAL WARS</a>
-      <span class="brand-sub">TRAINER HUB · ROSTER · BATTLE LAB</span>
-    </div>
+    <a class="brand-block" href="/">
+      <span class="device-tag">MAXIDOGE COMMAND</span>
+      <strong class="brand">AI MON: SIGNAL WARS</strong>
+      <span class="brand-sub">Pick the pack. Train the model. Win the proof.</span>
+    </a>
 
-    <nav>
+    <nav class="dock" aria-label="Primary">
       {#each links as link}
         <a href={link.href} class:active={isActive(link.href)}>{link.label}</a>
       {/each}
@@ -43,72 +45,81 @@
 <style>
   .app-shell {
     min-height: 100vh;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 16px;
   }
 
   .topbar {
+    position: sticky;
+    top: 16px;
+    z-index: 10;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--line);
-    background: rgba(7, 12, 25, 0.9);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    backdrop-filter: blur(14px);
+    gap: 18px;
+    align-items: start;
+    padding: 18px 20px;
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    background: linear-gradient(180deg, rgba(8, 18, 27, 0.88), rgba(8, 18, 27, 0.76));
+    backdrop-filter: blur(18px);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.18);
   }
 
   .brand-block {
     display: grid;
-    gap: 2px;
+    gap: 4px;
+    text-decoration: none;
+  }
+
+  .device-tag,
+  .brand-sub {
+    color: var(--text-2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   .brand {
     color: var(--cyan);
-    text-decoration: none;
     font-family: 'Orbitron', sans-serif;
-    font-size: clamp(24px, 4vw, 36px);
+    font-size: clamp(24px, 4vw, 34px);
     letter-spacing: 0.04em;
     line-height: 0.95;
   }
 
-  .brand-sub {
-    color: var(--text-2);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-  }
-
-  nav {
+  .dock {
     display: flex;
-    gap: 10px;
     flex-wrap: wrap;
+    gap: 10px;
+    justify-content: end;
   }
 
-  nav a {
-    color: var(--text-0);
-    text-decoration: none;
-    padding: 10px 14px;
+  .dock a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 999px;
     border: 1px solid var(--line);
-    border-radius: 14px;
-    background: rgba(255,255,255,0.03);
-    transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-1);
+    text-decoration: none;
+    transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
   }
 
-  nav a:hover {
-    transform: translateY(-1px);
-    border-color: rgba(0, 229, 255, 0.2);
-  }
-
-  nav a.active {
-    border-color: rgba(0, 229, 255, 0.3);
-    background: rgba(0, 229, 255, 0.08);
-    color: #a6f5ff;
+  .dock a:hover,
+  .dock a.active {
+    border-color: rgba(98, 215, 218, 0.3);
+    background: rgba(98, 215, 218, 0.1);
+    color: var(--text-0);
   }
 
   main {
-    min-height: calc(100vh - 80px);
+    min-height: calc(100vh - 132px);
+    padding: 18px 0 24px;
   }
 
   @media (max-width: 860px) {
@@ -117,8 +128,8 @@
       align-items: stretch;
     }
 
-    nav {
-      justify-content: space-between;
+    .dock {
+      justify-content: start;
     }
   }
 </style>
