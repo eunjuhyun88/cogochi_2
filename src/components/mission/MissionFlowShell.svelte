@@ -9,6 +9,7 @@
   export let summary: string;
   export let eyebrow = 'Mission';
   export let metrics: MissionMetric[] = [];
+  export let dense = false;
 
   const steps: Array<{ id: MissionFlowStepId; label: string; href: string }> = [
     { id: 'create', label: 'Create', href: buildCreateLink() },
@@ -23,7 +24,7 @@
   }
 </script>
 
-<section class="mission-flow-shell" aria-label="Mission flow progress">
+<section class="mission-flow-shell" class:dense aria-label="Mission flow progress">
   <div class="mission-flow-shell__copy">
     <div class="mission-flow-shell__heading">
       <p class="mission-flow-shell__eyebrow">{eyebrow}</p>
@@ -64,8 +65,8 @@
     position: relative;
     z-index: 12;
     display: grid;
-    gap: 8px;
-    padding: 12px 16px 10px;
+    gap: 6px;
+    padding: 10px 14px 8px;
     border-bottom: 1px solid rgba(232, 150, 125, 0.14);
     background:
       linear-gradient(180deg, rgba(9, 14, 23, 0.92), rgba(10, 16, 24, 0.82)),
@@ -77,20 +78,20 @@
   .mission-flow-shell__copy {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 12px;
+    gap: 10px;
     align-items: end;
   }
 
   .mission-flow-shell__heading {
     display: grid;
-    gap: 3px;
-    max-width: 36rem;
+    gap: 2px;
+    max-width: 34rem;
   }
 
   .mission-flow-shell__eyebrow {
     margin: 0;
     font-family: var(--sc-font-mono, 'IBM Plex Mono', monospace);
-    font-size: 11px;
+    font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: rgba(232, 150, 125, 0.78);
@@ -99,7 +100,7 @@
   h1 {
     margin: 0;
     font-family: var(--sc-font-display, 'Bebas Neue', sans-serif);
-    font-size: clamp(1.12rem, 1.45vw, 1.45rem);
+    font-size: clamp(1rem, 1.25vw, 1.28rem);
     line-height: 0.92;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -109,22 +110,22 @@
   p {
     margin: 0;
     font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: 0.9rem;
-    line-height: 1.4;
+    font-size: 0.84rem;
+    line-height: 1.32;
     color: rgba(240, 237, 228, 0.74);
   }
 
   .mission-flow-shell__metrics {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
     justify-content: flex-end;
   }
 
   .mission-flow-shell__metric {
-    min-width: 92px;
-    padding: 7px 9px;
-    border-radius: 12px;
+    min-width: 84px;
+    padding: 6px 8px;
+    border-radius: 11px;
     border: 1px solid rgba(173, 202, 124, 0.18);
     background: rgba(9, 14, 22, 0.46);
     display: grid;
@@ -141,19 +142,19 @@
 
   .mission-flow-shell__metric strong {
     font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: 0.92rem;
+    font-size: 0.86rem;
     color: rgba(248, 243, 232, 0.96);
   }
 
   .mission-flow-shell__steps {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    gap: 6px;
   }
 
   .mission-flow-shell__step {
-    padding: 9px 10px;
-    border-radius: 14px;
+    padding: 8px 9px;
+    border-radius: 12px;
     border: 1px solid rgba(240, 237, 228, 0.08);
     background: rgba(9, 14, 22, 0.36);
     color: inherit;
@@ -181,7 +182,7 @@
 
   .mission-flow-shell__index {
     font-family: var(--sc-font-mono, 'IBM Plex Mono', monospace);
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: rgba(240, 237, 228, 0.42);
@@ -189,9 +190,69 @@
 
   .mission-flow-shell__label {
     font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: 0.92rem;
+    font-size: 0.88rem;
     font-weight: 600;
     color: rgba(248, 243, 232, 0.98);
+  }
+
+  .dense {
+    gap: 4px;
+    padding: 8px 12px 6px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  }
+
+  .dense .mission-flow-shell__copy {
+    gap: 8px;
+    align-items: center;
+  }
+
+  .dense .mission-flow-shell__heading {
+    gap: 1px;
+    max-width: none;
+  }
+
+  .dense .mission-flow-shell__eyebrow {
+    font-size: 9px;
+  }
+
+  .dense h1 {
+    font-size: clamp(0.92rem, 1.05vw, 1.06rem);
+  }
+
+  .dense p {
+    font-size: 0.78rem;
+    max-width: 58ch;
+  }
+
+  .dense .mission-flow-shell__metrics {
+    gap: 4px;
+  }
+
+  .dense .mission-flow-shell__metric {
+    min-width: 72px;
+    padding: 4px 6px;
+    border-radius: 10px;
+  }
+
+  .dense .mission-flow-shell__metric strong {
+    font-size: 0.8rem;
+  }
+
+  .dense .mission-flow-shell__steps {
+    gap: 4px;
+  }
+
+  .dense .mission-flow-shell__step {
+    padding: 6px 8px;
+    border-radius: 10px;
+  }
+
+  .dense .mission-flow-shell__index {
+    font-size: 0.6rem;
+  }
+
+  .dense .mission-flow-shell__label {
+    font-size: 0.78rem;
   }
 
   @media (max-width: 768px) {
@@ -217,6 +278,21 @@
 
     .mission-flow-shell__step {
       padding: 10px;
+    }
+
+    .dense {
+      gap: 8px;
+      padding: 10px 12px 8px;
+    }
+
+    .dense .mission-flow-shell__copy {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .dense .mission-flow-shell__metrics {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
     }
   }
 </style>

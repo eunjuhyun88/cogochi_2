@@ -18,6 +18,8 @@
 
   const isTerminal = derived(page, $p => $p.url.pathname.startsWith('/terminal'));
   const isHome = derived(page, $p => $p.url.pathname === '/');
+  const isCreate = derived(page, $p => $p.url.pathname.startsWith('/create'));
+  const isArena = derived(page, $p => $p.url.pathname.startsWith('/arena'));
   const isFixedViewportRoute = derived(page, $p => {
     const path = $p.url.pathname;
     return (
@@ -35,7 +37,7 @@
   let windowWidth = $state(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const showMobileBottomNav = $derived(windowWidth <= 768);
   const showBottomBar = $derived(
-    windowWidth > 768 && !$isHome && !($isTerminal && windowWidth <= 1024)
+    windowWidth > 768 && !$isHome && !$isCreate && !$isArena && !($isTerminal && windowWidth <= 1024)
   );
 
   // Sync currentView store from URL via effect

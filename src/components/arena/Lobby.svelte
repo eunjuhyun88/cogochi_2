@@ -491,61 +491,60 @@
       </section>
     {/if}
 
-    <!-- ═══ KILL FEED: Recent Results ═══ -->
-    <section class="kill-feed">
-      <div class="section-tag">RECENT MATCHES</div>
-      <div class="feed-rows">
-        {#each recent as r, i}
-          <div class="feed-row" class:visible={killFeedVisible[i]} style="--stagger: {i * 0.12}s">
-            <div class="feed-left">
-              <span class="feed-id">{r.id}</span>
-              <span class="feed-result" class:win={r.result === 'WIN'} class:loss={r.result !== 'WIN'}>
-                {r.result}
-              </span>
-              <span class="feed-lp" class:pos={r.lp > 0} class:neg={r.lp < 0}>
-                {r.lp > 0 ? '+' : ''}{r.lp}LP
-              </span>
-              <span class="feed-pair">{r.pair}</span>
-              <span class="feed-dir">{r.dir}</span>
-            </div>
-            <div class="feed-right">
-              <span class="feed-tag">{r.tag}</span>
-              <span class="feed-fbs">FBS {r.fbs}</span>
-              <span class="feed-age">{r.age}</span>
-            </div>
+    <details class="lobby-drawer">
+      <summary>
+        <span>ADVANCED READOUTS</span>
+        <small>Recent runs and view mode</small>
+      </summary>
+
+      <div class="drawer-grid">
+        <!-- ═══ KILL FEED: Recent Results ═══ -->
+        <section class="kill-feed">
+          <div class="section-tag">RECENT MATCHES</div>
+          <div class="feed-rows">
+            {#each recent as r, i}
+              <div class="feed-row" class:visible={killFeedVisible[i]} style="--stagger: {i * 0.12}s">
+                <div class="feed-left">
+                  <span class="feed-id">{r.id}</span>
+                  <span class="feed-result" class:win={r.result === 'WIN'} class:loss={r.result !== 'WIN'}>
+                    {r.result}
+                  </span>
+                  <span class="feed-lp" class:pos={r.lp > 0} class:neg={r.lp < 0}>
+                    {r.lp > 0 ? '+' : ''}{r.lp}LP
+                  </span>
+                  <span class="feed-pair">{r.pair}</span>
+                  <span class="feed-dir">{r.dir}</span>
+                </div>
+                <div class="feed-right">
+                  <span class="feed-tag">{r.tag}</span>
+                  <span class="feed-fbs">FBS {r.fbs}</span>
+                  <span class="feed-age">{r.age}</span>
+                </div>
+              </div>
+            {/each}
           </div>
-        {/each}
-      </div>
-    </section>
+        </section>
 
-    <!-- ═══ VIEW PICKER: 4 Game Views ═══ -->
-    <section class="view-picker-section">
-      <div class="section-tag">BATTLE VIEW</div>
-      <div class="view-cards">
-        {#each viewOptions as opt}
-          <button
-            class="view-card"
-            class:active={$gameState.arenaView === opt.key}
-            onclick={() => pickView(opt.key)}
-          >
-            <span class="vc-icon">{opt.icon}</span>
-            <span class="vc-name">{opt.name}</span>
-            <span class="vc-desc">{opt.desc}</span>
-          </button>
-        {/each}
+        <!-- ═══ VIEW PICKER: 4 Game Views ═══ -->
+        <section class="view-picker-section">
+          <div class="section-tag">BATTLE VIEW</div>
+          <div class="view-cards">
+            {#each viewOptions as opt}
+              <button
+                class="view-card"
+                class:active={$gameState.arenaView === opt.key}
+                onclick={() => pickView(opt.key)}
+              >
+                <span class="vc-icon">{opt.icon}</span>
+                <span class="vc-name">{opt.name}</span>
+                <span class="vc-desc">{opt.desc}</span>
+              </button>
+            {/each}
+          </div>
+        </section>
       </div>
-    </section>
+    </details>
   </main>
-
-  <!-- ═══ STATUS BAR ═══ -->
-  <footer class="status-bar">
-    <span>DECISION CHAIN</span>
-    <span class="status-dot"></span>
-    <span class="status-online">SYSTEM ONLINE</span>
-    <span>BLOCK #18,429,031</span>
-    <span class="status-lat">LATENCY 42ms</span>
-    <span class="status-pair">{$gameState.pair}</span>
-  </footer>
 </div>
 
 <style>
@@ -572,10 +571,9 @@
 
   /* ── Base ── */
   .lobby {
-    position: absolute;
-    inset: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+    position: relative;
+    min-height: 100%;
+    overflow: visible;
     background: var(--bg);
     color: var(--txt);
     font-family: var(--fm);
@@ -639,22 +637,23 @@
   .lobby-core {
     position: relative;
     z-index: 5;
-    max-width: 1200px;
+    max-width: 1080px;
     margin: 0 auto;
-    padding: 16px 16px 80px;
+    padding: 10px 12px 28px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 10px;
   }
 
   /* ═══ HERO BAR ═══ */
   .hero-bar {
     border: 1px solid rgba(232, 150, 125, 0.3);
     background: linear-gradient(135deg, rgba(10, 26, 18, 0.95), rgba(8, 19, 13, 0.98));
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px 16px;
+    align-items: center;
     position: relative;
     overflow: hidden;
   }
@@ -676,18 +675,18 @@
   .hero-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 
   .player-badge {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 
   .badge-ring {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     border: 2px solid var(--tier-color);
     display: flex;
@@ -704,19 +703,19 @@
     50% { box-shadow: 0 0 24px color-mix(in srgb, var(--tier-color) 50%, transparent); }
   }
 
-  .badge-icon { font-size: 22px; }
+  .badge-icon { font-size: 18px; }
 
   .player-name {
-    font-size: clamp(22px, 3.5vw, 36px);
+    font-size: clamp(18px, 2.3vw, 28px);
     font-weight: 900;
-    letter-spacing: 2px;
+    letter-spacing: 1.2px;
     line-height: 1;
   }
 
   .player-tier {
-    font-size: 12px;
-    letter-spacing: 1.5px;
-    margin-top: 4px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-top: 3px;
   }
 
   /* Glitch text effect */
@@ -760,7 +759,8 @@
   .hero-stats {
     display: flex;
     align-items: center;
-    gap: 16px;
+    justify-content: flex-end;
+    gap: 12px;
     flex-wrap: wrap;
   }
 
@@ -771,14 +771,14 @@
   }
 
   .stat-label {
-    font-size: 9px;
-    letter-spacing: 1.5px;
+    font-size: 8px;
+    letter-spacing: 1.2px;
     color: var(--txt40);
     text-transform: uppercase;
   }
 
   .stat-value {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--txt);
   }
@@ -787,17 +787,20 @@
 
   .stat-divider {
     width: 1px;
-    height: 28px;
+    height: 22px;
     background: rgba(232, 150, 125, 0.2);
   }
 
   /* LP Health Bar */
   .lp-bar-wrap {
     position: relative;
+    grid-column: 2 / 3;
+    justify-self: end;
+    width: min(100%, 240px);
   }
 
   .lp-bar-track {
-    height: 6px;
+    height: 5px;
     background: rgba(232, 150, 125, 0.1);
     border-radius: 3px;
     overflow: hidden;
@@ -826,8 +829,8 @@
   .lp-bar-label {
     position: absolute;
     right: 0;
-    top: -16px;
-    font-size: 10px;
+    top: -14px;
+    font-size: 9px;
     color: var(--txt60);
     letter-spacing: 0.8px;
   }
@@ -836,8 +839,8 @@
   .agent-roster {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 12px;
+    gap: 8px;
+    padding: 6px 10px;
     border: 1px solid rgba(232, 150, 125, 0.15);
     background: rgba(8, 19, 13, 0.7);
     overflow-x: auto;
@@ -846,8 +849,8 @@
   .agent-roster::-webkit-scrollbar { display: none; }
 
   .roster-label {
-    font-size: 9px;
-    letter-spacing: 2px;
+    font-size: 8px;
+    letter-spacing: 1.6px;
     color: var(--coral);
     flex-shrink: 0;
   }
@@ -861,7 +864,7 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    padding: 4px 8px;
+    padding: 3px 6px;
     border: 1px solid rgba(232, 150, 125, 0.2);
     background: rgba(232, 150, 125, 0.04);
     border-radius: 2px;
@@ -882,34 +885,34 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .ag-icon { font-size: 14px; }
-  .ag-name { font-size: 10px; color: var(--txt60); letter-spacing: 0.5px; }
+  .ag-icon { font-size: 12px; }
+  .ag-name { font-size: 9px; color: var(--txt60); letter-spacing: 0.35px; }
 
   /* ═══ MODE SELECT ═══ */
   .mode-select {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
   .mode-select-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 8px;
   }
 
   .section-tag {
-    font-size: 11px;
-    letter-spacing: 3px;
+    font-size: 10px;
+    letter-spacing: 2.2px;
     color: var(--coral);
     font-weight: 700;
   }
 
   .typewriter {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--txt40);
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
   }
 
   .cursor {
@@ -926,7 +929,7 @@
   .portals {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
 
   .portal {
@@ -939,7 +942,7 @@
     cursor: pointer;
     overflow: hidden;
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.3s ease;
-    min-height: 220px;
+    min-height: 176px;
     display: flex;
     flex-direction: column;
   }
@@ -1019,7 +1022,7 @@
   .portal-content {
     position: relative;
     z-index: 2;
-    padding: 20px 16px;
+    padding: 16px 14px;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -1027,15 +1030,15 @@
 
   .portal-icon-wrap {
     position: relative;
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
   }
 
-  .portal-icon { font-size: 28px; position: relative; z-index: 1; }
+  .portal-icon { font-size: 24px; position: relative; z-index: 1; }
 
   .portal-ring {
     position: absolute;
@@ -1053,8 +1056,8 @@
   }
 
   .portal-label {
-    font-size: 11px;
-    letter-spacing: 3px;
+    font-size: 10px;
+    letter-spacing: 2.2px;
     color: var(--coral);
     font-weight: 700;
   }
@@ -1062,31 +1065,31 @@
   .tour-text.portal-label { color: var(--gold); }
 
   .portal-title {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 900;
-    letter-spacing: 1px;
+    letter-spacing: 0.8px;
     margin-top: 4px;
     line-height: 1.2;
   }
 
   .portal-sub {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--txt40);
-    letter-spacing: 1px;
-    margin-top: 8px;
+    letter-spacing: 0.8px;
+    margin-top: 6px;
   }
 
   .portal-stats {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--txt60);
-    margin-top: 6px;
+    margin-top: 5px;
   }
 
   .portal-enter {
     margin-top: auto;
-    padding-top: 16px;
-    font-size: 12px;
-    letter-spacing: 2px;
+    padding-top: 12px;
+    font-size: 11px;
+    letter-spacing: 1.4px;
     color: var(--coral);
     font-weight: 700;
     display: flex;
@@ -1139,11 +1142,54 @@
   .portal-pvp { border-color: rgba(0, 212, 255, 0.25); }
   .portal-tour { border-color: rgba(255, 208, 96, 0.25); }
 
+  .lobby-drawer {
+    border: 1px solid rgba(232, 150, 125, 0.2);
+    background: rgba(9, 18, 13, 0.86);
+  }
+
+  .lobby-drawer summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    cursor: pointer;
+  }
+
+  .lobby-drawer summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lobby-drawer summary span {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--coral);
+    font-weight: 700;
+  }
+
+  .lobby-drawer summary small {
+    font-size: 9px;
+    color: var(--txt40);
+    letter-spacing: 0.6px;
+  }
+
+  .lobby-drawer[open] summary {
+    border-bottom: 1px solid rgba(232, 150, 125, 0.12);
+  }
+
+  .drawer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 12px;
+    padding: 12px;
+  }
+
   /* ═══ KILL FEED ═══ */
   .kill-feed {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .feed-rows {
@@ -1157,7 +1203,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    padding: 8px 10px;
+    padding: 7px 9px;
     border: 1px solid rgba(232, 150, 125, 0.15);
     background: rgba(10, 22, 16, 0.85);
     opacity: 0;
@@ -1178,11 +1224,11 @@
     min-width: 0;
   }
 
-  .feed-id { color: var(--txt40); font-size: 11px; }
-  .feed-pair { color: var(--txt); font-size: 13px; font-weight: 700; }
-  .feed-dir { color: var(--txt40); font-size: 11px; }
-  .feed-age { color: var(--txt40); font-size: 10px; }
-  .feed-fbs { color: var(--txt60); font-size: 11px; }
+  .feed-id { color: var(--txt40); font-size: 10px; }
+  .feed-pair { color: var(--txt); font-size: 12px; font-weight: 700; }
+  .feed-dir { color: var(--txt40); font-size: 10px; }
+  .feed-age { color: var(--txt40); font-size: 9px; }
+  .feed-fbs { color: var(--txt60); font-size: 10px; }
 
   .feed-result {
     font-size: 10px;
@@ -1210,7 +1256,7 @@
   .panel {
     border: 1px solid rgba(255, 208, 96, 0.25);
     background: rgba(10, 22, 16, 0.92);
-    padding: 14px;
+    padding: 12px;
   }
 
   .panel-head {
@@ -1218,12 +1264,12 @@
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
   }
 
   .panel-title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     letter-spacing: 1.5px;
     color: var(--gold);
@@ -1271,7 +1317,7 @@
 
   .tour-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
     gap: 12px;
   }
 
@@ -1340,81 +1386,57 @@
   .br-vs { color: var(--txt40); text-align: center; font-size: 9px; }
   .br-status { color: var(--txt40); text-align: center; }
 
-  /* ═══ STATUS BAR ═══ */
-  .status-bar {
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
-    z-index: 20;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    padding: 8px 12px;
-    border-top: 1px solid rgba(232, 150, 125, 0.2);
-    background: rgba(5, 11, 8, 0.97);
-    backdrop-filter: blur(8px);
-    color: var(--txt40);
-    font-size: 10px;
-    letter-spacing: 1px;
-    flex-wrap: wrap;
-  }
-
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--grn);
-    box-shadow: 0 0 8px var(--grn);
-    animation: dotBlink 2s ease-in-out infinite;
-  }
-
-  @keyframes dotBlink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .status-online { color: var(--grn); }
-  .status-lat { color: var(--cyan2); }
-  .status-pair { color: var(--coral); font-weight: 700; }
-
   /* ═══ RESPONSIVE ═══ */
   @media (max-width: 900px) {
+    .hero-bar {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .hero-stats {
+      justify-content: flex-start;
+      gap: 10px;
+    }
+    .lp-bar-wrap {
+      grid-column: 1 / -1;
+      justify-self: stretch;
+      width: 100%;
+    }
     .portals { grid-template-columns: 1fr; }
-    .portal { min-height: 160px; }
+    .portal { min-height: 150px; }
     .hero-stats { gap: 10px; }
     .tour-layout { grid-template-columns: 1fr; }
+    .drawer-grid { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 600px) {
-    .lobby-core { padding: 10px 10px 80px; }
-    .player-name { font-size: 22px !important; }
+    .lobby-core { padding: 10px 10px 22px; }
+    .player-name { font-size: 20px !important; }
     .portal-title { font-size: 16px; }
     .hero-bar { padding: 10px 12px; }
     .stat-value { font-size: 14px; }
     .feed-row { flex-direction: column; align-items: flex-start; }
     .feed-right { width: 100%; justify-content: flex-end; }
-    .status-bar { gap: 8px; font-size: 9px; }
     .mode-select-header { flex-direction: column; align-items: flex-start; }
     .panel-head { flex-direction: column; align-items: flex-start; }
   }
 
   /* ── View Picker ── */
   .view-picker-section {
-    margin-top: 24px;
-    padding: 0 24px 16px;
+    margin-top: 0;
+    padding: 0;
   }
   .view-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-top: 10px;
+    gap: 8px;
+    margin-top: 8px;
   }
   .view-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 14px 8px;
+    gap: 3px;
+    padding: 10px 8px;
     border: 1px solid rgba(232, 150, 125, 0.2);
     border-radius: 10px;
     background: rgba(10, 26, 18, 0.6);
@@ -1436,17 +1458,17 @@
     box-shadow: 0 0 16px rgba(232, 150, 125, 0.15), inset 0 0 8px rgba(232, 150, 125, 0.06);
   }
   .vc-icon {
-    font-size: 22px;
+    font-size: 18px;
     line-height: 1;
   }
   .vc-name {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 800;
-    letter-spacing: 1.2px;
+    letter-spacing: 1px;
     text-transform: uppercase;
   }
   .vc-desc {
-    font-size: 9px;
+    font-size: 8px;
     opacity: 0.55;
   }
   @media (max-width: 700px) {

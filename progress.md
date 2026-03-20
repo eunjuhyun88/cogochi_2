@@ -142,3 +142,58 @@ Original prompt: 애플 uiux 엔지니어, gtm 엔지니어로써 다시한번 �
   - Create after global scroll restoration: `output/uiux-create-audit-v2/shot-0.png`
 - Console state during browser checks:
   - existing backend `401 Unauthorized` and `500 Internal Server Error` responses remain; no new frontend crash was introduced by the layout pass
+- Fresh-clone UI pass in `/Users/ej/Downloads/프로젝트/cogochi_2` on branch `codex/uiux-pass-20260319`:
+  - hid the desktop bottom status bar on `/create` so onboarding no longer loses vertical space to secondary chrome
+  - simplified the header on `/create` to the lighter home-style chrome by removing ticker/score/settings in that route
+  - compressed `MissionFlowShell` spacing, copy, and step cards so the stage rail stops consuming the first fold
+  - reduced home roster panel size and card density to keep the hero and right panel on the same visual center
+  - reduced create wizard density: smaller step chips, smaller shell cards, smaller sticky preview, shorter copy, and a shorter create mission header
+- Validation:
+  - `npm run safe:sync`: PASS
+  - `npm run check -- --fail-on-warnings=false`: PASS (`0 errors / 47 warnings`, same existing repo debt)
+  - `npm run build`: PASS
+- Browser verification:
+  - Home after ratio pass: `output/ui-pass-home-after/shot-0.png`
+  - Create after compact pass: `output/ui-pass-create-final/shot-0.png`
+- TODO:
+  - apply the same lighter onboarding chrome rules to `/terminal` if it still feels too dashboard-heavy
+  - tighten the `Agent HQ` overview/train first fold so the live loop reads as fast as home/create
+- Terminal + Agent HQ first-fold optimization pass:
+  - extended the lighter header treatment to `/agent` so the page no longer burns vertical space on ticker / score / settings chrome
+  - added a `dense` mode to `MissionFlowShell` for tighter mission rails on work-heavy routes
+  - added a `dense` mode to `StrategyVariantWorkbench` so compact Terminal/Train labs can show summary + controls + variant rail without pushing the real chart below the fold
+  - shortened Terminal mission copy and reduced default desktop war-room / intel widths so the chart gets more space by default
+  - shortened Agent HQ hero copy and reduced hero, spotlight, tab, card, and queue spacing so overview content appears much earlier
+  - enabled `dense` Strategy Lab inside `Agent HQ > Train` so the training loop matches Terminal more closely
+- Validation:
+  - `npm run check -- --fail-on-warnings=false`: PASS (`0 errors / 47 warnings`, same existing repo warning debt)
+  - `npm run build`: PASS
+- Browser verification:
+  - Agent HQ after compression: `output/ui-agent-after/shot-0.png`
+  - Terminal after compression: `output/ui-terminal-after/shot-0.png`
+- Current assessment:
+  - Agent HQ overview now shows the first content cards in the initial viewport instead of spending the whole fold on hero chrome
+  - Terminal now keeps the chart visible together with the strategy lab, so it reads like one workspace instead of stacked dashboards
+- TODO:
+  - decide whether Terminal should keep the full ticker/score header or adopt the lighter route chrome too
+  - normalize the same dense first-fold rules into `/arena` if it still reads taller than Home / Create / Agent / Terminal
+- Arena first-fold compression pass:
+  - set `MissionFlowShell` on `/arena` to `dense`
+  - moved `Recent matches` and `Battle view` into a collapsed `Advanced readouts` drawer so the first fold is now mode-first instead of dashboard-first
+  - removed the old fixed lobby status bar and its duplicate footer chrome
+  - compressed `Lobby.svelte` hero, squad strip, mode header, portal cards, feed rows, and view cards so the lobby fits closer to one desktop fold
+  - changed arena global chrome to the lighter route style by making `/arena` use the light header and hiding the desktop bottom bar there
+  - changed arena lobby layout flow so `state.inLobby` no longer traps the page in a hidden fixed viewport; the lobby can expand naturally and page scroll is restored when content exceeds one screen
+- Validation:
+  - `npm run check -- --fail-on-warnings=false`: PASS (`0 errors / 47 warnings`, back to existing repo warning baseline)
+  - `npm run build`: PASS
+- Browser verification:
+  - Arena before: `output/ui-arena-before/shot-0.png`
+  - Arena after: `output/web-game/shot-0.png`
+  - console errors remained existing backend `401 Unauthorized` / `500 Internal Server Error`
+- Current assessment:
+  - Arena now reads as `mission rail -> compact lobby status -> mode selection -> optional advanced drawer`
+  - the first fold is materially calmer and no longer wastes height on repeated top/bottom chrome
+- TODO:
+  - tighten the live battle state (`arena-topbar`, `phase-guide-wrap`, `view-picker-bar`) with the same lighter rhythm used in the lobby
+  - decide whether the squad strip in the lobby should stay visible by default or collapse into the advanced drawer too

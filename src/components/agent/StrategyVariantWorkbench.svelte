@@ -13,6 +13,7 @@
   import type { AgentDoctrineId } from '$lib/stores/agentJourneyStore';
 
   export let compact = false;
+  export let dense = false;
   export let title = 'Run variants. Keep the winner.';
   export let subtitle =
     'One lead can hold multiple builds. Change one lever, rerun, and promote only the build that improves.';
@@ -45,7 +46,7 @@
   }
 </script>
 
-<section class="variant-workbench" class:compact aria-label="Strategy variant lab">
+<section class="variant-workbench" class:compact class:dense aria-label="Strategy variant lab">
   <div class="workbench-head">
     <div class="head-copy">
       <p class="eyebrow">Strategy Lab</p>
@@ -583,6 +584,146 @@
     gap: 8px;
   }
 
+  .dense {
+    padding: 10px 12px;
+    gap: 8px;
+    border-radius: 18px;
+  }
+
+  .dense .workbench-head {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dense .head-copy {
+    gap: 4px;
+  }
+
+  .dense .eyebrow {
+    font-size: 0.68rem;
+  }
+
+  .dense h3 {
+    font-size: clamp(0.92rem, 1.1vw, 1.02rem);
+  }
+
+  .dense .head-copy p:last-child {
+    font-size: 0.82rem;
+    max-width: 56ch;
+  }
+
+  .dense .head-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, max-content));
+    align-items: center;
+    justify-content: end;
+    gap: 6px;
+  }
+
+  .dense .head-actions .primary-btn,
+  .dense .head-actions .secondary-btn,
+  .dense .head-actions .ghost-btn {
+    min-height: 34px;
+    padding: 0 11px;
+    border-radius: 10px;
+    font-size: 0.84rem;
+  }
+
+  .dense .summary-grid {
+    gap: 8px;
+  }
+
+  .dense .summary-card {
+    padding: 10px;
+    gap: 6px;
+    border-radius: 14px;
+  }
+
+  .dense .summary-card strong {
+    font-size: 1rem;
+    line-height: 1.05;
+  }
+
+  .dense .summary-card p {
+    font-size: 0.82rem;
+    line-height: 1.38;
+  }
+
+  .dense .metric-inline {
+    gap: 6px;
+  }
+
+  .dense .metric-inline span {
+    min-height: 24px;
+    padding: 0 8px;
+    font-size: 0.74rem;
+  }
+
+  .dense .control-grid {
+    gap: 8px;
+  }
+
+  .dense .control-group {
+    padding: 10px;
+    gap: 6px;
+    border-radius: 14px;
+  }
+
+  .dense .control-label {
+    font-size: 0.68rem;
+  }
+
+  .dense .chip-row {
+    gap: 6px;
+  }
+
+  .dense .chip-btn {
+    min-height: 32px;
+    padding: 0 8px;
+    font-size: 0.82rem;
+  }
+
+  .dense .variant-list {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 2px;
+    scrollbar-width: thin;
+  }
+
+  .dense .variant-row {
+    flex: 0 0 260px;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    min-height: 0;
+    padding: 10px;
+    gap: 6px;
+    border-radius: 14px;
+  }
+
+  .dense .variant-copy {
+    gap: 4px;
+  }
+
+  .dense .variant-copy span,
+  .dense .variant-copy p,
+  .dense .variant-metrics span {
+    font-size: 0.82rem;
+    line-height: 1.36;
+  }
+
+  .dense .variant-metrics {
+    grid-template-columns: repeat(3, minmax(0, max-content));
+    grid-auto-flow: column;
+    justify-content: start;
+    justify-items: start;
+    text-align: left;
+    min-width: 0;
+    gap: 8px;
+  }
+
   @media (max-width: 980px) {
     .workbench-head,
     .summary-grid,
@@ -606,6 +747,22 @@
     .compact .variant-list {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+
+    .dense .workbench-head {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .dense .head-actions {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      justify-content: stretch;
+    }
+
+    .dense .head-actions .primary-btn,
+    .dense .head-actions .secondary-btn,
+    .dense .head-actions .ghost-btn {
+      width: 100%;
+    }
   }
 
   @media (max-width: 640px) {
@@ -627,6 +784,19 @@
     .compact .control-grid,
     .compact .variant-list {
       grid-template-columns: 1fr;
+    }
+
+    .dense .summary-grid,
+    .dense .control-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .dense .head-actions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dense .variant-row {
+      flex-basis: 220px;
     }
 
     .head-actions :global(button) {

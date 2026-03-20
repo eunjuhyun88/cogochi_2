@@ -202,18 +202,18 @@
       : {
           label: 'Complete Setup',
           href: buildCreateLink(),
-        }
+      }
     : nextAction;
   $: heroTitle = currentTab === 'train'
-    ? 'Build the version that wins.'
+    ? 'Tune the winner.'
     : currentTab === 'record'
-      ? 'Turn battle results into release proof.'
-      : 'Grow the lead. Lock proof. Release it.';
+      ? 'Review the proof.'
+      : 'Grow the lead.';
   $: heroSubtitle = currentTab === 'train'
-    ? 'Clone one build, change one lever, rerun the same lead, and keep only what improves.'
+    ? 'Clone one build, change one lever, rerun, and keep only clear improvement.'
     : currentTab === 'record'
-      ? 'Record should explain why this lead is worth sharing, renting, or sending back for one more loop.'
-      : 'One lead, one crew, one running record. Train in Terminal, prove in Arena, then decide whether the agent earns a public release.';
+      ? 'Check whether this lead is ready for release, sharing, or one more training loop.'
+      : 'One lead, one crew, one next move. Train, prove, then decide if the agent is ready.';
   $: heroSecondaryAction = currentTab === 'train'
     ? { label: 'Open Arena', href: buildArenaLink() }
     : currentTab === 'record'
@@ -407,6 +407,7 @@
       <article class="surface-card workbench-card">
         <StrategyVariantWorkbench
           compact
+          dense
           title="Run builds before you call this lead ready."
           subtitle="Clone one setup, change one lever, rerun, and keep only the build that clearly improves."
         />
@@ -620,9 +621,9 @@
 <style>
   .agent-hq-page {
     min-height: 100%;
-    padding: var(--sc-sp-6) var(--sc-sp-4) var(--sc-sp-8);
+    padding: var(--sc-sp-5) var(--sc-sp-4) var(--sc-sp-7);
     display: grid;
-    gap: 14px;
+    gap: 12px;
     overflow: auto;
     background:
       radial-gradient(circle at top left, rgba(173, 202, 124, 0.1), transparent 24%),
@@ -640,23 +641,23 @@
   }
 
   .hq-hero {
-    padding: clamp(18px, 2.4vw, 24px);
+    padding: clamp(14px, 1.9vw, 18px);
     display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.72fr);
-    gap: 16px;
+    grid-template-columns: minmax(0, 1.38fr) minmax(250px, 0.6fr);
+    gap: 12px;
     align-items: stretch;
   }
 
   .hq-hero-compact {
-    grid-template-columns: minmax(0, 1.4fr) minmax(240px, 0.6fr);
-    padding: 16px 18px;
-    gap: 14px;
+    grid-template-columns: minmax(0, 1.5fr) minmax(220px, 0.52fr);
+    padding: 12px 14px;
+    gap: 10px;
   }
 
   .hq-hero-train {
-    grid-template-columns: minmax(0, 1.7fr) minmax(220px, 0.48fr);
-    padding: 12px 14px;
-    gap: 10px;
+    grid-template-columns: minmax(0, 1.8fr) minmax(210px, 0.42fr);
+    padding: 10px 12px;
+    gap: 8px;
   }
 
   .hero-copy,
@@ -704,18 +705,18 @@
   }
 
   h1 {
-    font-size: clamp(1.95rem, 3.2vw, 3rem);
-    line-height: 0.94;
-    max-width: 9ch;
+    font-size: clamp(1.45rem, 2.15vw, 2.1rem);
+    line-height: 0.96;
+    max-width: 14ch;
   }
 
   .hq-hero-compact h1 {
-    font-size: clamp(1.55rem, 2.3vw, 2.1rem);
-    max-width: 13ch;
+    font-size: clamp(1.2rem, 1.7vw, 1.48rem);
+    max-width: 16ch;
   }
 
   .hq-hero-train h1 {
-    font-size: clamp(1.15rem, 1.75vw, 1.55rem);
+    font-size: clamp(1rem, 1.45vw, 1.22rem);
     max-width: none;
   }
 
@@ -737,18 +738,18 @@
   }
 
   .hero-subtitle {
-    max-width: 62ch;
-    font-size: 1.02rem;
+    max-width: 60ch;
+    font-size: 0.94rem;
   }
 
   .hq-hero-compact .hero-subtitle {
-    font-size: 0.96rem;
-    max-width: 54ch;
+    font-size: 0.88rem;
+    max-width: 50ch;
   }
 
   .hq-hero-train .hero-subtitle {
-    font-size: 0.94rem;
-    max-width: 58ch;
+    font-size: 0.84rem;
+    max-width: 54ch;
   }
 
   .hq-hero-train .hero-copy {
@@ -782,15 +783,15 @@
 
   .status-strip {
     grid-template-columns: repeat(3, minmax(0, max-content));
-    gap: 8px;
+    gap: 6px;
   }
 
   .status-chip,
   .card-badge,
   .history-badge,
   .spotlight-note {
-    min-height: 32px;
-    padding: 0 11px;
+    min-height: 28px;
+    padding: 0 10px;
     border-radius: 999px;
     display: inline-flex;
     align-items: center;
@@ -799,7 +800,7 @@
     background: rgba(10, 16, 26, 0.78);
     color: var(--sc-text-1);
     font-family: var(--sc-font-mono);
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     letter-spacing: 0.05em;
     text-transform: uppercase;
   }
@@ -808,15 +809,15 @@
   .inline-actions {
     grid-template-columns: repeat(3, minmax(0, max-content));
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .primary-btn,
   .secondary-btn,
   .ghost-btn {
-    min-height: 40px;
-    padding: 0 16px;
-    border-radius: 14px;
+    min-height: 36px;
+    padding: 0 14px;
+    border-radius: 12px;
     cursor: pointer;
     font-family: var(--sc-font-body);
     font-weight: 700;
@@ -841,15 +842,15 @@
   }
 
   .hero-spotlight {
-    padding: 14px;
+    padding: 10px 12px;
     display: grid;
     align-content: start;
-    gap: 10px;
+    gap: 8px;
   }
 
   .spotlight-stage {
-    min-height: 164px;
-    border-radius: 18px;
+    min-height: 110px;
+    border-radius: 14px;
     border: 1px solid rgba(173, 202, 124, 0.12);
     background: radial-gradient(circle at top, rgba(173, 202, 124, 0.12), transparent 60%), rgba(8, 14, 24, 0.9);
     display: grid;
@@ -858,7 +859,7 @@
   }
 
   .hq-hero-compact .spotlight-stage {
-    min-height: 136px;
+    min-height: 96px;
   }
 
   .hq-hero-train .spotlight-stage {
@@ -869,8 +870,8 @@
   }
 
   .spotlight-image {
-    width: min(100%, 220px);
-    max-height: 136px;
+    width: min(100%, 140px);
+    max-height: 96px;
     object-fit: contain;
     image-rendering: pixelated;
   }
@@ -909,8 +910,8 @@
 
   .spotlight-stat,
   .metric-card {
-    padding: 12px;
-    border-radius: 16px;
+    padding: 10px;
+    border-radius: 14px;
     border: 1px solid rgba(173, 202, 124, 0.12);
     background: rgba(9, 16, 26, 0.82);
     display: grid;
@@ -927,11 +928,11 @@
 
   .tab-strip {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
+    gap: 6px;
   }
 
   .tab-btn {
-    padding: 10px 13px;
+    padding: 8px 11px;
     border-radius: 999px;
     text-align: left;
     cursor: pointer;
@@ -939,7 +940,7 @@
 
   .tab-btn span {
     color: var(--sc-text-2);
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     line-height: 1.4;
   }
 
@@ -955,7 +956,7 @@
   }
 
   .surface-card {
-    padding: 18px;
+    padding: 16px;
     align-content: start;
   }
 
@@ -975,6 +976,7 @@
 
   .metric-row {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .card-copy-tight {
@@ -983,11 +985,12 @@
 
   .crew-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .crew-tile {
-    padding: 12px;
-    border-radius: 18px;
+    padding: 10px;
+    border-radius: 14px;
     border: 1px solid rgba(173, 202, 124, 0.12);
     background: rgba(8, 14, 24, 0.9);
     display: grid;
@@ -996,7 +999,7 @@
 
   .crew-tile img {
     width: 100%;
-    height: 104px;
+    height: 86px;
     object-fit: contain;
     image-rendering: pixelated;
   }
@@ -1050,8 +1053,8 @@
 
   .queue-item {
     width: 100%;
-    padding: 16px 18px;
-    border-radius: 18px;
+    padding: 12px 14px;
+    border-radius: 14px;
     border: 1px solid rgba(173, 202, 124, 0.12);
     background: rgba(8, 14, 24, 0.9);
     display: grid;
@@ -1076,8 +1079,8 @@
   }
 
   .empty-card {
-    padding: 18px;
-    border-radius: 18px;
+    padding: 16px;
+    border-radius: 14px;
     border: 1px dashed rgba(173, 202, 124, 0.18);
     background: rgba(8, 14, 24, 0.72);
     display: grid;

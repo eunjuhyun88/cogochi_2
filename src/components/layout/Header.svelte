@@ -20,6 +20,10 @@
   const liveP = $derived($livePrices);
   const activePath = $derived($page.url.pathname);
   const isHome = $derived(activePath === '/');
+  const isCreate = $derived(activePath.startsWith('/create'));
+  const isAgent = $derived(activePath.startsWith('/agent'));
+  const isArena = $derived(activePath.startsWith('/arena'));
+  const isLightHeader = $derived(isHome || isCreate || isAgent || isArena);
 
   let _lastFetchedToken = '';
 
@@ -100,13 +104,13 @@
   );
 </script>
 
-<nav id="nav" class:home-header={isHome}>
+<nav id="nav" class:light-header={isLightHeader}>
   <div class="nav-main">
     <a class="nav-logo" href={buildDeepLink('/')} aria-label="Home">
       <span class="nav-logo-main">Cogochi</span>
     </a>
 
-    {#if !isHome}
+    {#if !isLightHeader}
       <div class="nav-sep"></div>
 
       <div class="selected-ticker">
@@ -122,7 +126,7 @@
     {#each DESKTOP_NAV_SURFACES as item}
       <a
         class="nav-tab-desktop"
-        class:home-tab={isHome}
+        class:light-tab={isLightHeader}
         class:active={isActive(item.id)}
         title={`${item.label} · ${item.description}`}
         aria-label={`${item.label}: ${item.description}`}
@@ -135,7 +139,7 @@
   </div>
 
   <div class="nav-right">
-    {#if !isHome}
+    {#if !isLightHeader}
       <div class="score-badge">
         <span class="score-label">SCORE</span>
         <span class="score-value">{Math.round(gState.score)}</span>
@@ -203,7 +207,7 @@
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
   }
 
-  .home-header {
+  .light-header {
     padding: 0 14px;
   }
 
@@ -250,8 +254,8 @@
     text-shadow: 0 0 10px rgba(255, 118, 181, 0.1);
   }
 
-  .home-header .nav-logo-main {
-    font-size: 1.5rem;
+  .light-header .nav-logo-main {
+    font-size: 1.46rem;
   }
 
   .nav-sep {
@@ -305,10 +309,10 @@
     margin-right: 6px;
   }
 
-  .nav-tab-desktop.home-tab {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
+  .nav-tab-desktop.light-tab {
+    font-size: 13px;
+    height: 38px;
+    padding: 0 15px;
   }
   .nav-tab-desktop:last-of-type { border-right: none; }
   .nav-tab-desktop:hover {

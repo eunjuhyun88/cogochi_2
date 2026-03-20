@@ -1744,8 +1744,9 @@
   });
 </script>
 
-<div class="arena-page arena-space-theme">
+<div class="arena-page arena-space-theme" class:in-lobby={state.inLobby}>
   <MissionFlowShell
+    dense
     step="arena"
     title={arenaMissionTitle}
     summary={arenaMissionSummary}
@@ -2392,6 +2393,7 @@
   }
 
   .arena-page { width: 100%; height: 100%; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+  .arena-page.in-lobby { height: auto; min-height: 100%; overflow: visible; }
   .arena-space-theme {
     --space-line: rgba(232, 150, 125, 0.25);
     --space-line-strong: rgba(232, 150, 125, 0.45);

@@ -7659,3 +7659,124 @@ Purpose: 작업 중복을 막고, 작업 전/후 실제 변경 이력을 시간 
 - Final state:
   - active local dev URL: `http://127.0.0.1:5177/`
   - dev server session is still running
+
+### W-20260319-0148-cogochi2-codex
+
+- Start: 2026-03-19 01:48 +0900
+- Repo: `/Users/ej/Downloads/프로젝트/cogochi_2`
+- Branch: `codex/uiux-pass-20260319`
+- Base `origin/main`: `ccf599df3c093c91e7be9bca0d3851a03c1caf38`
+- Working tree status:
+  - clean
+- Task summary:
+  - normalize Home and Create layout ratio, restore sane page-level scrolling, and reduce first-fold overflow in the fresh `cogochi_2` clone
+- Owned files / overlap:
+  - owned for this pass: `src/routes/+layout.svelte`, `src/components/layout/Header.svelte`, `src/routes/+page.svelte`, `src/routes/create/+page.svelte`
+  - overlap check: none observed
+- `npm run safe:status`:
+  - PASS
+
+### W-20260319-0148-cogochi2-codex (finish)
+
+- Finish: 2026-03-19 01:57 +0900
+- What changed:
+  - simplified `Create` chrome by removing the desktop bottom status bar there and using the lighter home-style header
+  - compressed `MissionFlowShell` so the stage rail consumes less first-fold height
+  - reduced home roster panel density and rebalanced the home two-column ratio
+  - reduced create wizard card sizes, preview height, and duplicate mission-header density
+- Validation:
+  - `npm run safe:sync`: PASS
+  - `npm run check -- --fail-on-warnings=false`: PASS
+  - `npm run build`: PASS
+  - browser captures reviewed:
+    - `output/ui-pass-home-after/shot-0.png`
+    - `output/ui-pass-create-final/shot-0.png`
+- Commit / push:
+  - not committed
+  - not pushed
+- Final working tree status:
+  - modified: `docs/AGENT_WATCH_LOG.md`
+  - modified: `progress.md`
+  - modified: `src/components/layout/Header.svelte`
+  - modified: `src/components/mission/MissionFlowShell.svelte`
+  - modified: `src/routes/+layout.svelte`
+  - modified: `src/routes/+page.svelte`
+  - modified: `src/routes/create/+page.svelte`
+
+### W-20260319-0148-cogochi2-codex (finish follow-up)
+
+- Finish: 2026-03-19 02:08 +0900
+- What changed:
+  - extended the lighter header treatment to `/agent` so Agent HQ no longer spends first-fold height on ticker / score / settings chrome
+  - added a reusable `dense` mode to `src/components/mission/MissionFlowShell.svelte` and applied it to `/terminal`
+  - added a reusable `dense` mode to `src/components/agent/StrategyVariantWorkbench.svelte` and applied it to `/terminal` and `Agent HQ > Train`
+  - shortened Terminal mission copy and tightened its top action shell so the chart stays visible in the same viewport
+  - reduced Terminal default desktop side-panel widths to give the chart more room by default
+  - compressed Agent HQ hero, spotlight, tabs, and card spacing so overview content appears much earlier
+- Validation:
+  - `npm run check -- --fail-on-warnings=false`: PASS
+  - `npm run build`: PASS
+  - browser captures reviewed:
+    - `output/ui-agent-after/shot-0.png`
+    - `output/ui-terminal-after/shot-0.png`
+- Commit / push:
+  - not committed
+  - not pushed
+- Final working tree status:
+  - modified: `docs/AGENT_WATCH_LOG.md`
+  - modified: `progress.md`
+  - modified: `src/components/agent/StrategyVariantWorkbench.svelte`
+  - modified: `src/components/layout/Header.svelte`
+  - modified: `src/components/mission/MissionFlowShell.svelte`
+  - modified: `src/routes/+layout.svelte`
+  - modified: `src/routes/+page.svelte`
+  - modified: `src/routes/agent/+page.svelte`
+  - modified: `src/routes/create/+page.svelte`
+  - modified: `src/routes/terminal/+page.svelte`
+
+### W-20260320-0021-cogochi2-codex
+
+- Start: 2026-03-20 00:21 +0900
+- Repo: `/Users/ej/Downloads/프로젝트/cogochi_2`
+- Branch: `codex/uiux-pass-20260319`
+- Base `origin/main`: `ccf599df3c093c91e7be9bca0d3851a03c1caf38`
+- Working tree status:
+  - dirty, continuing the active UIUX refactor branch
+- Task summary:
+  - refactor `Arena` so the battle field dominates the first fold, reduce oversized top chrome, and align its layout rhythm with the calmer Home / Create / Terminal / Agent HQ passes
+- Owned files / overlap:
+  - expected ownership for this pass: `src/routes/arena/+page.svelte` and any directly coupled arena UI components touched by the first-fold cleanup
+  - overlap check: existing uncommitted UI work is present on Home / Create / Terminal / Agent HQ files, but no conflicting edits in Arena have been observed yet
+- `npm run safe:status`:
+  - PASS
+- Actions completed:
+  - updated `src/routes/arena/+page.svelte` so Arena uses the dense mission shell and treats `inLobby` as a page-flow state instead of a permanently hidden fixed viewport
+  - refactored `src/components/arena/Lobby.svelte` first fold to be mode-first:
+    - compact hero/status bar
+    - smaller squad strip
+    - shorter portal cards
+    - `Advanced readouts` collapsed drawer for `Recent matches` and `Battle view`
+    - removed old fixed status footer
+  - updated shared chrome so `/arena` now uses the light header and hides the desktop bottom bar
+- Validation:
+  - `npm run check -- --fail-on-warnings=false`: PASS (`0 errors / 47 warnings`)
+  - `npm run build`: PASS
+  - browser capture reviewed:
+    - before: `output/ui-arena-before/shot-0.png`
+    - after: `output/web-game/shot-0.png`
+- Commit / push:
+  - not committed
+  - not pushed
+- Final working tree status:
+  - modified: `docs/AGENT_WATCH_LOG.md`
+  - modified: `progress.md`
+  - modified: `src/components/agent/StrategyVariantWorkbench.svelte`
+  - modified: `src/components/arena/Lobby.svelte`
+  - modified: `src/components/layout/Header.svelte`
+  - modified: `src/components/mission/MissionFlowShell.svelte`
+  - modified: `src/routes/+layout.svelte`
+  - modified: `src/routes/+page.svelte`
+  - modified: `src/routes/agent/+page.svelte`
+  - modified: `src/routes/arena/+page.svelte`
+  - modified: `src/routes/create/+page.svelte`
+  - modified: `src/routes/terminal/+page.svelte`

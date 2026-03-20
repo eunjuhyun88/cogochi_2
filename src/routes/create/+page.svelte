@@ -136,13 +136,8 @@
 <main class="create-page">
   <MissionFlowShell
     step="create"
-    title="Choose the lead. Lock the first build."
-    summary="Pick the lead, set the first growth bias, then move straight into Terminal."
-    metrics={[
-      { label: 'Pinned Crew', value: `${pinnedCrew.length}/3` },
-      { label: 'Lead', value: selectedShellMeta.label },
-      { label: 'Growth', value: selectedGrowthFocus.label },
-    ]}
+    title="Choose the lead. Start the build."
+    summary="Pick the lead and growth bias, then move straight into Terminal."
   />
 
   {#if alreadyActivated}
@@ -238,10 +233,10 @@
             <div class="section-head">
               <p class="eyebrow">Step 1</p>
               <h2>Choose the lead from your starter crew</h2>
-              <p>The other pinned companions stay on the bench for later growth. Only one becomes the first playable lead.</p>
+              <p>Choose one playable lead. The other pinned companions stay on the bench for later growth.</p>
             </div>
             <button class="ghost-inline" type="button" onclick={() => goto('/')}>
-              Edit roster on Home
+              Back to Home
             </button>
           </div>
 
@@ -451,7 +446,7 @@
 <style>
   .create-page {
     min-height: 100%;
-    padding: 20px 16px calc(36px + var(--sc-bottom-bar-h));
+    padding: 16px 16px 28px;
     display: grid;
     gap: var(--sc-sp-3);
     background:
@@ -471,7 +466,7 @@
 
   .summary-card,
   .builder-card {
-    padding: clamp(18px, 2.2vw, 24px);
+    padding: clamp(16px, 2vw, 22px);
   }
 
   .wizard-grid,
@@ -483,16 +478,16 @@
   .action-row,
   .preview-pill-row {
     display: grid;
-    gap: 12px;
+    gap: 10px;
   }
 
   .wizard-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+    grid-template-columns: minmax(0, 1fr) minmax(272px, 300px);
     align-items: start;
   }
 
   .completion-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 320px);
+    grid-template-columns: minmax(0, 1fr) minmax(272px, 300px);
     align-items: stretch;
   }
 
@@ -503,7 +498,7 @@
   .activation-card,
   .roster-head {
     display: grid;
-    gap: 12px;
+    gap: 10px;
   }
 
   .roster-head {
@@ -552,14 +547,14 @@
   }
 
   .step-chip {
-    min-height: 58px;
-    padding: 12px 14px;
+    min-height: 50px;
+    padding: 10px 12px;
     border-radius: 18px;
     border: 1px solid rgba(173, 202, 124, 0.1);
     background: rgba(8, 16, 14, 0.56);
     color: var(--sc-text-1);
     display: grid;
-    gap: 6px;
+    gap: 4px;
     text-align: left;
     cursor: pointer;
   }
@@ -580,7 +575,7 @@
 
   .builder-card {
     display: grid;
-    gap: 16px;
+    gap: 14px;
   }
 
   .shell-grid,
@@ -607,22 +602,22 @@
 
   .shell-card,
   .option-card {
-    padding: 16px;
+    padding: 14px;
     display: grid;
-    gap: 12px;
+    gap: 10px;
     text-align: left;
     cursor: pointer;
     color: inherit;
   }
 
   .shell-card {
-    grid-template-columns: 72px minmax(0, 1fr);
+    grid-template-columns: 64px minmax(0, 1fr);
     align-items: center;
-    min-height: 136px;
+    min-height: 118px;
   }
 
   .shell-card img {
-    width: 72px;
+    width: 64px;
     aspect-ratio: 1;
     object-fit: contain;
     image-rendering: pixelated;
@@ -639,7 +634,7 @@
   }
 
   .preview-stage {
-    min-height: 180px;
+    min-height: 152px;
     border-radius: 18px;
     border: 1px solid rgba(173, 202, 124, 0.12);
     background:
@@ -647,11 +642,11 @@
       linear-gradient(180deg, rgba(8, 16, 14, 0.92), rgba(6, 12, 12, 0.96));
     display: grid;
     place-items: center;
-    padding: 18px;
+    padding: 16px;
   }
 
   .preview-stage img {
-    width: min(100%, 152px);
+    width: min(100%, 128px);
     aspect-ratio: 1;
     object-fit: contain;
     image-rendering: pixelated;
@@ -707,7 +702,7 @@
   .metric-card,
   .identity-card,
   .crew-banner {
-    padding: 16px;
+    padding: 14px;
   }
 
   .wallet-card {
@@ -749,7 +744,7 @@
   }
 
   .field-card input {
-    min-height: 48px;
+    min-height: 44px;
     padding: 0 14px;
     border-radius: 14px;
     border: 1px solid rgba(173, 202, 124, 0.16);
@@ -774,8 +769,8 @@
   }
 
   .ghost-inline {
-    min-height: 42px;
-    padding: 0 14px;
+    min-height: 38px;
+    padding: 0 12px;
     border-radius: 14px;
     border: 1px solid rgba(173, 202, 124, 0.12);
     background: rgba(8, 16, 14, 0.42);
@@ -787,10 +782,10 @@
   }
 
   .preview-card {
-    padding: 18px;
+    padding: 16px;
     display: grid;
     align-content: start;
-    gap: 14px;
+    gap: 12px;
     position: sticky;
     top: 8px;
   }
@@ -848,7 +843,7 @@
   .primary-btn,
   .secondary-btn,
   .ghost-btn {
-    min-height: 46px;
+    min-height: 42px;
     padding: 0 var(--sc-sp-4);
     border-radius: 16px;
     cursor: pointer;

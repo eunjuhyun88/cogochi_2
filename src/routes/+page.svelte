@@ -156,11 +156,11 @@
 
   .hero-grid {
     display: grid;
-    width: min(1040px, 100%);
+    width: min(1016px, 100%);
     margin: 8px auto 0;
     min-height: calc(100dvh - var(--sc-header-h) - 56px);
-    grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
-    gap: clamp(18px, 2.2vw, 28px);
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+    gap: clamp(16px, 2vw, 24px);
     align-items: start;
   }
 
@@ -178,7 +178,7 @@
     position: relative;
     isolation: isolate;
     overflow: visible;
-    max-width: 560px;
+    max-width: 540px;
     padding: 4px 0;
     display: flex;
     flex-direction: column;
@@ -215,12 +215,12 @@
   h1 {
     margin: 0;
     font-family: var(--sc-font-display);
-    font-size: clamp(1.95rem, 3.5vw, 3.35rem);
+    font-size: clamp(1.82rem, 3.1vw, 3rem);
     line-height: 0.96;
     letter-spacing: 0.03em;
     text-transform: uppercase;
     color: var(--sc-text-0);
-    max-width: 8.6ch;
+    max-width: 9ch;
     text-shadow:
       0 3px 0 rgba(0, 0, 0, 0.34),
       0 0 18px rgba(173, 202, 124, 0.14);
@@ -228,7 +228,7 @@
 
   .subtitle {
     margin: 0;
-    max-width: 34ch;
+    max-width: 32ch;
     font-family: var(--sc-font-body);
     font-size: clamp(0.95rem, 1vw, 1.04rem);
     line-height: 1.5;
@@ -340,14 +340,14 @@
 
   .companion-bay {
     width: 100%;
-    max-width: 380px;
+    max-width: 360px;
     justify-self: end;
     align-self: center;
     border-radius: 22px;
-    padding: 18px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 9px;
     position: relative;
     overflow: hidden;
   }
@@ -408,7 +408,7 @@
 
   .bay-visual {
     position: relative;
-    min-height: 138px;
+    min-height: 126px;
     border-radius: 18px;
     overflow: hidden;
     background:
@@ -419,7 +419,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 10px 30px;
+    padding: 10px 10px 28px;
   }
 
   .bay-visual::before {
@@ -435,7 +435,7 @@
   }
 
   .bay-portrait {
-    width: min(100%, 116px);
+    width: min(100%, 108px);
     image-rendering: pixelated;
     filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.42));
     position: relative;
@@ -485,8 +485,8 @@
     border-radius: 16px;
     border: 1px solid rgba(173, 202, 124, 0.1);
     background: rgba(12, 19, 28, 0.74);
-    min-height: 74px;
-    padding: 8px 6px;
+    min-height: 68px;
+    padding: 7px 6px;
     display: grid;
     place-items: center;
     gap: 6px;
@@ -511,8 +511,8 @@
   }
 
   .roster-card img {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
     object-fit: contain;
     image-rendering: pixelated;
     filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.34));
@@ -520,7 +520,7 @@
 
   .roster-card span {
     font-family: var(--sc-font-body);
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 600;
     line-height: 1.3;
     letter-spacing: 0.01em;

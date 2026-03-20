@@ -48,7 +48,7 @@
   let terminalLeadLabel = journey.minted ? journey.agentName : journey.shellLabel;
   let terminalMissionTitle = journey.minted ? `Build ${journey.agentName}.` : 'Build the lead.';
   let terminalMissionSummary = journey.minted
-    ? `${journey.shellLabel} is on a ${growthFocus.label} path. Run multiple builds here and keep only the one that clearly wins.`
+    ? `${journey.shellLabel} is on a ${growthFocus.label} path. Run variants here and keep only clear improvement.`
     : 'Choose a lead and growth path in Create, then come back here to run the first build.';
 
   $: journey = $agentJourneyStore;
@@ -57,12 +57,12 @@
   $: terminalLeadLabel = journey.minted ? journey.agentName : journey.shellLabel;
   $: terminalMissionTitle = journey.minted ? `Build ${journey.agentName}.` : 'Build the lead.';
   $: terminalMissionSummary = journey.minted
-    ? `${journey.shellLabel} is on a ${growthFocus.label} path. Run multiple builds here and keep only the one that clearly wins.`
+    ? `${journey.shellLabel} is on a ${growthFocus.label} path. Run variants here and keep only clear improvement.`
     : 'Choose a lead and growth path in Create, then come back here to run the first build.';
 
   // ── Panel resize state ──
-  let leftW = 280;       // War Room width
-  let rightW = 300;      // Intel Panel width
+  let leftW = 250;       // War Room width
+  let rightW = 280;      // Intel Panel width
   let windowWidth = 1200;
 
   const MIN_LEFT = 200;
@@ -73,8 +73,8 @@
   // Collapse state
   let leftCollapsed = false;
   let rightCollapsed = false;
-  let savedLeftW = 280;
-  let savedRightW = 300;
+  let savedLeftW = 250;
+  let savedRightW = 280;
 
   function toggleLeft() {
     if (leftCollapsed) {
@@ -1432,6 +1432,7 @@
 
 <div class="terminal-route-shell">
   <MissionFlowShell
+    dense
     step="train"
     title={terminalMissionTitle}
     summary={terminalMissionSummary}
@@ -1443,8 +1444,9 @@
   />
   <StrategyVariantWorkbench
     compact
+    dense
     title="Run builds before the next proof run."
-    subtitle="Backtest and simulate multiple setups for the same lead. The goal is simple: find the build that actually improves."
+    subtitle="Backtest and simulate the same lead until one build clearly beats live."
   />
   <div class="terminal-shell">
     <div class="term-stars" aria-hidden="true"></div>
@@ -2011,7 +2013,7 @@
     width: 100%;
     height: auto;
     flex: 1;
-    min-height: 560px;
+    min-height: 520px;
     overflow: hidden;
     overflow-x: clip;
     overscroll-behavior: none;
@@ -2065,16 +2067,16 @@
   }
   .decision-rail {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
+    top: 8px;
+    left: 8px;
+    right: 8px;
     z-index: 28;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 7px 10px;
+    gap: 6px;
+    padding: 6px 8px;
     border: 1px solid rgba(232,150,125,.28);
-    border-radius: 10px;
+    border-radius: 9px;
     background: rgba(7, 15, 10, .72);
     box-shadow: 0 8px 22px rgba(0,0,0,.25);
     backdrop-filter: blur(6px);
@@ -2263,7 +2265,7 @@
     flex: 1;
     min-height: 0;
     height: auto;
-    padding-top: 16px;
+    padding-top: 12px;
     box-sizing: border-box;
     overflow: hidden;
     overflow-x: clip;
