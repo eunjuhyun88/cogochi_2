@@ -922,7 +922,7 @@
     applyTimeScale();
     try { chart?.priceScale('right').applyOptions({ autoScale: true }); } catch {}
     chart?.timeScale().fitContent();
-    pushChartNotice('스케일 초기화');
+    pushChartNotice('Reset');
     renderDrawings();
   }
 
@@ -1096,7 +1096,7 @@
     } catch (e) {
       console.error('[ChartPanel] TV init error:', e);
       tvLoading = false;
-      tvError = 'TradingView 초기화 실패';
+      tvError = 'TradingView initialization failed';
       gtmEvent('terminal_tradingview_error', { reason: 'init_exception', mode: useSafeMode ? 'safe' : 'primary', pair: state.pair, timeframe: state.timeframe });
     }
   }
@@ -1692,7 +1692,7 @@
         candleCount: klineCache.length,
         patternCount: 0,
         patterns: [],
-        message: '캔들 데이터가 부족해 패턴을 분석할 수 없습니다.',
+        message: 'Not enough candle data to detect patterns.',
       };
     }
 
@@ -1710,7 +1710,7 @@
         candleCount: sourceCandles.length,
         patternCount: 0,
         patterns: [],
-        message: '보이는 구간 캔들이 부족합니다. 조금 줌아웃한 뒤 다시 시도하세요.',
+        message: 'Not enough visible candles. Try zooming out and retry.',
       };
     }
 

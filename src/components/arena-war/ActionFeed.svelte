@@ -56,7 +56,7 @@
     {/each}
 
     {#if entries.length === 0}
-      <div class="feed-empty">배틀 대기 중...</div>
+      <div class="feed-empty">Waiting for battle...</div>
     {/if}
   </div>
 </div>

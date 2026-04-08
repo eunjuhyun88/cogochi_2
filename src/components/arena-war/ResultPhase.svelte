@@ -43,7 +43,7 @@
   <div class="winner-banner" style="border-color: {winnerColor}">
     <div class="winner-text" style="color: {winnerColor}">{winnerLabel}</div>
     {#if ws.fbsMargin <= 5}
-      <div class="razor-close">RAZOR CLOSE! {ws.fbsMargin.toFixed(1)}점 차이!</div>
+      <div class="razor-close">RAZOR CLOSE! {ws.fbsMargin.toFixed(1)} pt difference!</div>
     {/if}
   </div>
 
@@ -108,13 +108,13 @@
   <!-- Feedback -->
   {#if record}
     <div class="feedback-section">
-      <div class="feedback-title">📋 피드백</div>
+      <div class="feedback-title">📋 Feedback</div>
       <p class="feedback-text">{record.derived.feedback.immediate}</p>
     </div>
 
     <!-- Data Quality -->
     <div class="data-quality">
-      <div class="dq-title">📊 ORPO 데이터 품질</div>
+      <div class="dq-title">📊 ORPO Data Quality</div>
       <div class="dq-row">
         <span class="dq-label">Pair Quality</span>
         <span class="dq-value" style="color: {qualityColor}">{pairQuality.toUpperCase()}</span>
@@ -125,7 +125,7 @@
       </div>
       <div class="dq-row">
         <span class="dq-label">Reason Tags</span>
-        <span class="dq-value">{ws.humanReasonTags.length}개</span>
+        <span class="dq-value">{ws.humanReasonTags.length}</span>
       </div>
       <div class="dq-row">
         <span class="dq-label">Consensus</span>
@@ -134,7 +134,7 @@
       {#if record.human.battleActions.length > 0}
         <div class="dq-row">
           <span class="dq-label">Battle Actions</span>
-          <span class="dq-value">{record.human.battleActions.length}회</span>
+          <span class="dq-value">{record.human.battleActions.length}</span>
         </div>
       {/if}
     </div>
@@ -142,7 +142,7 @@
     <!-- Detected Patterns -->
     {#if record.context.detectedPatterns.length > 0}
       <div class="patterns">
-        <span class="pat-label">감지 패턴:</span>
+        <span class="pat-label">Detected Patterns:</span>
         {#each record.context.detectedPatterns as p}
           <span class="pat-chip">{p.replace(/_/g, ' ')}</span>
         {/each}
@@ -153,16 +153,16 @@
   <!-- Actions -->
   <div class="result-actions">
     <button class="action-btn rematch" onclick={rematch}>
-      ⚔ 한 판 더
+      ⚔ REMATCH
     </button>
     <button class="action-btn lobby" onclick={resetArenaWar}>
-      🏠 로비
+      🏠 LOBBY
     </button>
   </div>
 
   <!-- ORPO Contribution -->
   <div class="orpo-contribution">
-    이 판의 데이터가 AI 학습에 반영됩니다.
+    Data from this match will be used for AI training.
   </div>
 </div>
 

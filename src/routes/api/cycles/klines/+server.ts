@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Cycle Kline Fetch API
+// COGOTCHI — Cycle Kline Fetch API
 // ═══════════════════════════════════════════════════════════════
 //
 // Fetches historical BTC klines for a given market cycle.

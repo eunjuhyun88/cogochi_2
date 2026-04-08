@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-//  STOCKCLAW — Arena State Logic
+//  COGOTCHI — Arena State Logic
 //  Pure business logic extracted from arena/+page.svelte
 // ═══════════════════════════════════════════════════════════════
 

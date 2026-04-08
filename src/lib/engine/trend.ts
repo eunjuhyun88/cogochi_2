@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Trend Analysis Engine (pure functions)
+// COGOTCHI — Trend Analysis Engine (pure functions)
 // ═══════════════════════════════════════════════════════════════
 
 import type {

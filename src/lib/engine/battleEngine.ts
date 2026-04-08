@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Living Battle Engine
+// COGOTCHI — Living Battle Engine
 // ═══════════════════════════════════════════════════════════════
 //
 // Replaces the legacy random-walk battle simulation with:

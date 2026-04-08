@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Agent Engine v3 Constants
+// COGOTCHI — Agent Engine v3 Constants
 // ═══════════════════════════════════════════════════════════════
 
 import type { Tier, TierInfo, LPReason } from './types';

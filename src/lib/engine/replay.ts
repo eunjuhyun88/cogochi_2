@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Match Replay Engine
+// COGOTCHI — Match Replay Engine
 // Replays recorded match data through the phase system
 // ═══════════════════════════════════════════════════════════════
 

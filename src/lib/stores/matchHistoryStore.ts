@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Match History Store (localStorage persisted)
+// COGOTCHI — Match History Store (localStorage persisted)
 // ═══════════════════════════════════════════════════════════════
 
 import { writable, derived } from 'svelte/store';
@@ -168,7 +168,7 @@ export function addMatchRecord(record: Omit<MatchRecord, 'id' | 'timestamp'>, sy
   return localId;
 }
 
-// ─── Sprint A2: Simple battle record for CHATBATTLE mode ────
+// ─── Sprint A2: Simple battle record for COGOTCHI mode ────
 
 export interface BattleRecord {
   id: string;

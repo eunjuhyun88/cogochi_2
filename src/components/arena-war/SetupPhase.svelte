@@ -13,9 +13,9 @@
   const wagers: WagerAmount[] = [0, 5, 10, 20];
 
   const modes = [
-    { id: 'pvai' as const,      label: 'VS AI',      icon: '⚔',  desc: 'AI와 직접 분석 대결' },
-    { id: 'draft' as const,     label: 'DRAFT',      icon: '📋', desc: '밴/픽 에이전트 드래프트' },
-    { id: 'spectator' as const, label: 'AI vs AI',   icon: '👁',  desc: 'AI끼리 배틀 관전' },
+    { id: 'pvai' as const,      label: 'VS AI',      icon: '⚔',  desc: 'Match Analysis vs AI' },
+    { id: 'draft' as const,     label: 'DRAFT',      icon: '📋', desc: 'Ban/Pick Agent Draft' },
+    { id: 'spectator' as const, label: 'AI vs AI',   icon: '👁',  desc: 'Spectate AI Battle' },
   ] as const;
 
   function handleStart() {
@@ -35,7 +35,7 @@
 <div class="setup-phase">
   <div class="setup-header">
     <h2>ARENA WAR</h2>
-    <p class="subtitle">같은 데이터, 다른 해석 — AI와의 분석 대결</p>
+    <p class="subtitle">Same data, different analysis — Match vs AI</p>
   </div>
 
   <div class="setup-grid">
@@ -112,13 +112,13 @@
 
   <div class="setup-hint">
     {#if selectedMode === 'spectator'}
-      <p>AI 2팀이 자동 배틀합니다. 승리 팀을 예측하세요!</p>
+      <p>Two AI teams auto-battle. Predict the winning team!</p>
     {:else if selectedMode === 'draft'}
-      <p>밴/픽으로 에이전트를 선택한 후 배틀합니다.</p>
-      <p>타입 상성을 활용하세요! TECH > FLOW > SENTI > MACRO > TECH</p>
+      <p>Ban/Pick agents then battle.</p>
+      <p>Use type matchups! TECH > FLOW > SENTI > MACRO > TECH</p>
     {:else}
-      <p>AI는 48개 팩터를 분석합니다. 당신도 같은 데이터를 봅니다.</p>
-      <p>더 나은 해석으로 AI를 이기세요.</p>
+      <p>AI analyzes 48 factors. You see the same data.</p>
+      <p>Beat the AI with better analysis.</p>
     {/if}
   </div>
 </div>

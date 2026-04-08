@@ -68,7 +68,7 @@
 </script>
 
 <svelte:head>
-  <title>STOCKCLAW Arena v2</title>
+  <title>COGOTCHI Arena v2</title>
 </svelte:head>
 
 <div class="arena-v2">
@@ -85,7 +85,7 @@
     {#if phase === 'LOBBY'}
       <div class="lobby">
         <div class="lobby-content">
-          <div class="lobby-logo">STOCKCLAW</div>
+          <div class="lobby-logo">COGOTCHI</div>
           <div class="lobby-subtitle">ARENA v2</div>
           <div class="lobby-price">
             {#if livePrice > 0}

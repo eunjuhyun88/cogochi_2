@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-//  STOCKCLAW — Home Page Static Data & Tracking Helpers
+//  COGOTCHI — Home Page Static Data & Tracking Helpers
 //  Extracted from +page.svelte for maintainability
 // ═══════════════════════════════════════════════════════════════
 

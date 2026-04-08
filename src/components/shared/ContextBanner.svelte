@@ -1,5 +1,5 @@
 <!-- ═══════════════════════════════════════════════════════════════
-     STOCKCLAW — Context Banner
+     COGOTCHI — Context Banner
      Cross-page navigation strip showing relevant context info
 ═══════════════════════════════════════════════════════════════ -->
 <script lang="ts">

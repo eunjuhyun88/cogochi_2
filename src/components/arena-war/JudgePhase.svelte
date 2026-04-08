@@ -35,7 +35,7 @@
       <div class="column-header">👤 YOU</div>
 
       <div class="score-item">
-        <span class="score-label">DS (방향)</span>
+        <span class="score-label">DS (Direction)</span>
         <div class="score-bar-wrap">
           <div class="score-bar" style="width: {humanDS}%; background: var(--arena-good, #00cc88)"></div>
         </div>
@@ -43,7 +43,7 @@
       </div>
 
       <div class="score-item">
-        <span class="score-label">RE (리스크)</span>
+        <span class="score-label">RE (Risk)</span>
         <div class="score-bar-wrap">
           <div class="score-bar" style="width: {humanRE}%; background: #3b9eff"></div>
         </div>
@@ -51,7 +51,7 @@
       </div>
 
       <div class="score-item">
-        <span class="score-label">CI (확신)</span>
+        <span class="score-label">CI (Conviction)</span>
         <div class="score-bar-wrap">
           <div class="score-bar" style="width: {humanCI}%; background: #a78bfa"></div>
         </div>
@@ -74,7 +74,7 @@
       <div class="column-header">🤖 AI</div>
 
       <div class="score-item">
-        <span class="score-label">DS (방향)</span>
+        <span class="score-label">DS (Direction)</span>
         <div class="score-bar-wrap">
           <div class="score-bar" style="width: {aiDS}%; background: var(--arena-good, #00cc88)"></div>
         </div>
@@ -82,7 +82,7 @@
       </div>
 
       <div class="score-item">
-        <span class="score-label">RE (리스크)</span>
+        <span class="score-label">RE (Risk)</span>
         <div class="score-bar-wrap">
           <div class="score-bar" style="width: {aiRE}%; background: #3b9eff"></div>
         </div>
@@ -90,7 +90,7 @@
       </div>
 
       <div class="score-item">
-        <span class="score-label">CI (확신)</span>
+        <span class="score-label">CI (Conviction)</span>
         <div class="score-bar-wrap">
           <div class="score-bar" style="width: {aiCI}%; background: #a78bfa"></div>
         </div>

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-//  STOCKCLAW — Shared Time Formatting Utilities
+//  COGOTCHI — Shared Time Formatting Utilities
 // ═══════════════════════════════════════════════════════════════
 
 /**

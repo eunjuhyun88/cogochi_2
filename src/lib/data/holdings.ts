@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Holdings Data
+// COGOTCHI — Holdings Data
 // ═══════════════════════════════════════════════════════════════
 
 export interface HoldingAsset {

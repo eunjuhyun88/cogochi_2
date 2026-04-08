@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Chart Pattern Detector (MVP)
+// COGOTCHI — Chart Pattern Detector (MVP)
 // ═══════════════════════════════════════════════════════════════
 
 import type { BinanceKline } from './types';

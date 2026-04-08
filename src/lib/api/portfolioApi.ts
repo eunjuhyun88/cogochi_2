@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Portfolio API Client
+// COGOTCHI — Portfolio API Client
 // ═══════════════════════════════════════════════════════════════
 
 export interface PortfolioHolding {

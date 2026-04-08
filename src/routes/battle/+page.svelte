@@ -102,7 +102,7 @@
 </script>
 
 <svelte:head>
-  <title>Battle | CHATBATTLE</title>
+  <title>Battle | COGOTCHI</title>
 </svelte:head>
 
 <div class="battle-page">

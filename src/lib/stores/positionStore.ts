@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Unified Position Store
+// COGOTCHI — Unified Position Store
 // ═══════════════════════════════════════════════════════════════
 // Aggregates QuickTrades + Polymarket + GMX positions for the POSITION tab.
 // Hydrates from /api/positions/unified, provides derived stores.

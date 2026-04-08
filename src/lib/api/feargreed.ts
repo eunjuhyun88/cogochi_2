@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Fear & Greed Index Client (B-05)
+// COGOTCHI — Fear & Greed Index Client (B-05)
 // ═══════════════════════════════════════════════════════════════
 // Alternative.me Crypto Fear & Greed — completely free, no key
 // https://api.alternative.me/fng/

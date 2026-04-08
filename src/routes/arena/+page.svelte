@@ -77,12 +77,12 @@
   const ACTION_CATALOG: Record<ActionType, CharAction> = {
     dash:     { type: 'dash',     label: '돌진!',     emoji: '💨', duration: 400,  shakeLevel: 'light',  flashColor: 'white' },
     ping:     { type: 'ping',     label: '핑!',       emoji: '📡', duration: 300,  shakeLevel: 'light',  flashColor: 'white' },
-    shield:   { type: 'shield',   label: '방어!',     emoji: '🛡️', duration: 600,  shakeLevel: 'light',  flashColor: 'green' },
-    burst:    { type: 'burst',    label: '폭발!',     emoji: '💥', duration: 500,  shakeLevel: 'medium', flashColor: 'gold' },
-    hook:     { type: 'hook',     label: '훅!',       emoji: '🪝', duration: 450,  shakeLevel: 'medium', flashColor: 'red' },
-    taunt:    { type: 'taunt',    label: '도발!',     emoji: '😤', duration: 350,  shakeLevel: 'light',  flashColor: 'white' },
-    assist:   { type: 'assist',   label: '지원!',     emoji: '✨', duration: 500,  shakeLevel: 'light',  flashColor: 'green' },
-    finisher: { type: 'finisher', label: '필살기!',   emoji: '⚡', duration: 800,  shakeLevel: 'heavy',  flashColor: 'gold' },
+    shield:   { type: 'shield',   label: 'Shield!',   emoji: '🛡️', duration: 600,  shakeLevel: 'light',  flashColor: 'green' },
+    burst:    { type: 'burst',    label: 'Burst!',    emoji: '💥', duration: 500,  shakeLevel: 'medium', flashColor: 'gold' },
+    hook:     { type: 'hook',     label: 'Hook!',     emoji: '🪝', duration: 450,  shakeLevel: 'medium', flashColor: 'red' },
+    taunt:    { type: 'taunt',    label: 'Taunt!',    emoji: '😤', duration: 350,  shakeLevel: 'light',  flashColor: 'white' },
+    assist:   { type: 'assist',   label: 'Assist!',   emoji: '✨', duration: 500,  shakeLevel: 'light',  flashColor: 'green' },
+    finisher: { type: 'finisher', label: 'Finishing Move!', emoji: '⚡', duration: 800,  shakeLevel: 'heavy',  flashColor: 'gold' },
   };
   // Per-character role → preferred actions
   const CHAR_ACTIONS: Record<string, ActionType[]> = {
@@ -258,19 +258,19 @@
   }
 
   const ATTACK_NAMES: Record<string, string> = {
-    STRUCTURE: '차트 분석', VPA: '거래량 델타', ICT: '유동성 스윕',
-    DERIV: '파생 분석', FLOW: '고래 추적', SENTI: '소셜 스캔',
-    MACRO: '매크로 분석', VALUATION: '온체인 밸류'
+    STRUCTURE: 'Chart Analysis', VPA: 'Volume Delta', ICT: 'Liquidity Sweep',
+    DERIV: 'Deriv Analysis', FLOW: 'Whale Tracking', SENTI: 'Social Scan',
+    MACRO: 'Macro Analysis', VALUATION: 'On-chain Value'
   };
   const ATTACK_SUPER: Record<string, string> = {
-    STRUCTURE: '강세 브레이크아웃!', VPA: '거래량 폭발!', ICT: '스마트머니 포착!',
-    DERIV: 'OI 급증!', FLOW: '대형 매수!', SENTI: '분위기 폭등!',
-    MACRO: '글로벌 확인!', VALUATION: '저평가 발견!'
+    STRUCTURE: 'Bullish Breakout!', VPA: 'Volume Explosion!', ICT: 'Smart Money Caught!',
+    DERIV: 'OI Surge!', FLOW: 'Massive Buy!', SENTI: 'Sentiment Spike!',
+    MACRO: 'Global Confirmed!', VALUATION: 'Undervalued Found!'
   };
   const ATTACK_WEAK: Record<string, string> = {
-    STRUCTURE: '패턴 불분명...', VPA: '거래량 약세...', ICT: '유동성 부족...',
-    DERIV: '데이터 혼재...', FLOW: '흐름 불확실...', SENTI: '분위기 혼조...',
-    MACRO: '신호 약함...', VALUATION: '밸류 중립...'
+    STRUCTURE: 'Pattern Unclear...', VPA: 'Volume Weak...', ICT: 'Liquidity Low...',
+    DERIV: 'Data Mixed...', FLOW: 'Flow Uncertain...', SENTI: 'Sentiment Mixed...',
+    MACRO: 'Signal Weak...', VALUATION: 'Value Neutral...'
   };
   let phaseLabel = PHASE_LABELS.DRAFT;
   let pvpVisible = false;
@@ -666,7 +666,7 @@
       const ds = ag.dir === 'LONG' ? 1 : -1;
       const baseDamage = (eff === 'super' ? 18 : eff === 'weak' ? 5 : 10) * cMult;
       return {
-        agent: ag, attackName: ATTACK_NAMES[ag.id]||'분석',
+        agent: ag, attackName: ATTACK_NAMES[ag.id]||'Analysis',
         action, effectiveness: eff, isCritical: crit,
         meterShift: ag.conf * 0.3 * ds * eMult * cMult,
         dirSign: ds, damage: baseDamage,
@@ -683,7 +683,7 @@
     // ── Phase 1: LOCK (0ms) — character focuses
     setCharState(agId, 'lock');
     setAgentState(agId, 'alert');
-    battleNarration = `${turn.agent.name} 준비 중...`;
+    battleNarration = `${turn.agent.name} Preparing...`;
     battlePhaseLabel = `${turn.agent.name} TURN`;
 
     // ── Phase 2: WINDUP (400ms) — character charges
@@ -691,7 +691,7 @@
       setCharState(agId, 'windup');
       setAgentState(agId, 'charge');
       sfx.charge();
-      showCharAction(agId, '⚡', '차징...');
+      showCharAction(agId, '⚡', 'Charging...');
       battleNarration = `${turn.agent.name}: ${act.label}`;
       addChatMsg(turn.agent, `${turn.attackName} ${act.emoji} ${act.label}`, true);
       // Move toward center for attack
@@ -714,27 +714,27 @@
 
       if (turn.isCritical) {
         juice_shake('heavy'); juice_flash('gold'); sfx.verdict();
-        battleNarration = `💥 CRITICAL! ${turn.agent.name} ${ATTACK_SUPER[agId]||'필살!'}`;
+        battleNarration = `💥 CRITICAL! ${turn.agent.name} ${ATTACK_SUPER[agId]||'Finishing Move!'}`;
         showCharHit(agId, `CRITICAL! -${Math.round(turn.damage)}`, '#ffcc00');
         showCritical = true; criticalText = `💥 ${turn.agent.name} CRITICAL!`;
-        addChatMsg(turn.agent, `급소!! ${ATTACK_SUPER[agId]||''} 🔥`);
+        addChatMsg(turn.agent, `Critical Hit!! ${ATTACK_SUPER[agId]||''} 🔥`);
         const tc = setTimeout(() => { showCritical = false; }, 1200);
         turnTimers.push(tc);
       } else if (turn.effectiveness === 'super') {
         juice_shake('medium'); juice_flash('white'); sfx.impact();
-        battleNarration = `⚡ ${turn.attackName}! ${ATTACK_SUPER[agId]||'효과 굉장!'}`;
+        battleNarration = `⚡ ${turn.attackName}! ${ATTACK_SUPER[agId]||'Super Effective!'}`;
         showCharHit(agId, `-${Math.round(turn.damage)}`, '#00ff88');
-        addChatMsg(turn.agent, `${ATTACK_SUPER[agId]||'효과 굉장!'} ⚡`);
+        addChatMsg(turn.agent, `${ATTACK_SUPER[agId]||'Super Effective!'} ⚡`);
       } else if (turn.effectiveness === 'weak') {
         sfx.step();
-        battleNarration = `${turn.attackName}... ${ATTACK_WEAK[agId]||'효과 약함'}`;
+        battleNarration = `${turn.attackName}... ${ATTACK_WEAK[agId]||'Not Very Effective'}`;
         showCharHit(agId, 'WEAK', '#ff5e7a');
-        addChatMsg(turn.agent, `${ATTACK_WEAK[agId]||'효과 약함...'} 😐`);
+        addChatMsg(turn.agent, `${ATTACK_WEAK[agId]||'Not Very Effective...'} 😐`);
       } else {
         juice_shake('light'); sfx.impact();
-        battleNarration = `${turn.attackName}! 나쁘지 않다!`;
+        battleNarration = `${turn.attackName}! Not Bad!`;
         showCharHit(agId, `-${Math.round(turn.damage)}`, '#fff');
-        addChatMsg(turn.agent, `나쁘지 않다! 💪`);
+        addChatMsg(turn.agent, `Not Bad! 💪`);
       }
 
       // Update VS meter
@@ -1142,8 +1142,8 @@
           moveChar(ag.id, targetSource.x * 100, targetSource.y * 100);
         }
         sfx.scan();
-        battleNarration = `🔍 ${ag.name}가 데이터를 스캔 중...`;
-        addChatMsg(ag, `📡 ${targetSource?.label || 'data source'} 스캔 중...`);
+        battleNarration = `🔍 ${ag.name} Scanning data...`;
+        addChatMsg(ag, `📡 Scanning ${targetSource?.label || 'data source'}...`);
 
         safeTimeout(() => {
           // Phase 2: Arrive at source + charge up energy
@@ -1184,7 +1184,7 @@
   function initGather() {
     councilActive = true;
     addFeed('📊', 'GATHER', '#66CCE6', 'Gathering analysis data...');
-    battleNarration = '📊 에이전트들이 분석 데이터를 수집 중...';
+    battleNarration = '📊 Collecting analysis data...';
     activeAgents.forEach((ag, i) => {
       safeTimeout(() => {
         setAgentState(ag.id, 'vote');
@@ -1196,7 +1196,7 @@
 
   function initCouncil() {
     addFeed('🗳', 'COUNCIL', '#E8967D', 'Agents voting on direction...');
-    battleNarration = '🗳 에이전트 투표 시작!';
+    battleNarration = '🗳 Vote Started!';
     activeAgents.forEach((ag, i) => {
       safeTimeout(() => {
         const dir = ag.dir;
@@ -1560,8 +1560,8 @@
       juice_confetti(40);
       juice_flash('green');
       juice_shake('medium');
-      battleNarration = `🏆 승리! +${lpChange} LP!`;
-      addChatMsg({ id:'SYS', name:'SYSTEM', icon:'🏆', color:'#00ff88' } as any, `승리!! +${lpChange} LP! ${resultTag}`, true);
+      battleNarration = `🏆 Victory! +${lpChange} LP!`;
+      addChatMsg({ id:'SYS', name:'SYSTEM', icon:'🏆', color:'#00ff88' } as any, `Victory!! +${lpChange} LP! ${resultTag}`, true);
       activeAgents.forEach(ag => {
         setAgentState(ag.id, 'jump');
         setCharState(ag.id, 'celebrate');
@@ -1574,8 +1574,8 @@
       juice_flash('red');
       // Near-miss detection
       const nearMiss = br === 'sl' && state.hypothesis ? Math.abs(state.prices.BTC - state.hypothesis.tp) / state.hypothesis.tp < 0.003 : false;
-      battleNarration = nearMiss ? `😱 아깝다! TP까지 ${(Math.abs(state.prices.BTC - (state.hypothesis?.tp||0))).toFixed(0)}$ 남았었다!` : `💀 패배... ${resultTag}`;
-      addChatMsg({ id:'SYS', name:'SYSTEM', icon:'💀', color:'#ff5e7a' } as any, nearMiss ? '아깝다!! 거의 TP 도달이었는데...' : `패배... ${resultTag}`, true);
+      battleNarration = nearMiss ? `😱 Close One! Only ${(Math.abs(state.prices.BTC - (state.hypothesis?.tp||0))).toFixed(0)}$ away from TP!` : `💀 Defeat... ${resultTag}`;
+      addChatMsg({ id:'SYS', name:'SYSTEM', icon:'💀', color:'#ff5e7a' } as any, nearMiss ? 'Close One!! Almost reached TP...' : `Defeat... ${resultTag}`, true);
       activeAgents.forEach(ag => {
         setAgentState(ag.id, 'sad');
         setCharState(ag.id, 'panic');

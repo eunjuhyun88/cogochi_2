@@ -78,10 +78,10 @@
 
   function getCategoryLabel(cat: ReasonTagCategory): string {
     const labels: Record<ReasonTagCategory, string> = {
-      technical: '기술적 해석',
-      ai_reinterpretation: 'AI 판단 교정',
-      sentiment: '심리 판단',
-      intuition: '직관',
+      technical: 'Technical Analysis',
+      ai_reinterpretation: 'AI Calibration',
+      sentiment: 'Psychological Read',
+      intuition: 'Intuition',
     };
     return labels[cat];
   }
@@ -109,7 +109,7 @@
     <div class="ai-panel">
       <div class="panel-header">
         <span class="panel-icon">🤖</span>
-        <span class="panel-title">AI 분석 — 전체 공개</span>
+        <span class="panel-title">AI Analysis — Public</span>
       </div>
 
       {#if c02}
@@ -135,7 +135,7 @@
           {/each}
 
           <div class="orpo-summary">
-            → ORPO 합성:
+            → ORPO Synthesis:
             <span style="color: {dirColor(c02.orpo.direction)}; font-weight: 700">
               {c02.orpo.direction} {c02.orpo.confidence}%
             </span>
@@ -144,7 +144,7 @@
 
         <!-- CTX -->
         <div class="section ctx">
-          <div class="section-label">═══ CTX 검증 ═══</div>
+          <div class="section-label">═══ CTX Verify ═══</div>
           {#each c02.ctx as belief}
             <div class="ctx-row">
               <span class="ctx-icon">{getFlagIcon(belief.flag)}</span>
@@ -173,32 +173,32 @@
 
         <!-- COMMANDER -->
         <div class="section commander">
-          <div class="section-label">═══ COMMANDER 판정 ═══</div>
+          <div class="section-label">═══ COMMANDER VERDICT ═══</div>
           {#if c02.commander}
             <div class="commander-conflict">
-              ORPO({c02.orpo.direction}) vs CTX → 충돌 감지
+              ORPO({c02.orpo.direction}) vs CTX → Conflict Detected
             </div>
             <div class="commander-result">
-              결론: <span style="color: {dirColor(c02.commander.finalDirection)}; font-weight: 700">
+              Conclusion: <span style="color: {dirColor(c02.commander.finalDirection)}; font-weight: 700">
                 {c02.commander.finalDirection}
               </span>
-              확신도: {c02.commander.entryScore}%
+              Conviction: {c02.commander.entryScore}%
             </div>
             <div class="commander-reason">{c02.commander.reasoning}</div>
           {:else}
-            <div class="commander-ok">충돌 없음 — ORPO 방향 유지</div>
+            <div class="commander-ok">No conflict — ORPO direction maintained</div>
           {/if}
         </div>
 
         <!-- AI FINAL -->
         <div class="ai-final">
-          <div class="section-label">═══ AI 최종 판단 ═══</div>
+          <div class="section-label">═══ AI FINAL VERDICT ═══</div>
           <div class="ai-verdict">
             <span class="ai-bot">🤖</span>
             <span style="color: {dirColor(aiDecision?.direction ?? 'NEUTRAL')}; font-weight: 700; font-size: 1.1rem">
               {aiDecision?.direction}
             </span>
-            <span class="ai-conf">확신 {aiDecision?.confidence}%</span>
+            <span class="ai-conf">Conviction {aiDecision?.confidence}%</span>
             <span class="ai-levels">
               TP {aiDecision?.tp?.toLocaleString()} | SL {aiDecision?.sl?.toLocaleString()}
             </span>
@@ -207,7 +207,7 @@
 
         <!-- Factor Detail Toggle -->
         <button class="factor-toggle" onclick={() => showFactorDetail = !showFactorDetail}>
-          {showFactorDetail ? '▲ 48팩터 접기' : '▼ 48팩터 전체 보기'}
+          {showFactorDetail ? '▲ Collapse 48 Factors' : '▼ View All 48 Factors'}
         </button>
 
         {#if showFactorDetail}
@@ -236,12 +236,12 @@
     <div class="human-panel">
       <div class="panel-header">
         <span class="panel-icon">👤</span>
-        <span class="panel-title">당신의 판단</span>
+        <span class="panel-title">Your Decision</span>
       </div>
 
       <!-- Direction -->
       <div class="decision-section">
-        <span class="dec-label">방향</span>
+        <span class="dec-label">Direction</span>
         <div class="dir-buttons">
           <button
             class="dir-btn long"
@@ -272,7 +272,7 @@
 
       <!-- Confidence -->
       <div class="decision-section">
-        <label class="dec-label" for="confidence-slider">확신도: {ws.humanConfidence}%</label>
+        <label class="dec-label" for="confidence-slider">Conviction: {ws.humanConfidence}%</label>
         <input
           id="confidence-slider"
           type="range"
@@ -322,7 +322,7 @@
 
       <!-- Reason Tags -->
       <div class="decision-section">
-        <span class="dec-label">근거 태그 (AI를 왜 따르거나 거부하는가?)</span>
+        <span class="dec-label">Reason Tags (Why agree or disagree with AI?)</span>
         <div class="tag-categories">
           {#each Object.entries(REASON_TAGS) as [cat, tags]}
             <div class="tag-category">
@@ -356,11 +356,11 @@
 
       <!-- Reason Text (optional) -->
       <div class="decision-section">
-        <label class="dec-label" for="reason-memo">메모 (선택)</label>
+        <label class="dec-label" for="reason-memo">Memo (Optional)</label>
         <textarea
           id="reason-memo"
           class="reason-text"
-          placeholder="AI의 판단과 다르게 생각하는 이유..."
+          placeholder="Why you think differently from AI..."
           maxlength="280"
           bind:value={reasonTextInput}
           disabled={ws.humanLocked}

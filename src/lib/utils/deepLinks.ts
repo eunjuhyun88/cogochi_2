@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Shared Deep Link Utilities
+// COGOTCHI — Shared Deep Link Utilities
 // Canonical URL builders for reusable route state.
 // ═══════════════════════════════════════════════════════════════
 

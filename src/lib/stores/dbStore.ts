@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — localStorage DB CRUD Layer
+// COGOTCHI — localStorage DB CRUD Layer
 // Generic table-based localStorage persistence
 // ═══════════════════════════════════════════════════════════════
 

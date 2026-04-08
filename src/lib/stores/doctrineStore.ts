@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// CHATBATTLE — Doctrine CRUD Store
+// COGOTCHI — Doctrine CRUD Store
 // ═══════════════════════════════════════════════════════════════
 //
 // Manages doctrine weight configuration per agent.

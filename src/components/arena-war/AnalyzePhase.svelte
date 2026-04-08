@@ -14,14 +14,14 @@
   let mode = $derived($arenaWarStore.selectedMode);
 
   const agents: { id: AgentId; icon: string; name: string; role: string }[] = [
-    { id: 'STRUCTURE', icon: '📊', name: '차트구조', role: 'OFFENSE' },
-    { id: 'VPA',       icon: '📈', name: '볼륨분석', role: 'OFFENSE' },
-    { id: 'ICT',       icon: '⚡', name: '스마트머니', role: 'OFFENSE' },
-    { id: 'DERIV',     icon: '💰', name: '파생상품', role: 'DEFENSE' },
-    { id: 'VALUATION', icon: '💎', name: '밸류에이션', role: 'DEFENSE' },
-    { id: 'FLOW',      icon: '🐋', name: '자금흐름', role: 'DEFENSE' },
-    { id: 'SENTI',     icon: '🧠', name: '센티먼트', role: 'CONTEXT' },
-    { id: 'MACRO',     icon: '🌍', name: '매크로', role: 'CONTEXT' },
+    { id: 'STRUCTURE', icon: '📊', name: 'Chart Structure', role: 'OFFENSE' },
+    { id: 'VPA',       icon: '📈', name: 'Volume Analysis', role: 'OFFENSE' },
+    { id: 'ICT',       icon: '⚡', name: 'Smart Money', role: 'OFFENSE' },
+    { id: 'DERIV',     icon: '💰', name: 'Derivatives', role: 'DEFENSE' },
+    { id: 'VALUATION', icon: '💎', name: 'Valuation', role: 'DEFENSE' },
+    { id: 'FLOW',      icon: '🐋', name: 'Fund Flow', role: 'DEFENSE' },
+    { id: 'SENTI',     icon: '🧠', name: 'Sentiment', role: 'CONTEXT' },
+    { id: 'MACRO',     icon: '🌍', name: 'Macro', role: 'CONTEXT' },
   ];
 
   let activeAgent = $derived(Math.floor(progress / 12.5));
@@ -125,15 +125,15 @@
 
   <div class="analyze-status">
     {#if progress < 25}
-      C02 Pipeline: ORPO 분석 시작...
+      C02 Pipeline: ORPO Analysis starting...
     {:else if progress < 50}
-      에이전트 팩터 분석 중... ({Math.floor(progress / 12.5)}/8)
+      Agent Factor Analysis in progress... ({Math.floor(progress / 12.5)}/8)
     {:else if progress < 75}
-      Guardian 체크 + CTX 검증 중...
+      Guardian Check + CTX Verify in progress...
     {:else if progress < 100}
-      Commander 최종 판정 중...
+      Commander final judgment in progress...
     {:else}
-      분석 완료! 배틀 준비 중...
+      Analysis complete! Preparing for battle...
     {/if}
   </div>
 </div>

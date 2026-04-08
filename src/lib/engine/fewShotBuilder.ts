@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Few-Shot Builder: RAG → Commander Prompt
+// COGOTCHI — Few-Shot Builder: RAG → Commander Prompt
 // ═══════════════════════════════════════════════════════════════
 //
 // 유사 게임 top-3을 Few-Shot 예시로 포맷팅.

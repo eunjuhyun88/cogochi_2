@@ -29,11 +29,11 @@
   });
 
   const statusText = $derived(() => {
-    if (value >= 75) return '압도적 우세!';
-    if (value >= 60) return '유리';
-    if (value <= 25) return '위험!';
-    if (value <= 40) return '불리';
-    return '접전';
+    if (value >= 75) return 'Dominating!';
+    if (value >= 60) return 'Advantage';
+    if (value <= 25) return 'Danger!';
+    if (value <= 40) return 'Disadvantage';
+    return 'Close Fight';
   });
 </script>
 

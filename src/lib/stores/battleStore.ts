@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// CHATBATTLE — Battle Arena Store (Sprint B)
+// COGOTCHI — Battle Arena Store (Sprint B)
 // ChartGame-style: 3 rounds x 5 bars = 15 bars, order-based trading
 // Real Binance historical data, pure P/L (no HP)
 // ═══════════════════════════════════════════════════════════════

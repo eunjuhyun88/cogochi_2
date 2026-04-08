@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Polymarket API Client
+// COGOTCHI — Polymarket API Client
 // Fetches from local proxy to avoid CORS
 // ═══════════════════════════════════════════════════════════════
 

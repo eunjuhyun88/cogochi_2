@@ -1,5 +1,5 @@
 <!--
-  STOCKCLAW — War Room Panel (3-Round Agent LLM Debate)
+  COGOTCHI — War Room Panel (3-Round Agent LLM Debate)
   Replaces the static Emergency Meeting with interactive debate.
 
   Phase Flow:

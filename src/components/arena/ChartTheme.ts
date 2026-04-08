@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-//  STOCKCLAW — Chart Theme Definitions & Resolver
+//  COGOTCHI — Chart Theme Definitions & Resolver
 //  Extracted from ChartPanel.svelte for maintainability
 // ═══════════════════════════════════════════════════════════════
 

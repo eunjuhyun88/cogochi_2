@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Terminal Scan Service (server)
+// COGOTCHI — Terminal Scan Service (server)
 // ═══════════════════════════════════════════════════════════════
 
 import { randomUUID } from 'node:crypto';

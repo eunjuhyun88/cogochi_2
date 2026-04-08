@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Token Registry (Binance Supported Pairs)
+// COGOTCHI — Token Registry (Binance Supported Pairs)
 // ═══════════════════════════════════════════════════════════════
 
 export interface TokenDef {

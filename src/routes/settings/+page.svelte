@@ -248,7 +248,7 @@
   .settings-page {
     height: 100%;
     overflow-y: auto;
-    background: #00120a;
+    background: var(--sc-bg-0, #050914);
   }
 
   .settings-header {

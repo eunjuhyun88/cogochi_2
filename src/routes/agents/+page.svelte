@@ -30,13 +30,13 @@
 </script>
 
 <svelte:head>
-  <title>STOCKCLAW — Agent Collection</title>
+  <title>COGOTCHI — Agent Collection</title>
 </svelte:head>
 
 <div class="agents-page">
   <div class="page-header">
     <h1>AGENT COLLECTION</h1>
-    <p class="subtitle">AI 에이전트 학습 현황 & 성장 기록</p>
+    <p class="subtitle">AI Agent Learning Status & Growth Record</p>
   </div>
 
   <!-- Agent Grid -->
@@ -270,9 +270,9 @@
             <span class="sig-trigger">{char.signature.trigger}</span>
             <span class="sig-effect">{char.signature.effect}</span>
             {#if tier < char.signature.minTier}
-              <span class="sig-locked">Tier {char.signature.minTier}에서 해금</span>
+              <span class="sig-locked">Unlocks at Tier {char.signature.minTier}</span>
             {:else}
-              <span class="sig-unlocked">해금됨!</span>
+              <span class="sig-unlocked">Unlocked!</span>
             {/if}
           </div>
         </div>

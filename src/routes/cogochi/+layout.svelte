@@ -55,17 +55,17 @@
   }
 
   .cg-shell {
-    --cg-bg: #06060b;
-    --cg-surface: #0a0a11;
-    --cg-surface-2: #0e0e17;
-    --cg-border: #16162a;
+    --cg-bg: var(--sc-bg-0, #050914);
+    --cg-surface: var(--sc-bg-1, #0b1220);
+    --cg-surface-2: var(--sc-bg-2, #111b2c);
+    --cg-border: rgba(219,154,159,0.16);
     --cg-border-strong: #1e1e38;
-    --cg-text: #c8c8e0;
-    --cg-text-dim: #505078;
-    --cg-text-muted: #383860;
-    --cg-cyan: #00e5ff;
-    --cg-red: #ff3860;
-    --cg-green: #00d68f;
+    --cg-text: var(--sc-text-0, #f7f2ea);
+    --cg-text-dim: rgba(247,242,234,0.4);
+    --cg-text-muted: rgba(247,242,234,0.25);
+    --cg-cyan: var(--sc-accent, #db9a9f);
+    --cg-red: var(--sc-bad, #cf7f8f);
+    --cg-green: var(--sc-good, #adca7c);
     --cg-orange: #ff9f43;
     --cg-purple: #a855f7;
     --cg-blue: #3b82f6;

@@ -6,21 +6,21 @@
 .hypo-panel,
 .mh-panel,
 .battle-stage {
-  --arena-bg-0: #07130d;
-  --arena-bg-1: #0a1a0d;
-  --arena-bg-2: #10271b;
-  --arena-surface: #0d2218;
-  --arena-surface-2: #132c20;
-  --arena-line: rgba(232, 150, 125, 0.34);
-  --arena-line-soft: rgba(232, 150, 125, 0.2);
-  --arena-accent: #e8967d;
-  --arena-accent-2: #66cce6;
-  --arena-good: #00cc88;
-  --arena-bad: #ff5e7a;
-  --arena-warn: #dcb970;
-  --arena-text: #f0ede4;
-  --arena-text-dim: rgba(240, 237, 228, 0.84);
-  --arena-text-muted: rgba(240, 237, 228, 0.74);
+  --arena-bg-0: var(--sc-bg-0, #050914);
+  --arena-bg-1: var(--sc-bg-1, #0b1220);
+  --arena-bg-2: var(--sc-bg-2, #111b2c);
+  --arena-surface: var(--sc-surface, #0f1828);
+  --arena-surface-2: var(--sc-surface-2, #152033);
+  --arena-line: var(--sc-line, rgba(219,154,159,0.28));
+  --arena-line-soft: var(--sc-line-soft, rgba(219,154,159,0.16));
+  --arena-accent: var(--sc-accent, #db9a9f);
+  --arena-accent-2: var(--sc-accent-2, #adca7c);
+  --arena-good: var(--sc-good, #adca7c);
+  --arena-bad: var(--sc-bad, #cf7f8f);
+  --arena-warn: var(--sc-accent-3, #f2d193);
+  --arena-text: var(--sc-text-0, #f7f2ea);
+  --arena-text-dim: var(--sc-text-1, rgba(247,242,234,0.84));
+  --arena-text-muted: var(--sc-text-2, rgba(247,242,234,0.55));
   --arena-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
 }
 

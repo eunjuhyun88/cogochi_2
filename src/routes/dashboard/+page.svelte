@@ -57,7 +57,7 @@
 </script>
 
 <svelte:head>
-  <title>Dashboard — STOCKCLAW</title>
+  <title>Dashboard — COGOTCHI</title>
 </svelte:head>
 
 <div class="dash-page">

@@ -69,9 +69,9 @@
 
   // Step label
   const stepLabel = $derived(() => {
-    if (isDone) return '드래프트 완료!';
-    if (isBanPhase) return isHumanTurn ? '🚫 밴할 에이전트 선택' : '🤖 AI가 밴 중...';
-    return isHumanTurn ? '✅ 에이전트를 선택하세요' : '🤖 AI가 선택 중...';
+    if (isDone) return 'Draft Complete!';
+    if (isBanPhase) return isHumanTurn ? '🚫 Select agent to Ban' : '🤖 AI is Banning...';
+    return isHumanTurn ? '✅ Pick your agent' : '🤖 AI is Picking...';
   });
 
   function selectAgent(id: AgentId) {
@@ -257,15 +257,15 @@
           <span class="detail-title">{selectedChar.titleKR}</span>
         </div>
         <div class="detail-stats">
-          <div class="stat-row"><span>분석</span><HPBar value={selectedChar.baseStats.analysis} max={100} size="sm" showValue /></div>
-          <div class="stat-row"><span>정확</span><HPBar value={selectedChar.baseStats.accuracy} max={100} size="sm" showValue /></div>
-          <div class="stat-row"><span>속도</span><HPBar value={selectedChar.baseStats.speed} max={100} size="sm" showValue /></div>
-          <div class="stat-row"><span>직감</span><HPBar value={selectedChar.baseStats.instinct} max={100} size="sm" showValue /></div>
-          <div class="stat-row"><span>시너지</span><HPBar value={selectedChar.baseStats.synergy} max={100} size="sm" showValue /></div>
-          <div class="stat-row"><span>회복</span><HPBar value={selectedChar.baseStats.resilience} max={100} size="sm" showValue /></div>
+          <div class="stat-row"><span>Analysis</span><HPBar value={selectedChar.baseStats.analysis} max={100} size="sm" showValue /></div>
+          <div class="stat-row"><span>Accuracy</span><HPBar value={selectedChar.baseStats.accuracy} max={100} size="sm" showValue /></div>
+          <div class="stat-row"><span>Speed</span><HPBar value={selectedChar.baseStats.speed} max={100} size="sm" showValue /></div>
+          <div class="stat-row"><span>Instinct</span><HPBar value={selectedChar.baseStats.instinct} max={100} size="sm" showValue /></div>
+          <div class="stat-row"><span>Synergy</span><HPBar value={selectedChar.baseStats.synergy} max={100} size="sm" showValue /></div>
+          <div class="stat-row"><span>Recovery</span><HPBar value={selectedChar.baseStats.resilience} max={100} size="sm" showValue /></div>
         </div>
         <div class="detail-signature">
-          <span class="sig-label">시그니처:</span>
+          <span class="sig-label">Signature:</span>
           <span class="sig-name">{selectedChar.signature.nameKR}</span>
           <span class="sig-desc">{selectedChar.signature.descriptionKR}</span>
         </div>
@@ -279,7 +279,7 @@
   <!-- Done state -->
   {#if isDone}
     <div class="draft-done">
-      <span class="done-text">드래프트 완료! 배틀 준비 중...</span>
+      <span class="done-text">Draft Complete! Preparing for battle...</span>
     </div>
   {/if}
 </div>

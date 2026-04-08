@@ -333,7 +333,7 @@
   .signals-page {
     height: 100%;
     overflow-y: auto;
-    background: #00120a;
+    background: var(--sc-bg-0, #050914);
   }
 
   .sig-header {
@@ -375,7 +375,7 @@
     font-size: 7px;
     font-weight: 900;
     letter-spacing: 1.5px;
-    color: #00120a;
+    color: var(--sc-bg-0, #050914);
     background: rgba(0,255,136,.8);
     padding: 2px 7px;
     display: flex;
@@ -387,7 +387,7 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #00120a;
+    background: var(--sc-bg-0, #050914);
     animation: sh-blink .9s infinite;
   }
   @keyframes sh-blink { 0%,100%{opacity:1} 50%{opacity:.2} }

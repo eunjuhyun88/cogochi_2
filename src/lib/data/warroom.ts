@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — War Room Data Types (Terminal View)
+// COGOTCHI — War Room Data Types (Terminal View)
 // ═══════════════════════════════════════════════════════════════
 
 export interface WRMessage {

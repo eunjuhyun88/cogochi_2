@@ -212,7 +212,7 @@
 </script>
 
 <svelte:head>
-  <title>Lab — STOCKCLAW</title>
+  <title>Lab — COGOTCHI</title>
 </svelte:head>
 
 <div class="lab-page">
@@ -250,11 +250,11 @@
       <!-- Tab bar -->
       <div class="tab-bar">
         {#if mode === 'auto'}
-          <button class="tab" class:active={activeTab === 'strategy'} onclick={() => activeTab = 'strategy'}>전략</button>
-          <button class="tab" class:active={activeTab === 'result'} onclick={() => activeTab = 'result'}>결과</button>
+          <button class="tab" class:active={activeTab === 'strategy'} onclick={() => activeTab = 'strategy'}>Strategy</button>
+          <button class="tab" class:active={activeTab === 'result'} onclick={() => activeTab = 'result'}>Result</button>
         {:else}
-          <button class="tab" class:active={activeTab === 'order'} onclick={() => activeTab = 'order'}>주문</button>
-          <button class="tab" class:active={activeTab === 'trades'} onclick={() => activeTab = 'trades'}>트레이드</button>
+          <button class="tab" class:active={activeTab === 'order'} onclick={() => activeTab = 'order'}>Order</button>
+          <button class="tab" class:active={activeTab === 'trades'} onclick={() => activeTab = 'trades'}>Trades</button>
         {/if}
       </div>
 
@@ -325,21 +325,21 @@
             {#if manualPosition}
               <div class="pos-info">
                 <div class="pos-row">
-                  <span class="pos-label">방향</span>
+                  <span class="pos-label">Direction</span>
                   <span class="pos-val" class:long={manualPosition.direction === 'long'} class:short={manualPosition.direction === 'short'}>
                     {manualPosition.direction.toUpperCase()}
                   </span>
                 </div>
                 <div class="pos-row">
-                  <span class="pos-label">진입가</span>
+                  <span class="pos-label">Entry</span>
                   <span class="pos-val">{manualPosition.entryPrice.toFixed(0)}</span>
                 </div>
                 <div class="pos-row">
-                  <span class="pos-label">현재가</span>
+                  <span class="pos-label">Current</span>
                   <span class="pos-val">{manualPosition.currentPrice.toFixed(0)}</span>
                 </div>
                 <div class="pos-row">
-                  <span class="pos-label">미실현</span>
+                  <span class="pos-label">Unrealized</span>
                   <span class="pos-val {manualPosition.pnlPercent >= 0 ? 'positive' : 'negative'}">
                     {manualPosition.pnlPercent >= 0 ? '+' : ''}{manualPosition.pnlPercent.toFixed(2)}%
                   </span>
@@ -348,7 +348,7 @@
             {/if}
           </div>
         {:else if activeTab === 'trades'}
-          <div class="trades-empty">수동 트레이드 내역</div>
+          <div class="trades-empty">Manual trade history</div>
         {/if}
       </div>
     </div>

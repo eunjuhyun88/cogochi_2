@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// STOCKCLAW — Arena API Client (browser-side)
+// COGOTCHI — Arena API Client (browser-side)
 // ═══════════════════════════════════════════════════════════════
 //
 // Wraps /api/arena/* endpoints for the Arena page to call.

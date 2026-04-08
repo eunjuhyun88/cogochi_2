@@ -264,22 +264,22 @@
 
       <div class="hero-stats">
         <div class="stat-block">
-          <span class="stat-label">전적</span>
+          <span class="stat-label">Record</span>
           <span class="stat-value">{pveRecord}</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-block">
-          <span class="stat-label">승률</span>
+          <span class="stat-label">Win Rate</span>
           <span class="stat-value" class:hot={winRate >= 60}>{winRate}%</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-block">
-          <span class="stat-label">연승</span>
+          <span class="stat-label">Streak</span>
           <span class="stat-value">{streakEmoji}{$gameState.streak}</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-block">
-          <span class="stat-label">동시매치</span>
+          <span class="stat-label">Concurrent</span>
           <span class="stat-value accent">{activeCount}/5</span>
         </div>
       </div>
@@ -433,8 +433,8 @@
         <div class="panel-head">
           <span class="panel-title tour-text">👑 WEEKLY TOURNAMENT</span>
           <div class="panel-actions">
-            <button class="btn-sm" onclick={loadTournaments} disabled={tournamentsLoading}>새로고침</button>
-            <button class="btn-sm btn-primary" onclick={startTournamentRound} disabled={!selectedTournamentId}>라운드 시작 →</button>
+            <button class="btn-sm" onclick={loadTournaments} disabled={tournamentsLoading}>Refresh</button>
+            <button class="btn-sm btn-primary" onclick={startTournamentRound} disabled={!selectedTournamentId}>Start Round →</button>
           </div>
         </div>
 
@@ -550,7 +550,7 @@
 
 <style>
   /* ═══════════════════════════════════════════════════════════════
-     STOCKCLAW — Arena Lobby v3
+     COGOTCHI — Arena Lobby v3
      Fighting Game Select Screen × Crypto Terminal
      ═══════════════════════════════════════════════════════════════ */
 
