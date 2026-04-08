@@ -122,10 +122,12 @@
         class="nav-tab-desktop"
         class:active={isActive(item.id)}
         class:highlight={item.highlight === true}
+        class:disabled={activePath === '/'}
         title={`${item.label} · ${item.description}`}
         aria-label={`${item.label}: ${item.description}`}
         aria-current={isActive(item.id) ? 'page' : undefined}
-        href={item.href}
+        href={activePath === '/' ? undefined : item.href}
+        onclick={(e) => { if (activePath === '/') e.preventDefault(); }}
       >
         <span class="tab-full">{item.label.toUpperCase()}{#if item.highlight}<span class="tab-star">&#9733;</span>{/if}</span>
         <span class="tab-short">{item.shortLabel}{#if item.highlight}<span class="tab-star">&#9733;</span>{/if}</span>
@@ -294,6 +296,11 @@
     position: relative;
     text-decoration: none;
     margin-right: 6px;
+  }
+  .nav-tab-desktop.disabled {
+    opacity: .35;
+    pointer-events: none;
+    cursor: default;
   }
   .nav-tab-desktop:last-of-type { margin-right: 0; }
 

@@ -1,291 +1,238 @@
 <script lang="ts">
-  import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
 
   let mounted = $state(false);
-  let inputVal = $state('');
+  let email = $state('');
+  let submitted = $state(false);
+  let submitting = $state(false);
+  let errorMsg = $state('');
 
-  onMount(() => { requestAnimationFrame(() => { mounted = true; }); });
-
-  function go() {
-    const v = inputVal.trim();
-    goto(v ? `/terminal?q=${encodeURIComponent(v)}` : '/terminal');
+  async function handleSubmit() {
+    if (!email.includes('@') || submitting) return;
+    submitting = true;
+    errorMsg = '';
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        submitted = true;
+      } else {
+        errorMsg = data.error || 'Something went wrong';
+      }
+    } catch {
+      errorMsg = 'Network error. Try again.';
+    }
+    submitting = false;
   }
-  function onKey(e: KeyboardEvent) { if (e.key === 'Enter') go(); }
+
+  function onKey(e: KeyboardEvent) { if (e.key === 'Enter') handleSubmit(); }
+  onMount(() => { requestAnimationFrame(() => { mounted = true; }); });
 </script>
 
-<svelte:head><title>COGOTCHI — Signal Engine</title></svelte:head>
+<svelte:head>
+  <title>COGOTCHI — Train Your Trading Edge</title>
+</svelte:head>
 
-<div class="root" class:mounted>
-<div class="page">
+<div class="lp" class:mounted>
+  <section class="hero">
 
-  <!-- ━━━ LIVE SIGNAL — 제품 그 자체 ━━━ -->
-  <section class="section">
-    <div class="sec-head">
-      <span class="sh-line"></span>
-      <span class="sh-title">BTC / 4H</span>
-      <span class="sh-line grow"></span>
-      <span class="sh-live"><span class="dot"></span>LIVE</span>
+    <h1 class="brand">COGOTCHI</h1>
+
+    <div class="tagline">
+      <p class="tl">The market has patterns.</p>
+      <p class="tl">Now you can <span class="accent">train on them.</span></p>
     </div>
-    <div class="signal">
-      <div class="sig-left">
-        <div class="sig-score">+52</div>
-        <div class="sig-verdict">BULLISH</div>
-      </div>
-      <div class="sig-right">
-        <div class="sig-row"><span class="sig-k">WYCKOFF</span><span class="sig-v good">Markup — accumulation done</span></div>
-        <div class="sig-row"><span class="sig-k">MTF</span><span class="sig-v good">1H 4H 1D aligned</span></div>
-        <div class="sig-row"><span class="sig-k">CVD</span><span class="sig-v good">Buyers absorbing sells</span></div>
-        <div class="sig-row"><span class="sig-k">FLOW</span><span class="sig-v bad">FR hot — squeeze risk</span></div>
-        <div class="sig-metrics">
-          <span>FR 0.0084%</span><span>OI 89K</span><span>L/S 1.51</span><span>F&G 11</span>
+
+    <p class="sub">
+      Your AI agent learns your trading edge — and scans
+      the entire market 24/7 to find it.
+    </p>
+
+    <div class="tags">
+      <span class="pill">Active futures traders</span>
+      <span class="pill">Pattern-based traders</span>
+      <span class="pill">Copy trading followers</span>
+    </div>
+
+    <div class="cta">
+      {#if submitted}
+        <div class="cta-ok">
+          <span class="ok-icon">✓</span>
+          You're on the list. We'll reach out soon.
         </div>
-      </div>
+      {:else}
+        <div class="cta-row">
+          <input
+            class="cta-in"
+            type="email"
+            bind:value={email}
+            onkeydown={onKey}
+            placeholder="your@email.com"
+            autocomplete="email"
+          />
+          <button class="cta-btn" onclick={handleSubmit} disabled={submitting || !email.includes('@')}>
+            {submitting ? 'Joining...' : 'Join Alpha Waitlist →'}
+          </button>
+        </div>
+        {#if errorMsg}
+          <p class="cta-err">{errorMsg}</p>
+        {/if}
+      {/if}
     </div>
-    <p class="sig-caption">You check 5 tabs for this. We do it in one call.</p>
+
+    <p class="fine">Free · No credit card · Early access priority</p>
+
   </section>
-
-  <!-- ━━━ TRY IT ━━━ -->
-  <section class="section">
-    <div class="sec-head">
-      <span class="sh-line"></span>
-      <span class="sh-title">TRY IT</span>
-      <span class="sh-line grow"></span>
-    </div>
-    <div class="prompt-row">
-      <span class="prompt-char">❯</span>
-      <input class="prompt-input" type="text" bind:value={inputVal} onkeydown={onKey} placeholder="BTC 4H, ETH 1D, SOL 15M ..." />
-      <button class="prompt-go" onclick={go}>Analyze →</button>
-    </div>
-    <p class="prompt-sub">No signup. No API key. Free.</p>
-  </section>
-
-  <!-- ━━━ 3 SURFACES ━━━ -->
-  <section class="section">
-    <div class="sec-head">
-      <span class="sh-line"></span>
-      <span class="sh-title">SURFACES</span>
-      <span class="sh-line grow"></span>
-    </div>
-    <div class="surf-grid">
-      <button class="surf" onclick={() => goto('/terminal')}>
-        <span class="surf-name">TERMINAL</span>
-        <span class="surf-desc">Type a symbol → full analysis with chart</span>
-        <span class="surf-arrow">→</span>
-      </button>
-      <button class="surf" onclick={() => goto('/scanner')}>
-        <span class="surf-name">SCANNER</span>
-        <span class="surf-desc">What's moving right now across 200+ coins</span>
-        <span class="surf-arrow">→</span>
-      </button>
-      <button class="surf" onclick={() => goto('/lab')}>
-        <span class="surf-name">LAB</span>
-        <span class="surf-desc">Build a strategy, backtest it, prove your edge</span>
-        <span class="surf-arrow">→</span>
-      </button>
-    </div>
-  </section>
-
-  <footer class="foot">
-    <span>COGOTCHI</span>
-    <span>Binance data · Free · Always</span>
-  </footer>
-
-</div>
 </div>
 
 <style>
-  .root {
-    min-height: 100vh;
-    background:
-      radial-gradient(circle at 10% 0%, rgba(219,154,159,0.06), transparent 28%),
-      radial-gradient(circle at 86% 0%, rgba(173,202,124,0.04), transparent 24%),
-      linear-gradient(180deg, rgba(10,15,26,0.96), rgba(8,13,23,0.94));
-    color: var(--sc-text-0, #f7f2ea);
-    font-family: var(--sc-font-mono, 'JetBrains Mono', monospace);
-    font-size: 12px;
-    line-height: 1.5;
-    opacity: 0; transition: opacity 0.3s;
+  .lp {
+    position: relative; z-index: 2;
+    height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    color: #F0EDE4;
+    opacity: 0; transition: opacity .6s ease;
+    padding: 0 24px;
   }
-  .root.mounted { opacity: 1; }
-  .page { max-width: 720px; margin: 0 auto; padding: 16px 16px 40px; }
+  .lp.mounted { opacity: 1; }
 
-  .good { color: var(--sc-good, #adca7c); }
-  .bad { color: var(--sc-bad, #cf7f8f); }
-
-  /* ── SECTION ── */
-  .section { margin-bottom: 24px; }
-  .sec-head {
-    display: flex; align-items: center; gap: 8px;
-    padding: 0 0 8px;
-    font-size: 10px;
-  }
-  .sh-line { flex: 0 0 8px; height: 1px; background: rgba(219,154,159,0.2); }
-  .sh-line.grow { flex: 1; }
-  .sh-title {
-    color: var(--sc-accent, #db9a9f);
-    font-weight: 700; letter-spacing: 1.5px;
-    white-space: nowrap;
-  }
-  .sh-live {
-    display: flex; align-items: center; gap: 5px;
-    font-size: 8px; font-weight: 700; letter-spacing: 1.5px;
-    color: var(--sc-good, #adca7c);
-  }
-  .dot {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: var(--sc-good, #adca7c);
-    box-shadow: 0 0 8px var(--sc-good, #adca7c);
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
-
-  /* ── SIGNAL ── */
-  .signal {
-    display: flex;
-    border: 1px solid rgba(219,154,159,0.12);
-    border-radius: 6px;
-    background: rgba(10,15,26,0.6);
-    overflow: hidden;
-  }
-  .sig-left {
+  .hero {
+    width: 100%; max-width: 800px;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 20px 28px;
-    border-right: 1px solid rgba(219,154,159,0.08);
-    min-width: 110px;
-  }
-  .sig-score {
-    font-size: 48px; font-weight: 700; line-height: 1;
-    color: var(--sc-good, #adca7c);
-    text-shadow: 0 0 24px rgba(173,202,124,0.3);
-  }
-  .sig-verdict {
-    font-size: 9px; font-weight: 800;
-    letter-spacing: 3px; margin-top: 6px;
-    color: var(--sc-good, #adca7c);
+    align-items: center; text-align: center;
   }
 
-  .sig-right { flex: 1; padding: 12px 16px; display: flex; flex-direction: column; justify-content: center; }
-  .sig-row {
-    display: flex; align-items: baseline; gap: 10px;
-    padding: 4px 0; font-size: 11px;
-  }
-  .sig-k {
-    min-width: 60px; font-size: 9px; font-weight: 700;
-    color: rgba(247,242,234,0.5); letter-spacing: 0.5px;
-  }
-  .sig-v { font-size: 11px; color: rgba(247,242,234,0.65); }
-  .sig-v.good { color: var(--sc-good, #adca7c); }
-  .sig-v.bad { color: var(--sc-bad, #cf7f8f); }
-
-  .sig-metrics {
-    display: flex; gap: 14px; margin-top: 8px; padding-top: 8px;
-    border-top: 1px solid rgba(219,154,159,0.06);
-    font-size: 9px; color: rgba(247,242,234,0.3);
+  .brand {
+    font-family: 'Orbitron', var(--sc-font-display, 'Bebas Neue'), sans-serif;
+    font-size: clamp(44px, 10vw, 120px);
+    font-weight: 900;
+    letter-spacing: 4px;
+    line-height: .92;
+    margin: 0 0 clamp(16px, 3vw, 32px);
+    color: #F0EDE4;
+    text-transform: uppercase;
+    animation: rise .9s cubic-bezier(.16,1,.3,1) both;
   }
 
-  .sig-caption {
-    margin: 10px 0 0;
-    font-size: 11px; color: rgba(247,242,234,0.25);
-    font-style: italic;
+  .tagline { margin-bottom: clamp(10px, 1.5vw, 16px); }
+  .tl {
+    font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
+    font-size: clamp(18px, 2.8vw, 32px);
+    font-weight: 500;
+    line-height: 1.35;
+    margin: 0;
+    color: rgba(240,237,228,.75);
+    animation: rise .8s cubic-bezier(.16,1,.3,1) .15s both;
+  }
+  .accent { color: #E8967D; }
+
+  .sub {
+    font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
+    font-size: clamp(13px, 1.5vw, 16px);
+    line-height: 1.6;
+    color: rgba(240,237,228,.38);
+    max-width: 480px;
+    margin: 0 0 clamp(14px, 2vw, 24px);
+    animation: rise .8s cubic-bezier(.16,1,.3,1) .3s both;
   }
 
-  /* ── PROMPT ── */
-  .prompt-row {
-    display: flex; align-items: center;
-    background: var(--sc-bg-1, #0b1220);
-    border: 1px solid rgba(219,154,159,0.18);
-    border-radius: 6px;
+  .tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center;
+    margin-bottom: clamp(16px, 2.5vw, 28px);
+    animation: rise .8s cubic-bezier(.16,1,.3,1) .45s both;
+  }
+  .pill {
+    font-family: var(--sc-font-mono, monospace);
+    font-size: 10px;
+    letter-spacing: .5px;
+    color: rgba(240,237,228,.4);
+    padding: 5px 12px;
+    border: 1px solid rgba(232,150,125,.1);
+    border-radius: 999px;
+  }
+
+  .cta { animation: rise .8s cubic-bezier(.16,1,.3,1) .6s both; width: 100%; max-width: 460px; }
+  .cta-row {
+    display: flex;
+    border: 1px solid rgba(232,150,125,.16);
+    border-radius: 10px;
     overflow: hidden;
-    transition: border-color 0.15s;
+    transition: border-color .2s, box-shadow .2s;
+    background: rgba(11,18,32,.35);
   }
-  .prompt-row:focus-within { border-color: var(--sc-accent, #db9a9f); }
-  .prompt-char {
-    padding: 0 0 0 14px;
-    color: var(--sc-accent, #db9a9f); font-size: 14px;
+  .cta-row:focus-within {
+    border-color: rgba(232,150,125,.35);
+    box-shadow: 0 0 0 3px rgba(232,150,125,.05);
   }
-  .prompt-input {
-    flex: 1; padding: 12px 10px;
+  .cta-in {
+    flex: 1; padding: 14px 16px;
     background: transparent; border: none; outline: none;
-    font-family: inherit; font-size: 12px;
-    color: var(--sc-text-0);
-    caret-color: var(--sc-accent, #db9a9f);
+    font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
+    font-size: 14px; color: #F0EDE4; caret-color: #E8967D;
+    min-width: 0;
   }
-  .prompt-input::placeholder { color: rgba(247,242,234,0.15); }
-  .prompt-go {
-    padding: 12px 18px;
-    background: var(--sc-accent, #db9a9f);
-    border: none;
-    color: var(--sc-bg-0, #050914);
-    font-family: inherit; font-size: 11px; font-weight: 700;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    transition: filter 0.15s;
+  .cta-in::placeholder { color: rgba(240,237,228,.18); }
+  .cta-btn {
+    padding: 14px 24px; background: #E8967D; border: none;
+    color: #0a0a0f;
+    font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: filter .15s;
+    white-space: nowrap; flex-shrink: 0;
   }
-  .prompt-go:hover { filter: brightness(1.15); }
+  .cta-btn:hover:not(:disabled) { filter: brightness(1.1); }
+  .cta-btn:disabled { opacity: .3; cursor: not-allowed; }
 
-  .prompt-sub {
-    margin: 8px 0 0;
-    font-size: 10px; color: rgba(247,242,234,0.2);
-  }
-
-  /* ── SURFACES ── */
-  .surf-grid { display: flex; flex-direction: column; gap: 1px; }
-  .surf {
-    display: flex; align-items: center; gap: 12px;
-    padding: 14px 12px;
-    background: rgba(10,15,26,0.4);
-    border: 1px solid rgba(219,154,159,0.06);
-    border-radius: 4px;
-    font-family: inherit; color: inherit;
-    cursor: pointer; text-align: left;
-    transition: all 0.15s;
-  }
-  .surf:hover {
-    border-color: rgba(219,154,159,0.2);
-    background: rgba(219,154,159,0.03);
-  }
-  .surf-name {
-    min-width: 80px;
-    font-size: 11px; font-weight: 700;
-    letter-spacing: 1.5px;
-    color: var(--sc-text-0);
-  }
-  .surf-desc {
-    flex: 1;
-    font-size: 11px;
-    color: rgba(247,242,234,0.35);
-  }
-  .surf-arrow {
+  .cta-ok {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 14px 20px;
+    border: 1px solid rgba(173,202,124,.16);
+    border-radius: 10px;
+    background: rgba(173,202,124,.05);
+    color: #adca7c;
+    font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
     font-size: 14px;
-    color: rgba(247,242,234,0.1);
-    transition: all 0.15s;
   }
-  .surf:hover .surf-arrow {
-    color: var(--sc-accent, #db9a9f);
-    transform: translateX(3px);
+  .ok-icon {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: #adca7c; color: #0a0a0f;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
   }
-
-  /* ── FOOTER ── */
-  .foot {
-    display: flex; justify-content: space-between;
-    padding: 16px 0 0;
-    border-top: 1px solid rgba(219,154,159,0.04);
-    font-size: 8px; letter-spacing: 1.5px;
-    color: rgba(247,242,234,0.08);
+  .cta-err {
+    font-family: var(--sc-font-mono, monospace);
+    font-size: 11px; color: #cf7f8f; margin: 8px 0 0;
   }
 
-  /* ── RESPONSIVE ── */
-  @media(max-width:640px) {
-    .signal { flex-direction: column; }
-    .sig-left {
-      flex-direction: row; gap: 10px;
-      padding: 12px 16px;
-      border-right: none;
-      border-bottom: 1px solid rgba(219,154,159,0.08);
-      min-width: auto;
-    }
-    .surf-desc { display: none; }
+  .fine {
+    font-family: var(--sc-font-mono, monospace);
+    font-size: 10px; letter-spacing: .5px;
+    color: rgba(240,237,228,.18);
+    margin: 12px 0 0;
+    animation: rise .8s cubic-bezier(.16,1,.3,1) .75s both;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(40px); filter: blur(4px); }
+    to { opacity: 1; transform: none; filter: blur(0); }
+  }
+
+  @media (max-width: 768px) {
+    .lp { padding: 0 20px; }
+    .brand { letter-spacing: 2px; }
+    .cta-row { flex-direction: column; }
+    .cta-btn { width: 100%; text-align: center; }
+  }
+
+  @media (max-width: 480px) {
+    .brand { font-size: clamp(32px, 12vw, 52px); letter-spacing: 1px; }
+    .tl { font-size: clamp(16px, 4.5vw, 22px); }
+    .sub { font-size: 12px; }
+    .pill { font-size: 9px; padding: 4px 9px; }
   }
 </style>

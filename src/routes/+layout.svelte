@@ -168,13 +168,13 @@
   });
 </script>
 
-<div id="app" class:cogochi-mode={$isCogochi}>
+<div id="app" class:cogochi-mode={$isCogochi} class:home-mode={$isHome}>
   {#if !$isCogochi}<Header />{/if}
   {#if !$isCogochi}<P0Banner />{/if}
   <div id="main-content" class:terminal-route={$isTerminal}>
     {@render children()}
   </div>
-  {#if !$isCogochi}
+  {#if !$isCogochi && !$isHome}
     {#if showBottomBar}
       <BottomBar />
     {:else if showMobileBottomNav}
@@ -201,9 +201,13 @@
     padding-top: var(--sc-header-h, 44px);
     overflow: hidden;
     position: relative;
+    z-index: 1; /* above body::before/after scanline & grid overlays */
   }
   #app.cogochi-mode {
     padding-top: 0;
+  }
+  #app.home-mode {
+    padding-bottom: 0 !important;
   }
   #main-content {
     flex: 1;
