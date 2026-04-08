@@ -198,7 +198,7 @@
     flex-direction: column;
     height: 100dvh;
     min-height: 100vh;
-    padding-top: var(--sc-header-h, 44px);
+    padding-top: 56px;
     overflow: hidden;
     position: relative;
     z-index: 1; /* above body::before/after scanline & grid overlays */
@@ -215,9 +215,10 @@
     position: relative;
   }
 
-  /* 769-1024px: compact one-line header (44px) */
+  /* 769-1024px: tablet */
   @media (max-width: 1024px) {
     #app {
+      padding-top: 52px;
       height: 100svh;
       min-height: 100svh;
     }
@@ -225,7 +226,7 @@
   /* ≤768px: header (40px) + tab strip (34px) = 74px top */
   @media (max-width: 768px) {
     #app {
-      padding-top: var(--sc-header-h-mobile, 40px);
+      padding-top: 48px;
       padding-bottom: calc(var(--sc-mobile-nav-h, 64px) + env(safe-area-inset-bottom, 0px));
     }
     #main-content {
@@ -240,7 +241,7 @@
   }
   @media (max-width: 480px) {
     #app {
-      padding-top: var(--sc-touch-sm, 36px);
+      padding-top: 44px;
     }
   }
 </style>

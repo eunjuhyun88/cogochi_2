@@ -230,9 +230,13 @@
   }
 
   @media (max-width: 480px) {
-    .brand { font-size: clamp(32px, 12vw, 52px); letter-spacing: 1px; }
-    .tl { font-size: clamp(16px, 4.5vw, 22px); }
-    .sub { font-size: 12px; }
-    .pill { font-size: 9px; padding: 4px 9px; }
+    .brand { font-size: clamp(28px, 11vw, 44px); letter-spacing: 1px; margin-bottom: 12px; }
+    .tl { font-size: clamp(15px, 4.2vw, 20px); }
+    .sub { font-size: 12px; margin-bottom: 10px; }
+    .pill { font-size: 8px; padding: 4px 8px; }
+    .tags { gap: 5px; margin-bottom: 12px; }
+    .cta-in { padding: 12px 14px; font-size: 13px; }
+    .cta-btn { padding: 12px; font-size: 12px; }
+    .fine { font-size: 9px; }
   }
 </style>

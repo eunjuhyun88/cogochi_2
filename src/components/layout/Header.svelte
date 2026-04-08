@@ -108,7 +108,7 @@
 
     <div class="nav-sep desktop-only"></div>
 
-    <!-- Ticker (desktop + mobile) -->
+    <!-- Ticker -->
     <div class="selected-ticker">
       <span class="st-pair">{selectedToken}</span>
       <span class="st-price">${selectedPriceText}</span>
@@ -122,12 +122,10 @@
         class="nav-tab-desktop"
         class:active={isActive(item.id)}
         class:highlight={item.highlight === true}
-        class:disabled={activePath === '/'}
         title={`${item.label} · ${item.description}`}
         aria-label={`${item.label}: ${item.description}`}
         aria-current={isActive(item.id) ? 'page' : undefined}
-        href={activePath === '/' ? undefined : item.href}
-        onclick={(e) => { if (activePath === '/') e.preventDefault(); }}
+        href={item.href}
       >
         <span class="tab-full">{item.label.toUpperCase()}{#if item.highlight}<span class="tab-star">&#9733;</span>{/if}</span>
         <span class="tab-short">{item.shortLabel}{#if item.highlight}<span class="tab-star">&#9733;</span>{/if}</span>
@@ -142,7 +140,7 @@
       <span class="score-value">{Math.round(gState.score).toLocaleString()}</span>
     </div>
 
-    <!-- Settings (desktop only) -->
+    <!-- Settings (desktop only, hidden on home) -->
     <a
       class="settings-btn desktop-only"
       title="Settings"
@@ -197,8 +195,8 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    height: var(--sc-header-h);
-    padding: 0 var(--sc-sp-3);
+    height: 56px;
+    padding: 0 20px;
     font-family: var(--sc-font-body);
     color: var(--sc-text-0);
     backdrop-filter: blur(18px);
@@ -242,17 +240,18 @@
   .nav-logo:hover { opacity: 0.8; }
 
   .nav-logo-main {
-    font-family: var(--sc-font-display);
-    font-size: 1.35rem;
-    letter-spacing: 0.08em;
+    font-family: 'Orbitron', var(--sc-font-display);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 2px;
     text-shadow: 0 0 10px rgba(219, 154, 159, 0.1);
   }
 
   .nav-sep {
     width: 1px;
-    height: 20px;
+    height: 24px;
     background: var(--sc-line-soft);
-    margin: 0 var(--sc-sp-2);
+    margin: 0 14px;
     flex-shrink: 0;
   }
 
@@ -260,31 +259,32 @@
   .selected-ticker {
     display: flex;
     align-items: center;
-    gap: var(--sc-sp-1_5);
-    padding: 0 var(--sc-sp-2);
+    gap: 8px;
+    padding: 0 8px;
     flex-shrink: 0;
   }
   .st-pair {
-    font-family: var(--sc-font-pixel);
-    font-size: var(--sc-fs-2xs);
+    font-family: var(--sc-font-mono);
+    font-size: 11px;
     color: var(--sc-text-3);
     letter-spacing: 1px;
   }
   .st-price {
-    font-family: var(--sc-font-pixel);
-    font-size: var(--sc-fs-sm);
+    font-family: var(--sc-font-mono);
+    font-size: 14px;
+    font-weight: 700;
     color: var(--sc-text-0);
   }
 
   /* Desktop Nav Tabs */
   .nav-tab-desktop {
     font-family: var(--sc-font-body);
-    font-weight: 700;
-    font-size: var(--sc-fs-2xs);
-    letter-spacing: 0.12em;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
     color: var(--sc-text-3);
-    padding: 0 var(--sc-sp-3);
-    height: 28px;
+    padding: 0 16px;
+    height: 32px;
     display: flex;
     align-items: center;
     border: 1px solid rgba(219, 154, 159, 0.08);
@@ -352,28 +352,28 @@
 
   /* Right Section */
   .nav-right {
-    margin-left: var(--sc-sp-2);
+    margin-left: 12px;
     display: flex;
     align-items: center;
-    gap: var(--sc-sp-2);
+    gap: 10px;
     flex-shrink: 0;
   }
 
   .score-badge {
     font-family: var(--sc-font-mono);
-    font-size: var(--sc-fs-2xs);
+    font-size: 11px;
     background: rgba(242, 209, 147, 0.06);
     color: var(--sc-accent-3);
     border: 1px solid rgba(242, 209, 147, 0.12);
-    border-radius: 999px;
-    padding: var(--sc-sp-1) var(--sc-sp-2);
-    letter-spacing: 0.12em;
+    border-radius: 8px;
+    padding: 6px 12px;
+    letter-spacing: 0.08em;
     display: flex;
     align-items: center;
     gap: var(--sc-sp-1);
   }
   .score-value {
-    font-size: var(--sc-fs-xs);
+    font-size: 13px;
     color: var(--sc-text-0);
     font-weight: 700;
   }
@@ -403,13 +403,13 @@
   .wallet-btn {
     font-family: var(--sc-font-body);
     font-weight: 700;
-    font-size: var(--sc-fs-2xs);
-    background: var(--sc-accent, #db9a9f);
-    color: var(--sc-bg-0, #050914);
-    border: 1px solid rgba(219, 154, 159, 0.5);
-    border-radius: 999px;
-    padding: var(--sc-sp-1) var(--sc-sp-3);
-    min-height: var(--sc-touch-sm, 36px);
+    font-size: 13px;
+    background: #E8967D;
+    color: #0a0a0f;
+    border: 1px solid rgba(232, 150, 125, 0.5);
+    border-radius: 10px;
+    padding: 8px 20px;
+    min-height: 36px;
     cursor: pointer;
     letter-spacing: 0.06em;
     transition: all var(--sc-duration-fast);
@@ -499,86 +499,53 @@
     opacity: 0.85;
   }
 
-  /* ═══ COMPACT DESKTOP / TABLET (769-1024px) ═══
-     Keep one line, hide ticker/score, show short labels */
+  /* ═══ TABLET (769-1024px) ═══ */
   @media (max-width: 1024px) and (min-width: 769px) {
+    #nav { height: 52px; padding: 0 16px; }
     .desktop-only { display: none; }
-    .selected-ticker { display: none; }
+    .selected-ticker { display: flex; gap: 6px; }
+    .st-pair { font-size: 10px; }
+    .st-price { font-size: 13px; }
     .nav-tab-desktop {
-      padding: 0 var(--sc-sp-2);
-      font-size: var(--sc-fs-2xs);
-      letter-spacing: 0.5px;
+      padding: 0 14px;
+      height: 30px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
     }
     .tab-full { display: none; }
     .tab-short { display: inline; }
-    .nav-logo {
-      gap: 6px;
-    }
-    .nav-logo-main { font-size: var(--sc-fs-sm); }
-    .nav-right { gap: var(--sc-sp-1); }
+    .nav-logo-main { font-size: 15px; letter-spacing: 2px; }
+    .nav-right { gap: 8px; }
+    .wallet-btn { padding: 6px 16px; font-size: 12px; }
   }
 
-  /* ═══ MOBILE (<=768px) — compact top chrome, tabs move to bottom nav ═══ */
+  /* ═══ MOBILE (<=768px) ═══ */
   @media (max-width: 768px) {
     #nav {
-      height: var(--sc-header-h-mobile, 40px);
+      height: 48px;
       flex-wrap: nowrap;
+      padding: 0 16px;
     }
     .desktop-only { display: none; }
     .nav-tab-desktop { display: none; }
-
-    .nav-main {
-      height: var(--sc-header-h-mobile, 40px);
-    }
+    .nav-main { height: 48px; }
     .nav-logo { gap: 0; }
-    .nav-logo-main {
-      font-size: var(--sc-fs-sm);
-      letter-spacing: 1.5px;
-    }
-
-    /* Show ticker on mobile */
-    .selected-ticker {
-      display: flex;
-      margin-left: auto;
-    }
-    .st-pair {
-      font-size: 8px;
-    }
-    .st-price {
-      font-size: var(--sc-fs-2xs);
-    }
-
-    .nav-right {
-      margin-left: var(--sc-sp-2);
-      height: var(--sc-header-h-mobile, 40px);
-    }
-    .settings-btn {
-      padding: var(--sc-sp-2);
-      min-width: var(--sc-touch-sm, 36px);
-      min-height: var(--sc-touch-sm, 36px);
-    }
-    .wallet-btn {
-      padding: var(--sc-sp-1) var(--sc-sp-3);
-      border-radius: var(--sc-radius-md);
-    }
+    .nav-logo-main { font-size: 15px; letter-spacing: 2px; }
+    .selected-ticker { display: flex; margin-left: auto; gap: 6px; padding: 0 8px; }
+    .st-pair { font-size: 10px; }
+    .st-price { font-size: 13px; }
+    .nav-right { margin-left: 10px; height: 48px; gap: 8px; }
+    .settings-btn { display: none; }
+    .wallet-btn { padding: 6px 16px; border-radius: 8px; font-size: 12px; }
   }
 
   /* ═══ SMALL MOBILE (<=480px) ═══ */
   @media (max-width: 480px) {
-    .nav-main {
-      height: var(--sc-touch-sm, 36px);
-    }
-    .nav-right {
-      height: var(--sc-touch-sm, 36px);
-    }
-    .nav-logo { gap: 0; }
-    .nav-logo-main {
-      font-size: var(--sc-fs-xs);
-      letter-spacing: 1px;
-    }
-    .wallet-btn {
-      padding: var(--sc-sp-1) var(--sc-sp-2);
-      min-height: var(--sc-touch-sm, 36px);
-    }
+    #nav { height: 44px; padding: 0 12px; }
+    .nav-main { height: 44px; }
+    .nav-right { height: 44px; }
+    .nav-logo-main { font-size: 14px; letter-spacing: 1.5px; }
+    .st-price { font-size: 12px; }
+    .wallet-btn { padding: 6px 14px; font-size: 11px; min-height: 32px; }
   }
 </style>
