@@ -296,7 +296,7 @@
       const frHot = Math.abs(fr) > 0.0005;
       metrics.push({
         title: 'Funding Rate', value: `${frPct}%`,
-        subtext: frHot ? (fr > 0 ? '롱 과열' : '숏 과열') : '보통',
+        subtext: frHot ? (fr > 0 ? 'Long Overheated' : 'Short Overheated') : 'Normal',
         trend: frHot ? 'danger' : 'neutral',
         chartData: [0.01, 0.02, 0.03, 0.02, 0.03, 0.04, 0.03, Math.abs(fr) * 100],
       });
@@ -314,7 +314,7 @@
       const oi = data.derivatives.oi;
       metrics.push({
         title: 'OI', value: oi >= 1e6 ? `${(oi/1e6).toFixed(0)}M` : `${(oi/1e3).toFixed(0)}K`,
-        subtext: '미결제약정', trend: 'neutral',
+        subtext: 'Open Interest', trend: 'neutral',
         chartData: [80, 85, 82, 88, 90, 87, 92, 95],
       });
     }
@@ -322,7 +322,7 @@
       const ls = data.derivatives.lsRatio;
       metrics.push({
         title: 'L/S Ratio', value: ls.toFixed(2),
-        subtext: ls > 1.1 ? '롱 과밀' : ls < 0.9 ? '숏 과밀' : '균형',
+        subtext: ls > 1.1 ? 'Long Crowded' : ls < 0.9 ? 'Short Crowded' : 'Balanced',
         trend: ls > 1.1 ? 'bear' : ls < 0.9 ? 'bull' : 'neutral',
         chartData: [1.0, 1.05, 1.1, 1.08, 1.12, 1.15, 1.1, ls],
       });

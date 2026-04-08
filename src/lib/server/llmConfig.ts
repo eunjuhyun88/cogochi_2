@@ -166,13 +166,13 @@ export function isHfAvailable(): boolean {
 
 export type LLMProvider = 'ollama' | 'groq' | 'grok' | 'qwen' | 'kimi' | 'hf' | 'deepseek' | 'gemini';
 
-/** 우선순위: Groq(70B,빠름) → Kimi → HF → DeepSeek → Gemini → Ollama(로컬,작음) */
+/** Priority: HF(free,large) → Groq(70B,fast) → Kimi → DeepSeek → Gemini → Ollama(local) */
 export function getAvailableProvider(): LLMProvider | null {
+  if (isHfAvailable()) return 'hf';
   if (isGroqAvailable()) return 'groq';
   if (isGrokAvailable()) return 'grok';
   if (isKimiAvailable()) return 'kimi';
   if (isQwenAvailable()) return 'qwen';
-  if (isHfAvailable()) return 'hf';
   if (isDeepSeekAvailable()) return 'deepseek';
   if (isGeminiAvailable()) return 'gemini';
   if (isOllamaAvailable()) return 'ollama';
