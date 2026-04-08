@@ -103,7 +103,7 @@
   <div class="nav-main">
     <!-- Logo -->
     <a class="nav-logo" href={buildDeepLink(connected ? '/dashboard' : '/')} aria-label="Home">
-      <span class="nav-logo-main">Cogochi</span>
+      <span class="nav-logo-main">COGOTCHI</span>
     </a>
 
     <div class="nav-sep desktop-only"></div>
