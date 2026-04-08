@@ -31,6 +31,13 @@ This file is repo-local and worktree-aware. Treat the current git worktree roote
 - Task-level doc router: `docs/README.md`
 - Canonical docs: `docs/{DESIGN,FRONTEND,PLANS,PRODUCT_SENSE,QUALITY_SCORE,RELIABILITY,SECURITY}.md`
 
+## Code Standards
+
+- **모듈화 우선**: 컴포넌트, 유틸, API는 항상 분리된 파일로. 한 파일 200줄 넘으면 분리 검토.
+- **재사용 가능하게**: 하드코딩 금지. 색상은 tokens.css, 데이터는 별도 ts 파일.
+- **타입 안전**: TypeScript interface/type 선언 필수. any 금지.
+- **리팩토링 친화적**: import path가 바뀌지 않도록 index.ts barrel export 활용.
+
 ## Guardrails
 
 - `docs/archive/` is historical context, not current authority.
