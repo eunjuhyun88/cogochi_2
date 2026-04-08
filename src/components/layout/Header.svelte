@@ -397,9 +397,9 @@
     font-family: var(--sc-font-body);
     font-weight: 700;
     font-size: var(--sc-fs-2xs);
-    background: linear-gradient(135deg, var(--sc-accent), rgba(242, 209, 147, 0.6), var(--sc-accent-2));
-    color: #0f1520;
-    border: 1px solid rgba(219, 154, 159, 0.34);
+    background: var(--sc-accent, #db9a9f);
+    color: var(--sc-bg-0, #050914);
+    border: 1px solid rgba(219, 154, 159, 0.5);
     border-radius: 999px;
     padding: var(--sc-sp-1) var(--sc-sp-3);
     min-height: var(--sc-touch-sm, 36px);
@@ -412,7 +412,8 @@
     gap: var(--sc-sp-1);
   }
   .wallet-btn:hover {
-    box-shadow: 0 0 20px rgba(219, 154, 159, 0.24);
+    filter: brightness(1.1);
+    box-shadow: 0 0 16px rgba(219, 154, 159, 0.2);
     transform: translateY(-1px);
   }
   .wallet-btn.connected {
