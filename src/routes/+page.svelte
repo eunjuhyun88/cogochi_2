@@ -6,21 +6,21 @@
   // Chart tool cards — arranged in orbital rings around center
   const orbitCards = [
     // Inner ring (closer, larger)
-    { src: '/cogochi/chart-tools/scanner-grid.svg', title: 'Scanner', angle: 20, dist: 320, size: 120 },
-    { src: '/cogochi/chart-tools/breakout-arrow.svg', title: 'Breakout', angle: 80, dist: 340, size: 100 },
-    { src: '/cogochi/chart-tools/trend-map.svg', title: 'Trend Map', angle: 140, dist: 310, size: 115 },
-    { src: '/cogochi/chart-tools/vwap-band.svg', title: 'VWAP', angle: 200, dist: 330, size: 105 },
-    { src: '/cogochi/chart-tools/risk-ratio.svg', title: 'Risk', angle: 260, dist: 320, size: 95 },
-    { src: '/cogochi/chart-tools/support-zones.svg', title: 'Zones', angle: 320, dist: 335, size: 100 },
+    { src: '/cogochi/chart-tools/scanner-grid.svg', title: 'Scanner', angle: 20, dist: 320, size: 145 },
+    { src: '/cogochi/chart-tools/breakout-arrow.svg', title: 'Breakout', angle: 80, dist: 340, size: 120 },
+    { src: '/cogochi/chart-tools/trend-map.svg', title: 'Trend Map', angle: 140, dist: 310, size: 138 },
+    { src: '/cogochi/chart-tools/vwap-band.svg', title: 'VWAP', angle: 200, dist: 330, size: 126 },
+    { src: '/cogochi/chart-tools/risk-ratio.svg', title: 'Risk', angle: 260, dist: 320, size: 114 },
+    { src: '/cogochi/chart-tools/support-zones.svg', title: 'Zones', angle: 320, dist: 335, size: 120 },
     // Outer ring (farther, slightly smaller)
-    { src: '/cogochi/chart-tools/volume-feed.svg', title: 'Volume', angle: 50, dist: 440, size: 100 },
-    { src: '/cogochi/chart-tools/orderbook-ladder.svg', title: 'Orderbook', angle: 110, dist: 460, size: 95 },
-    { src: '/cogochi/chart-tools/liquidity-heatmap.svg', title: 'Heatmap', angle: 170, dist: 450, size: 90 },
-    { src: '/cogochi/chart-tools/divergence-oscillator.svg', title: 'Divergence', angle: 230, dist: 445, size: 90 },
-    { src: '/cogochi/chart-tools/momentum-stack.svg', title: 'Momentum', angle: 290, dist: 455, size: 105 },
-    { src: '/cogochi/chart-tools/session-clock.svg', title: 'Session', angle: 350, dist: 440, size: 88 },
-    { src: '/cogochi/chart-tools/sweep-marker.svg', title: 'Sweep', angle: 0, dist: 470, size: 92 },
-    { src: '/cogochi/chart-tools/alert-tag.svg', title: 'Alert', angle: 180, dist: 470, size: 82 },
+    { src: '/cogochi/chart-tools/volume-feed.svg', title: 'Volume', angle: 50, dist: 450, size: 120 },
+    { src: '/cogochi/chart-tools/orderbook-ladder.svg', title: 'Orderbook', angle: 110, dist: 470, size: 114 },
+    { src: '/cogochi/chart-tools/liquidity-heatmap.svg', title: 'Heatmap', angle: 170, dist: 460, size: 108 },
+    { src: '/cogochi/chart-tools/divergence-oscillator.svg', title: 'Divergence', angle: 230, dist: 455, size: 108 },
+    { src: '/cogochi/chart-tools/momentum-stack.svg', title: 'Momentum', angle: 290, dist: 465, size: 126 },
+    { src: '/cogochi/chart-tools/session-clock.svg', title: 'Session', angle: 350, dist: 450, size: 106 },
+    { src: '/cogochi/chart-tools/sweep-marker.svg', title: 'Sweep', angle: 0, dist: 480, size: 110 },
+    { src: '/cogochi/chart-tools/alert-tag.svg', title: 'Alert', angle: 180, dist: 480, size: 98 },
   ];
 
   let mouseX = $state(50);
@@ -57,8 +57,6 @@
   <link rel="canonical" href="/" />
   <script type="module" src="https://unpkg.com/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
 </svelte:head>
-
-<div class="mouse-bg" style={`--mx:${mouseX}%; --my:${mouseY}%;`}></div>
 
 <WebGLAsciiBackground {mouseX} {mouseY} />
 
@@ -130,24 +128,9 @@
 
 <style>
   :global(html) { -webkit-text-size-adjust: 100%; height: 100%; }
-  :global(body) { margin: 0; min-height: 100%; background: #030610; color: #f7f2ea; font-family: Instrumentsans, 'Space Grotesk', Arial, sans-serif; }
+  :global(body) { margin: 0; min-height: 100%; background: #000; color: #f7f2ea; font-family: Instrumentsans, 'Space Grotesk', Arial, sans-serif; }
 
   .page { position: relative; z-index: 1; }
-
-  .mouse-bg {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 55% 45% at var(--mx) var(--my), rgba(219, 154, 159, 0.18), transparent),
-      radial-gradient(ellipse 65% 55% at var(--mx) var(--my), rgba(255, 255, 255, 0.06), transparent),
-      radial-gradient(ellipse 45% 40% at calc(100% - var(--mx)) calc(100% - var(--my)), rgba(173, 202, 124, 0.14), transparent),
-      radial-gradient(circle at 20% 80%, rgba(242, 209, 147, 0.08), transparent 45%),
-      radial-gradient(circle at 80% 20%, rgba(219, 154, 159, 0.06), transparent 45%),
-      linear-gradient(180deg, #050a18 0%, #080c22 50%, #030610 100%);
-    transition: background 200ms ease;
-  }
 
   .hero {
     position: relative;
@@ -202,8 +185,8 @@
     left: 0; top: 0;
     width: var(--size);
     height: var(--size);
-    opacity: 0.7;
-    filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45));
+    opacity: 0.9;
+    filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.6));
     animation: orbit-float 10s ease-in-out infinite;
     animation-delay: var(--delay);
     will-change: transform;
