@@ -58,6 +58,8 @@
   <script type="module" src="https://unpkg.com/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
 </svelte:head>
 
+<div class="mouse-bg" style={`--mx:${mouseX}%; --my:${mouseY}%;`}></div>
+
 <WebGLAsciiBackground {mouseX} {mouseY} />
 
 <div class="page">
@@ -131,6 +133,21 @@
   :global(body) { margin: 0; min-height: 100%; background: #030610; color: #f7f2ea; font-family: Instrumentsans, 'Space Grotesk', Arial, sans-serif; }
 
   .page { position: relative; z-index: 1; }
+
+  .mouse-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 50% 40% at var(--mx) var(--my), rgba(219, 154, 159, 0.08), transparent),
+      radial-gradient(ellipse 60% 50% at var(--mx) var(--my), rgba(255, 255, 255, 0.03), transparent),
+      radial-gradient(ellipse 40% 35% at calc(100% - var(--mx)) calc(100% - var(--my)), rgba(173, 202, 124, 0.06), transparent),
+      radial-gradient(circle at 20% 80%, rgba(242, 209, 147, 0.04), transparent 40%),
+      radial-gradient(circle at 80% 20%, rgba(219, 154, 159, 0.03), transparent 40%),
+      linear-gradient(180deg, #030610 0%, #050914 50%, #030610 100%);
+    transition: background 200ms ease;
+  }
 
   .hero {
     position: relative;
