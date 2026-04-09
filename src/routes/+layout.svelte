@@ -1,6 +1,10 @@
 <script lang="ts">
   import '../app.css';
+  import { dev } from '$app/environment';
+  import { injectAnalytics } from '@vercel/analytics/sveltekit';
   import Header from '../components/layout/Header.svelte';
+
+  injectAnalytics({ mode: dev ? 'development' : 'production' });
   import BottomBar from '../components/layout/BottomBar.svelte';
   import MobileBottomNav from '../components/layout/MobileBottomNav.svelte';
   import WalletModal from '../components/modals/WalletModal.svelte';
