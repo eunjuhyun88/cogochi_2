@@ -5,22 +5,22 @@
 
   // Chart tool cards — arranged in orbital rings around center
   const orbitCards = [
-    // Inner ring (closer, larger)
-    { src: '/cogochi/chart-tools/scanner-grid.svg', title: 'Scanner', angle: 20, dist: 320, size: 145 },
-    { src: '/cogochi/chart-tools/breakout-arrow.svg', title: 'Breakout', angle: 80, dist: 340, size: 120 },
-    { src: '/cogochi/chart-tools/trend-map.svg', title: 'Trend Map', angle: 140, dist: 310, size: 138 },
-    { src: '/cogochi/chart-tools/vwap-band.svg', title: 'VWAP', angle: 200, dist: 330, size: 126 },
-    { src: '/cogochi/chart-tools/risk-ratio.svg', title: 'Risk', angle: 260, dist: 320, size: 114 },
-    { src: '/cogochi/chart-tools/support-zones.svg', title: 'Zones', angle: 320, dist: 335, size: 120 },
-    // Outer ring (farther, slightly smaller)
-    { src: '/cogochi/chart-tools/volume-feed.svg', title: 'Volume', angle: 50, dist: 450, size: 120 },
-    { src: '/cogochi/chart-tools/orderbook-ladder.svg', title: 'Orderbook', angle: 110, dist: 470, size: 114 },
-    { src: '/cogochi/chart-tools/liquidity-heatmap.svg', title: 'Heatmap', angle: 170, dist: 460, size: 108 },
-    { src: '/cogochi/chart-tools/divergence-oscillator.svg', title: 'Divergence', angle: 230, dist: 455, size: 108 },
-    { src: '/cogochi/chart-tools/momentum-stack.svg', title: 'Momentum', angle: 290, dist: 465, size: 126 },
-    { src: '/cogochi/chart-tools/session-clock.svg', title: 'Session', angle: 350, dist: 450, size: 106 },
-    { src: '/cogochi/chart-tools/sweep-marker.svg', title: 'Sweep', angle: 0, dist: 480, size: 110 },
-    { src: '/cogochi/chart-tools/alert-tag.svg', title: 'Alert', angle: 180, dist: 480, size: 98 },
+    // Inner ring
+    { src: '/cogochi/chart-tools/scanner-grid.svg', title: 'Scanner', angle: 20, dist: 300, size: 100 },
+    { src: '/cogochi/chart-tools/breakout-arrow.svg', title: 'Breakout', angle: 80, dist: 315, size: 84 },
+    { src: '/cogochi/chart-tools/trend-map.svg', title: 'Trend Map', angle: 140, dist: 290, size: 96 },
+    { src: '/cogochi/chart-tools/vwap-band.svg', title: 'VWAP', angle: 200, dist: 310, size: 88 },
+    { src: '/cogochi/chart-tools/risk-ratio.svg', title: 'Risk', angle: 260, dist: 300, size: 80 },
+    { src: '/cogochi/chart-tools/support-zones.svg', title: 'Zones', angle: 320, dist: 312, size: 84 },
+    // Outer ring
+    { src: '/cogochi/chart-tools/volume-feed.svg', title: 'Volume', angle: 50, dist: 410, size: 84 },
+    { src: '/cogochi/chart-tools/orderbook-ladder.svg', title: 'Orderbook', angle: 110, dist: 425, size: 80 },
+    { src: '/cogochi/chart-tools/liquidity-heatmap.svg', title: 'Heatmap', angle: 170, dist: 420, size: 76 },
+    { src: '/cogochi/chart-tools/divergence-oscillator.svg', title: 'Divergence', angle: 230, dist: 415, size: 76 },
+    { src: '/cogochi/chart-tools/momentum-stack.svg', title: 'Momentum', angle: 290, dist: 425, size: 88 },
+    { src: '/cogochi/chart-tools/session-clock.svg', title: 'Session', angle: 350, dist: 410, size: 74 },
+    { src: '/cogochi/chart-tools/sweep-marker.svg', title: 'Sweep', angle: 0, dist: 435, size: 78 },
+    { src: '/cogochi/chart-tools/alert-tag.svg', title: 'Alert', angle: 180, dist: 435, size: 68 },
   ];
 
   let mouseX = $state(50);
@@ -261,8 +261,22 @@
   @media (max-width: 768px) {
     .orbit-layer { display: none; }
     .model-shell { display: none; }
-    .side-label { display: none; }
-    .hero { padding: 5rem 20px 3rem; }
+    .hero {
+      flex-direction: column;
+      padding: 5rem 20px 3rem;
+      gap: 2rem;
+    }
+    .side-label {
+      position: static;
+      max-width: 100%;
+      text-align: center;
+    }
+    .side-label strong { font-size: 1.4rem; }
+    .side-label span { font-size: 0.85rem; }
+    .left-top, .left-bottom, .right-top, .right-bottom {
+      left: auto; right: auto; top: auto; bottom: auto;
+      text-align: center;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
