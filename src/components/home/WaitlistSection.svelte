@@ -273,4 +273,25 @@
     text-align: center;
     margin: 0;
   }
+
+  @media (max-width: 768px) {
+    .waitlist-card { width: min(340px, 92vw); border-radius: 16px; }
+    .card-body { padding: 20px 20px 18px; gap: 12px; }
+    .brand-mark { font-size: 1.2rem; }
+    .card-title { font-size: 1.3rem; }
+    .card-desc { font-size: 0.85rem; }
+    .field { padding: 10px 12px; font-size: 0.85rem; }
+    .textarea { min-height: 56px; }
+    .submit-btn { padding: 10px 16px; font-size: 0.8rem; }
+    .card-chrome { padding: 10px 14px; }
+    .dot { width: 8px; height: 8px; }
+  }
+
+  @media (max-width: 480px) {
+    .waitlist-card { width: min(300px, 94vw); }
+    .card-body { padding: 16px 16px 14px; gap: 10px; }
+    .brand-mark { font-size: 1rem; }
+    .card-title { font-size: 1.15rem; }
+    .field-row { flex-direction: column; }
+  }
 </style>
