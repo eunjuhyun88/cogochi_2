@@ -149,7 +149,7 @@
     height: min(48vw, 36rem);
     z-index: 0;
     pointer-events: none;
-    opacity: 0.15;
+    opacity: 0.35;
     will-change: transform;
     transition: transform 400ms cubic-bezier(0.22, 0.61, 0.36, 1);
     overflow: visible;
@@ -230,18 +230,18 @@
 
   .side-label strong {
     display: block;
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-size: clamp(1.8rem, 3.2vw, 2.8rem);
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: rgba(247, 242, 234, 0.88);
-    margin-bottom: 6px;
-    line-height: 1.1;
+    color: rgba(247, 242, 234, 0.92);
+    margin-bottom: 8px;
+    line-height: 1.08;
   }
 
   .side-label span {
     display: block;
-    font-size: clamp(0.85rem, 1.3vw, 1rem);
-    color: rgba(247, 242, 234, 0.38);
+    font-size: clamp(0.88rem, 1.4vw, 1.05rem);
+    color: rgba(247, 242, 234, 0.42);
     line-height: 1.5;
   }
 

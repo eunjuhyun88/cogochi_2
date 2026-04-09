@@ -112,15 +112,15 @@
 <style>
   .waitlist-card {
     width: min(400px, 88vw);
-    background: rgba(12, 14, 20, 0.82);
-    border: 1px solid rgba(219, 154, 159, 0.15);
-    border-radius: 16px;
+    background: rgba(12, 14, 20, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
     overflow: hidden;
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(40px) saturate(1.2);
+    -webkit-backdrop-filter: blur(40px) saturate(1.2);
     box-shadow:
-      0 24px 60px rgba(0, 0, 0, 0.5),
-      0 0 1px rgba(255, 255, 255, 0.1);
+      0 32px 80px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
   .card-chrome {
