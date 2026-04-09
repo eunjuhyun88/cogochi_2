@@ -4,68 +4,62 @@ Route scope:
 - `/`
 
 Purpose:
-- Define the landing-page contract around the official builder/copier split.
+- Define the landing-page contract around the email-first private-alpha landing.
 
 ## Primary User Job
 
-- Understand the product promise from the hero without leaving the page.
-- Choose the right first path quickly from the hero CTA group.
+- Feel the product promise immediately.
+- Submit an email without leaving the page.
 
 ## Core Flow
 
 1. Hero intro animates in and logs a `hero_view` funnel event.
-2. User sees the builder/copier split and a lightweight demo or loop explanation.
-3. Primary CTA routes builders into `/onboard?path=builder`.
-4. Secondary CTA routes copiers into `/market`.
-5. Returning-user state may route to a progress-aware continuation target.
+2. User sees a cinematic hero, a strong visual trace panel, and a single email capture form.
+3. Primary CTA submits into `POST /api/waitlist`.
+4. Success state confirms the user is on the private-alpha list.
+5. Returning-user state may route to a progress-aware continuation target after access is granted.
 
 ## Official Contract
 
-1. Hero copy explains the loop in this order:
-   - onboard an agent
-   - inspect chart context in `Terminal`
-   - iterate in `Lab`
-   - prove in `Battle`
-   - manage record in `Agent`
-2. Builder CTA should not drop users into dense analysis UI first.
-3. Copier CTA should land in the public market flow, not in private builder surfaces.
+1. Hero copy should communicate the product as a memory layer for market judgment.
+2. The landing should build curiosity before asking for email.
+3. The primary CTA should be a single email form, not a multi-choice routing step.
 4. Returning-user CTA may route to the next eligible surface based on durable progression state.
 
 ## Guardrails
 
 - Do not force wallet connection before the user understands the builder/copier choice.
-- Builder CTA should not jump directly into `Terminal`.
+- Do not force wallet connection before the user has seen the landing promise.
 - Funnel events must reflect the real CTA and feature interactions, not an outdated terminal-first story.
-- The page should not feel like a generic exchange dashboard.
+- The page should not feel like a generic exchange dashboard or a plain signup form.
 
 ## Key UI Blocks
 
 - animated hero and positioning copy
-- builder / copier path cards
-- primary CTA to `/onboard?path=builder`
-- secondary CTA to `/market`
-- loop explanation blocks for onboarding, analysis, lab, battle, and proof
+- single email capture form
+- cinematic trace panel
+- short curiosity cards
+- trust strip and closing access prompt
 - optional returning-user CTA
 
 ## State Authority
 
-- selected feature and mobile sheet: route local
+- email field state and success state: route local
 - wallet connection and short address: `walletStore`
-- profile summary used in hero chrome: `userProfileStore`
 - funnel instrumentation: client analytics events
 - progression-aware CTA routing: durable agent progression state, not hero-local flags
 
 ## Supporting APIs And Data
 
-- route handoff targets: `/onboard`, `/market`, optional `/dashboard`
+- route handoff targets: `POST /api/waitlist`, optional `/dashboard`
 - wallet modal / connect flow from `walletStore`
-- hero content and funnel names from `components/home/homeData`
+- hero content and funnel names from the landing component
 
 ## Failure States
 
 - wallet connect appears as the first or only action
 - home still reads like a direct Terminal shortcut
-- builder and copier CTAs are visually ambiguous
+- multiple competing CTAs dilute the email submit goal
 - hero storytelling hides the actual next action
 
 ## Read These First

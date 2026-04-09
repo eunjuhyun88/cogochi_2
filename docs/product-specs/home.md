@@ -5,66 +5,57 @@ Purpose:
 
 ## Primary User Job
 
-Help the user understand the builder vs copier paths quickly, then start the right path without unnecessary setup drag.
+Help the user feel the product instantly, then capture their email without adding setup drag.
 
 ## Surface Role In The Official IA
 
 Home must explain, in plain language, that the product is:
-- a place to create and train an AI agent
-- inspect chart context in `Terminal`
-- iterate and rerun doctrine in `Lab`
-- prove the result in `Battle`
-- manage doctrine, memory, and record in `Agent`
-- later distribute proven specialists through `Market`
+- a private-alpha landing for a market memory agent
+- a place where judgment becomes traceable and reusable
+- an early-access entry point that collects email before deeper routing
 
 ## Current Route Shape
 
-- `/` currently behaves as a hero-led landing route, not a signup/demo wizard.
-- Official direction is a dual-path split:
-  - builder -> `/onboard?path=builder`
-  - copier -> `/market`
-- The page should still support a fast loop explanation and lightweight demo framing.
+- `/` currently behaves as an email-first private-alpha landing route.
+- The page should build curiosity, show the product mood quickly, and collect email.
+- Builder/copier split is deferred to later surfaces and should not dominate the landing page.
 - Use `docs/page-specs/home-onboarding.md` for the detailed route contract.
 
 ## Required Message Order
 
 Home should communicate the loop in this order:
-1. onboard an agent
-2. inspect context in `Terminal`
-3. iterate in `Lab`
-4. prove in `Battle`
-5. manage record in `Agent`
+1. your edge should leave a trace
+2. Cogochi turns judgment into a living agent
+3. early access is email-first
+4. the deeper product flow comes after the landing capture
 
-If Home cannot communicate those five steps quickly, the surface is failing.
+If Home cannot communicate those four steps quickly, the surface is failing.
 
 ## Core Flows
 
 1. Land on the home route and understand the product promise.
-2. Explore one feature path without leaving the hero context.
-3. Choose the next action:
-   - start builder onboarding
-   - inspect the loop
-   - browse the market
-4. Understand that monetization is downstream of proof, not the first action.
+2. Scan one strong visual that makes the landing feel memorable.
+3. Enter an email and receive a success state.
+4. Decide whether to keep following the product after capture.
+5. Understand that access is gated by interest, not by setup friction.
 
 ## Product Constraints
 
 - The first valuable path should remain available without forced wallet connection.
 - The page should explain the product through the hero, not through a long setup checklist.
-- The hero should communicate the onboarding -> terminal/lab -> battle -> agent -> market progression faster than any lore or worldbuilding detail.
-- The hero should make the builder/copier split obvious before the user hits dense trading UI.
+- The hero should communicate the private-alpha promise faster than any lore or worldbuilding detail.
+- The hero should make the email action obvious before the user hits any dense product detail.
 - Desktop and mobile feature exploration should remain semantically aligned.
-- Landing analytics should reflect the real current CTA paths.
+- Landing analytics should reflect email capture as the primary CTA.
 - Home should not read like a direct shortcut into `Terminal`.
-- Public earnings or rental upside can be mentioned, but only after ownership and evidence are legible.
+- Public earnings or rental upside can be mentioned later, but only after the landing hook is legible.
 
 ## Target IA
 
-- Primary CTA: `AI 만들기`
-- Target handoff: `/onboard?path=builder`
-- Secondary CTA: `마켓 둘러보기`
-- Market handoff: `/market`
-- Returning-user CTA: progress-aware handoff into `/dashboard`, `/lab`, or `/battle`
+- Primary CTA: `Request access`
+- Target handoff: `/api/waitlist`
+- Secondary CTA: in-page anchors such as `Product`, `Workflow`, and `Proof`
+- Returning-user CTA: continue into the appropriate product surface after access is granted
 
 ## Supporting Docs
 

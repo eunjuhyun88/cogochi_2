@@ -92,44 +92,34 @@ fade(150ms) — 모달/오버레이
 
 ## 3. 페이지별 UIUX 설계
 
-### 3.1 `/` — 랜딩 (비로그인)
+### 3.1 `/` — 랜딩 (Private Alpha)
 
-**목적**: 두 ICP(BUILDER/COPIER)를 빠르게 분기
+**목적**: 관심을 끌고, 이메일을 받는다.
 
 **레이아웃**:
 ```
-┌─────────────────────────────────┐
-│         [COGOCHI]               │  ← eyebrow
-│   내가 만든 AI 에이전트가          │  ← Bebas Neue display
-│   역사적 시장에서 싸운다           │  ← accent em
-│                                 │
-│   전략을 가르치고...              │  ← body text
-│                                 │
-│   [AI 만들기 →]  [마켓 둘러보기]    │  ← dual CTA
-├─────────────────────────────────┤
-│   ┌──────────── DEMO ─────────┐ │  ← 자동 재생 배틀 데모
-│   │ BTC/USDT 4H   ERA:???    │ │
-│   │ ████ ██ ███ █████ ██████ │ │  ← 캔들차트 + 스캔 애니메이션
-│   │      [LONG +4.2%]         │ │  ← 결과 오버레이
-│   │ HP ██████  CONF ████████  │ │
-│   └───────────────────────────┘ │
-├─────────────────────────────────┤
-│   START                         │
-│   두 가지 경로                    │
-│   ┌──BUILDER──┐ ┌──COPIER───┐  │  ← 2-col 카드
-│   │ 내 전략     │ │ 검증된 AI  │  │
-│   │ AI 만들기   │ │ 구독하기   │  │
-│   └────────→──┘ └────────→──┘  │
-├─────────────────────────────────┤
-│   CORE LOOP                     │
-│   ◎Term → ◆Agent → ⬡Lab★★★    │  ← 5노드 플로우
-│            → ▲Battle → ●Market  │
-│          ↩ Run Again             │
-└─────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│ [COGOCHI]  Product  Workflow  Proof          [Request Access] │
+├──────────────────────────────────────────────────────────┤
+│ PRIVATE ALPHA                                            │
+│ YOUR EDGE SHOULD LEAVE A TRACE.                          │
+│ Cogochi turns market judgment into a living agent...     │
+│ [Work email____________________][Request access]         │
+│ No spam. Invitation-only rollout.                       │
+├──────────────────────────────────────────────────────────┤
+│  LIVE TRACE panel + signal state cards + trust ribbon    │
+├──────────────────────────────────────────────────────────┤
+│  What makes it stick / The loop / Trust / Closing access │
+└──────────────────────────────────────────────────────────┘
 ```
 
-**데이터**: 없음 (정적 페이지, mock 캔들만)
-**기존 코드 활용**: `+page.svelte` 전면 교체
+**데이터**:
+- `POST /api/waitlist`
+- client-local success state
+
+**기존 코드 활용**:
+- `src/routes/+page.svelte` 전면 교체
+- home route no longer foregrounds builder/copier routing above the fold
 
 ### 3.2 `/onboard` — 온보딩
 

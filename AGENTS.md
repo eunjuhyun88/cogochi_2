@@ -5,7 +5,8 @@ This file defines mandatory execution rules for all coding agents in this reposi
 ## Mandatory Start Sequence (Every Task)
 1. Re-read `README.md` sections `0) Agent Collaboration Protocol (SSOT)` and `1.1) Context Routing`.
 2. Re-read `docs/README.md` and load only the smallest relevant canonical doc set for the current task.
-   - Do not start with `docs/archive/*`, old audits, or sibling clone folders unless the active docs explicitly send you there.
+   - Default bundle: `README.md`, `AGENTS.md`, `docs/README.md`, and one surface canonical doc.
+   - Do not start with `docs/archive/*`, `docs/generated/*`, old audits, the full watch log, or sibling clone folders unless the active docs explicitly send you there.
 3. If the task changes architecture, state ownership, contracts, or product behavior, read `ARCHITECTURE.md`, `docs/SYSTEM_INTENT.md`, and the relevant canonical doc under `docs/`.
 4. Run `git status --short --branch` and confirm current branch/worktree state.
 5. Reserve a unique work ID using `W-YYYYMMDD-HHMM-<repo>-<agent>`.
@@ -85,6 +86,8 @@ This file defines mandatory execution rules for all coding agents in this reposi
 - Development log: `docs/AGENT_WATCH_LOG.md`
 - Runtime memory: `.agent-context/{snapshots,checkpoints,briefs,handoffs,compact,state}`
 - Do not treat the watch log as the primary resume surface. Use checkpoints and briefs first.
+- Read only the recent tail or a work-id match from the watch log; do not scan the full file unless reconstructing history.
+- Generated maps are opt-in navigation aids, not default-reading material.
 
 ## Source of Truth
 - Canonical collaboration and project guide: `README.md`

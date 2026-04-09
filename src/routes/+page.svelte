@@ -1,242 +1,272 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import WebGLAsciiBackground from '../components/home/WebGLAsciiBackground.svelte';
+  import WaitlistSection from '../components/home/WaitlistSection.svelte';
 
-  let mounted = $state(false);
-  let email = $state('');
-  let submitted = $state(false);
-  let submitting = $state(false);
-  let errorMsg = $state('');
+  // Chart tool cards — arranged in orbital rings around center
+  const orbitCards = [
+    // Inner ring (closer, larger)
+    { src: '/cogochi/chart-tools/scanner-grid.svg', title: 'Scanner', angle: 20, dist: 320, size: 120 },
+    { src: '/cogochi/chart-tools/breakout-arrow.svg', title: 'Breakout', angle: 80, dist: 340, size: 100 },
+    { src: '/cogochi/chart-tools/trend-map.svg', title: 'Trend Map', angle: 140, dist: 310, size: 115 },
+    { src: '/cogochi/chart-tools/vwap-band.svg', title: 'VWAP', angle: 200, dist: 330, size: 105 },
+    { src: '/cogochi/chart-tools/risk-ratio.svg', title: 'Risk', angle: 260, dist: 320, size: 95 },
+    { src: '/cogochi/chart-tools/support-zones.svg', title: 'Zones', angle: 320, dist: 335, size: 100 },
+    // Outer ring (farther, slightly smaller)
+    { src: '/cogochi/chart-tools/volume-feed.svg', title: 'Volume', angle: 50, dist: 440, size: 100 },
+    { src: '/cogochi/chart-tools/orderbook-ladder.svg', title: 'Orderbook', angle: 110, dist: 460, size: 95 },
+    { src: '/cogochi/chart-tools/liquidity-heatmap.svg', title: 'Heatmap', angle: 170, dist: 450, size: 90 },
+    { src: '/cogochi/chart-tools/divergence-oscillator.svg', title: 'Divergence', angle: 230, dist: 445, size: 90 },
+    { src: '/cogochi/chart-tools/momentum-stack.svg', title: 'Momentum', angle: 290, dist: 455, size: 105 },
+    { src: '/cogochi/chart-tools/session-clock.svg', title: 'Session', angle: 350, dist: 440, size: 88 },
+    { src: '/cogochi/chart-tools/sweep-marker.svg', title: 'Sweep', angle: 0, dist: 470, size: 92 },
+    { src: '/cogochi/chart-tools/alert-tag.svg', title: 'Alert', angle: 180, dist: 470, size: 82 },
+  ];
 
-  async function handleSubmit() {
-    if (!email.includes('@') || submitting) return;
-    submitting = true;
-    errorMsg = '';
-    try {
-      const res = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim() }),
-      });
-      const data = await res.json();
-      if (data.ok) {
-        submitted = true;
-      } else {
-        errorMsg = data.error || 'Something went wrong';
-      }
-    } catch {
-      errorMsg = 'Network error. Try again.';
-    }
-    submitting = false;
+  let mouseX = $state(50);
+  let mouseY = $state(50);
+
+  const mx = $derived((mouseX - 50) / 50);
+  const my = $derived((mouseY - 50) / 50);
+  const cameraOrbit = $derived(
+    `${(mx * 25).toFixed(1)}deg ${(75 + my * 15).toFixed(1)}deg 1.8m`
+  );
+
+  function clamp01(v: number) { return Math.min(1, Math.max(0, v)); }
+
+  function updateCursor(e: PointerEvent) {
+    if (typeof window === 'undefined') return;
+    mouseX = Math.round(clamp01(e.clientX / window.innerWidth) * 100);
+    mouseY = Math.round(clamp01(e.clientY / window.innerHeight) * 100);
   }
 
-  function onKey(e: KeyboardEvent) { if (e.key === 'Enter') handleSubmit(); }
-  onMount(() => { requestAnimationFrame(() => { mounted = true; }); });
+  onMount(() => {
+    window.addEventListener('pointermove', updateCursor, { passive: true });
+    return () => window.removeEventListener('pointermove', updateCursor);
+  });
 </script>
 
 <svelte:head>
-  <title>COGOTCHI — Train Your Trading Edge</title>
+  <title>Cogotchi — Market Judgment That Leaves a Trace</title>
+  <meta name="description" content="Cogotchi turns market judgment into a living agent you can refine, revisit, and prove." />
+  <meta property="og:title" content="Cogotchi — Market Judgment That Leaves a Trace" />
+  <meta property="og:description" content="Cogotchi turns market judgment into a living agent you can refine, revisit, and prove." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="canonical" href="/" />
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </svelte:head>
 
-<div class="lp" class:mounted>
-  <section class="hero">
+<WebGLAsciiBackground {mouseX} {mouseY} />
 
-    <h1 class="brand">COGOTCHI</h1>
-
-    <div class="tagline">
-      <p class="tl">The market has patterns.</p>
-      <p class="tl">Now you can <span class="accent">train on them.</span></p>
+<div class="page">
+  <div class="hero">
+    <!-- 3D model background -->
+    <div class="model-shell" aria-hidden="true" style:transform={`translate(-50%, -50%) translate3d(${mx * 16}px, ${my * 10}px, 0)`}>
+      <model-viewer
+        src="/cogochi/logo.glb"
+        class="model-el"
+        alt=""
+        camera-orbit={cameraOrbit}
+        min-camera-orbit="auto auto 0.5m"
+        field-of-view="30deg"
+        interaction-prompt="none"
+        shadow-intensity="0"
+        environment-image="neutral"
+        loading="eager"
+        interpolation-decay="120"
+      ></model-viewer>
     </div>
 
-    <p class="sub">
-      Your AI agent learns your trading edge — and scans
-      the entire market 24/7 to find it.
-    </p>
-
-    <div class="tags">
-      <span class="pill">Active futures traders</span>
-      <span class="pill">Pattern-based traders</span>
-      <span class="pill">Copy trading followers</span>
-    </div>
-
-    <div class="cta">
-      {#if submitted}
-        <div class="cta-ok">
-          <span class="ok-icon">✓</span>
-          You're on the list. We'll reach out soon.
+    <!-- Orbital chart cards -->
+    <div class="orbit-layer" aria-hidden="true">
+      {#each orbitCards as card, i}
+        {@const rad = (card.angle * Math.PI) / 180}
+        {@const baseX = Math.cos(rad) * card.dist}
+        {@const baseY = Math.sin(rad) * card.dist}
+        {@const parallax = card.dist / 400}
+        {@const px = mx * 12 * parallax}
+        {@const py = my * 8 * parallax}
+        <div
+          class="orbit-card"
+          style:--x={`${baseX}px`}
+          style:--y={`${baseY}px`}
+          style:--size={`${card.size}px`}
+          style:--delay={`${-(i * 0.9)}s`}
+          style:transform={`translate(calc(var(--x) + ${px.toFixed(1)}px - 50%), calc(var(--y) + ${py.toFixed(1)}px - 50%))`}
+        >
+          <img src={card.src} alt={card.title} class="orbit-img" loading="lazy" />
         </div>
-      {:else}
-        <div class="cta-row">
-          <input
-            class="cta-in"
-            type="email"
-            bind:value={email}
-            onkeydown={onKey}
-            placeholder="your@email.com"
-            autocomplete="email"
-          />
-          <button class="cta-btn" onclick={handleSubmit} disabled={submitting || !email.includes('@')}>
-            {submitting ? 'Joining...' : 'Join Alpha Waitlist →'}
-          </button>
-        </div>
-        {#if errorMsg}
-          <p class="cta-err">{errorMsg}</p>
-        {/if}
-      {/if}
+      {/each}
     </div>
 
-    <p class="fine">Free · No credit card · Early access priority</p>
+    <!-- Center: Waitlist card (the star) -->
+    <div class="center-card" style:transform={`perspective(800px) rotateY(${mx * -1.5}deg) rotateX(${my * 1.5}deg)`}>
+      <WaitlistSection />
+    </div>
 
-  </section>
+    <!-- Side feature labels (subtle, not competing) -->
+    <div class="side-label left-top">
+      <strong>Turn Judgment Into Proof</strong>
+      <span>Your trading edge, remembered.</span>
+    </div>
+    <div class="side-label left-bottom">
+      <strong>Capture Every Signal</strong>
+      <span>Before the moment evaporates.</span>
+    </div>
+    <div class="side-label right-top">
+      <strong>Build Memory</strong>
+      <span>Patterns that make your edge repeatable.</span>
+    </div>
+    <div class="side-label right-bottom">
+      <strong>Prove The Edge</strong>
+      <span>Claims that hold up.</span>
+    </div>
+  </div>
 </div>
 
 <style>
-  .lp {
-    position: relative; z-index: 2;
-    height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    color: #F0EDE4;
-    opacity: 0; transition: opacity .6s ease;
-    padding: 0 24px;
-  }
-  .lp.mounted { opacity: 1; }
+  :global(html) { -webkit-text-size-adjust: 100%; height: 100%; }
+  :global(body) { margin: 0; min-height: 100%; background: #030610; color: #f7f2ea; font-family: Instrumentsans, 'Space Grotesk', Arial, sans-serif; }
+
+  .page { position: relative; z-index: 1; }
 
   .hero {
-    width: 100%; max-width: 800px;
-    display: flex; flex-direction: column;
-    align-items: center; text-align: center;
-  }
-
-  .brand {
-    font-family: 'Orbitron', var(--sc-font-display, 'Bebas Neue'), sans-serif;
-    font-size: clamp(44px, 10vw, 120px);
-    font-weight: 900;
-    letter-spacing: 4px;
-    line-height: .92;
-    margin: 0 0 clamp(16px, 3vw, 32px);
-    color: #F0EDE4;
-    text-transform: uppercase;
-    animation: rise .9s cubic-bezier(.16,1,.3,1) both;
-  }
-
-  .tagline { margin-bottom: clamp(10px, 1.5vw, 16px); }
-  .tl {
-    font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: clamp(18px, 2.8vw, 32px);
-    font-weight: 500;
-    line-height: 1.35;
-    margin: 0;
-    color: rgba(240,237,228,.75);
-    animation: rise .8s cubic-bezier(.16,1,.3,1) .15s both;
-  }
-  .accent { color: #E8967D; }
-
-  .sub {
-    font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: clamp(13px, 1.5vw, 16px);
-    line-height: 1.6;
-    color: rgba(240,237,228,.38);
-    max-width: 480px;
-    margin: 0 0 clamp(14px, 2vw, 24px);
-    animation: rise .8s cubic-bezier(.16,1,.3,1) .3s both;
-  }
-
-  .tags {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    justify-content: center;
-    margin-bottom: clamp(16px, 2.5vw, 28px);
-    animation: rise .8s cubic-bezier(.16,1,.3,1) .45s both;
-  }
-  .pill {
-    font-family: var(--sc-font-mono, monospace);
-    font-size: 10px;
-    letter-spacing: .5px;
-    color: rgba(240,237,228,.4);
-    padding: 5px 12px;
-    border: 1px solid rgba(232,150,125,.1);
-    border-radius: 999px;
-  }
-
-  .cta { animation: rise .8s cubic-bezier(.16,1,.3,1) .6s both; width: 100%; max-width: 460px; }
-  .cta-row {
+    position: relative;
+    min-height: 100vh;
     display: flex;
-    border: 1px solid rgba(232,150,125,.16);
-    border-radius: 10px;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
-    transition: border-color .2s, box-shadow .2s;
-    background: rgba(11,18,32,.35);
-  }
-  .cta-row:focus-within {
-    border-color: rgba(232,150,125,.35);
-    box-shadow: 0 0 0 3px rgba(232,150,125,.05);
-  }
-  .cta-in {
-    flex: 1; padding: 14px 16px;
-    background: transparent; border: none; outline: none;
-    font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: 14px; color: #F0EDE4; caret-color: #E8967D;
-    min-width: 0;
-  }
-  .cta-in::placeholder { color: rgba(240,237,228,.18); }
-  .cta-btn {
-    padding: 14px 24px; background: #E8967D; border: none;
-    color: #0a0a0f;
-    font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: 13px; font-weight: 600;
-    cursor: pointer; transition: filter .15s;
-    white-space: nowrap; flex-shrink: 0;
-  }
-  .cta-btn:hover:not(:disabled) { filter: brightness(1.1); }
-  .cta-btn:disabled { opacity: .3; cursor: not-allowed; }
-
-  .cta-ok {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 14px 20px;
-    border: 1px solid rgba(173,202,124,.16);
-    border-radius: 10px;
-    background: rgba(173,202,124,.05);
-    color: #adca7c;
-    font-family: var(--sc-font-body, 'Space Grotesk', sans-serif);
-    font-size: 14px;
-  }
-  .ok-icon {
-    width: 20px; height: 20px; border-radius: 50%;
-    background: #adca7c; color: #0a0a0f;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700; flex-shrink: 0;
-  }
-  .cta-err {
-    font-family: var(--sc-font-mono, monospace);
-    font-size: 11px; color: #cf7f8f; margin: 8px 0 0;
   }
 
-  .fine {
-    font-family: var(--sc-font-mono, monospace);
-    font-size: 10px; letter-spacing: .5px;
-    color: rgba(240,237,228,.18);
-    margin: 12px 0 0;
-    animation: rise .8s cubic-bezier(.16,1,.3,1) .75s both;
+  /* ── 3D model ── */
+  .model-shell {
+    position: absolute;
+    left: 50%; top: 48%;
+    width: min(48vw, 36rem);
+    height: min(48vw, 36rem);
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.15;
+    will-change: transform;
+    transition: transform 400ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    overflow: visible;
   }
 
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(40px); filter: blur(4px); }
-    to { opacity: 1; transform: none; filter: blur(0); }
+  .model-el {
+    width: 100%; height: 100%;
+    background: transparent !important;
+    border: 0; outline: 0; box-shadow: none;
+    --poster-color: transparent;
+    animation: breathe 7s ease-in-out infinite;
+  }
+
+  @keyframes breathe {
+    0%, 100% { translate: 0 0; }
+    40% { translate: 2px -5px; }
+    70% { translate: -1px -3px; }
+  }
+
+  /* ── Orbital chart cards ── */
+  .orbit-layer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+  }
+
+  .orbit-card {
+    position: absolute;
+    left: 0; top: 0;
+    width: var(--size);
+    height: var(--size);
+    opacity: 0.7;
+    filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.45));
+    animation: orbit-float 10s ease-in-out infinite;
+    animation-delay: var(--delay);
+    will-change: transform;
+    transition: transform 500ms ease-out, opacity 0.3s ease;
+  }
+
+  .orbit-card:hover {
+    opacity: 1;
+  }
+
+  .orbit-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+
+  @keyframes orbit-float {
+    0%, 100% { translate: 0 0; }
+    25% { translate: 3px -5px; }
+    50% { translate: -2px -3px; }
+    75% { translate: 1px -6px; }
+  }
+
+  /* ── Center waitlist card ── */
+  .center-card {
+    position: relative;
+    z-index: 3;
+    will-change: transform;
+    transition: transform 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* ── Side feature labels (subtle) ── */
+  .side-label {
+    position: absolute;
+    z-index: 2;
+    max-width: 300px;
+    pointer-events: none;
+  }
+
+  .side-label strong {
+    display: block;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: rgba(247, 242, 234, 0.88);
+    margin-bottom: 6px;
+    line-height: 1.1;
+  }
+
+  .side-label span {
+    display: block;
+    font-size: clamp(0.85rem, 1.3vw, 1rem);
+    color: rgba(247, 242, 234, 0.38);
+    line-height: 1.5;
+  }
+
+  .left-top { left: clamp(20px, 4vw, 60px); top: 22%; }
+  .left-bottom { left: clamp(20px, 4vw, 60px); bottom: 18%; }
+  .right-top { right: clamp(20px, 4vw, 60px); top: 22%; text-align: right; }
+  .right-bottom { right: clamp(20px, 4vw, 60px); bottom: 18%; text-align: right; }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .orbit-card { opacity: 0.55; }
+    .model-shell { opacity: 0.1; }
+    .side-label strong { font-size: 1.1rem; }
+    .side-label { max-width: 180px; }
   }
 
   @media (max-width: 768px) {
-    .lp { padding: 0 20px; }
-    .brand { letter-spacing: 2px; }
-    .cta-row { flex-direction: column; }
-    .cta-btn { width: 100%; text-align: center; }
+    .orbit-layer { display: none; }
+    .model-shell { display: none; }
+    .side-label { display: none; }
+    .hero { padding: 5rem 20px 3rem; }
   }
 
-  @media (max-width: 480px) {
-    .brand { font-size: clamp(28px, 11vw, 44px); letter-spacing: 1px; margin-bottom: 12px; }
-    .tl { font-size: clamp(15px, 4.2vw, 20px); }
-    .sub { font-size: 12px; margin-bottom: 10px; }
-    .pill { font-size: 8px; padding: 4px 8px; }
-    .tags { gap: 5px; margin-bottom: 12px; }
-    .cta-in { padding: 12px 14px; font-size: 13px; }
-    .cta-btn { padding: 12px; font-size: 12px; }
-    .fine { font-size: 9px; }
+  @media (prefers-reduced-motion: reduce) {
+    .orbit-card { animation: none; }
+    .model-el { animation: none; }
   }
 </style>

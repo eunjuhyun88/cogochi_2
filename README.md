@@ -30,6 +30,8 @@ SvelteKit + TypeScript 기반으로 `Arena`, `Terminal (War Room/Intel)`, `Signa
 - 에이전트 자동 실행 규칙 파일은 `AGENTS.md`다.
 - 루트 아키텍처 맵은 `ARCHITECTURE.md`다.
 - `docs/README.md`는 작업별 문서 라우팅용 컨텍스트 맵이다.
+- 기본 컨텍스트 묶음은 `README.md`, `AGENTS.md`, `docs/README.md`, 그리고 해당 surface의 canonical doc 1개까지만 둔다.
+- `docs/generated/*`, 전체 `docs/AGENT_WATCH_LOG.md`, `.agent-context/*`는 필요할 때만 연다.
 
 ## 1) Overview
 
@@ -111,7 +113,7 @@ npm run preview
 - `npm run safe:split -- <slice> --describe`: mixed WIP slice manifest, validation gate, mixed-file 목록 출력
 - `npm run safe:split -- <slice> --create-worktree --stage`: target slice worktree 생성 후 whole-file carry 적용
 - `npm run safe:hooks`: 로컬 pre-push/post-merge 훅 설치 (`.githooks/*`)
-- `npm run safe:sync`: 브랜치 동기화 (`main`은 `pull --ff-only`, 작업 브랜치는 `origin/main` rebase + check)
+- `npm run safe:sync`: 브랜치 동기화 (`main`은 `pull --ff-only`, 작업 브랜치는 `origin/main` rebase + check`; 동기화 자체는 컨텍스트 로딩용이 아니다)
 - `npm run safe:sync:gate`: 동기화 후 `check + build`까지 실행
 - `npm run ctx:save -- --title "<task>" --work-id "<W-ID>" --agent "<agent>"`: machine snapshot 저장
 - `npm run ctx:checkpoint -- --work-id "<W-ID>" --surface "<surface>" --objective "<objective>"`: semantic working-memory checkpoint 저장
@@ -142,6 +144,7 @@ npm run preview
    ```bash
    npm run safe:sync
    ```
+   - generated maps나 watch log 전체를 먼저 열지 말고, 필요한 canonical docs만 먼저 확인한다.
 4. 작업 끝나기 전:
    ```bash
    npm run safe:sync:gate

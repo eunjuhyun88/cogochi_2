@@ -31,7 +31,7 @@ The product should feel like a tight builder loop, not a trading terminal with u
 ## Official Surface Model
 
 - `Home` (`/`)
-  - split builder vs copier intent quickly
+  - lead with private-alpha email capture and the trace/memory promise
 - `Onboard` (`/onboard`)
   - create the first usable agent and deliver the first battle taste
 - `Dashboard` (`/dashboard`)
@@ -110,8 +110,8 @@ The product should feel like a tight builder loop, not a trading terminal with u
 ## Route Intent Summary
 
 ### Home
-- Explain builder vs copier paths fast.
-- Primary CTA should send builders into onboarding, not directly into Terminal.
+- Explain the landing promise fast.
+- Primary CTA should capture email, not send users into dense trading UI first.
 
 ### Onboard
 - End with one usable agent plus a memorable first battle moment.
