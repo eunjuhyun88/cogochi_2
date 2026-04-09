@@ -22,7 +22,7 @@ uniform vec2 uMouse, uMousePrev, uRes;
 uniform float uSize, uTime;
 out vec4 o;
 
-const float FADE = 0.990, RAD = 0.005, STR = 0.55, CUT = 0.004;
+const float FADE = 0.988, RAD = 0.012, STR = 0.75, CUT = 0.003;
 
 float dSeg(vec2 p, vec2 a, vec2 b) {
   vec2 d = b - a; float l2 = dot(d, d);
@@ -54,7 +54,7 @@ void main() {
   float d = dSeg(p, a, b);
   float segLen = length(b - a);
   float mask = smoothstep(0.00025, 0.0015, segLen);
-  float dynR = mix(RAD, RAD * 6.0, clamp(uSize, 0.0, 1.0));
+  float dynR = mix(RAD, RAD * 12.0, clamp(uSize, 0.0, 1.0));
   // Organic edge via warped fBm
   vec2 nuv = vUv * vec2(7.0, 4.8) + vec2(uTime * 0.35, -uTime * 0.22);
   float wX = fbm4(nuv + vec2(1.7, 5.1)), wY = fbm4(nuv + vec2(8.3, 2.4));
@@ -75,7 +75,7 @@ uniform vec2 uRes;
 uniform float uTime;
 out vec4 o;
 
-const float GROW = 0.10, DISS = 0.988, CUT = 0.004;
+const float GROW = 0.18, DISS = 0.990, CUT = 0.003;
 
 float h12(vec2 p) {
   vec3 p3 = fract(vec3(p.xyx) * 0.1031);
