@@ -140,12 +140,12 @@
     z-index: 0;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 50% 40% at var(--mx) var(--my), rgba(219, 154, 159, 0.08), transparent),
-      radial-gradient(ellipse 60% 50% at var(--mx) var(--my), rgba(255, 255, 255, 0.03), transparent),
-      radial-gradient(ellipse 40% 35% at calc(100% - var(--mx)) calc(100% - var(--my)), rgba(173, 202, 124, 0.06), transparent),
-      radial-gradient(circle at 20% 80%, rgba(242, 209, 147, 0.04), transparent 40%),
-      radial-gradient(circle at 80% 20%, rgba(219, 154, 159, 0.03), transparent 40%),
-      linear-gradient(180deg, #030610 0%, #050914 50%, #030610 100%);
+      radial-gradient(ellipse 55% 45% at var(--mx) var(--my), rgba(219, 154, 159, 0.18), transparent),
+      radial-gradient(ellipse 65% 55% at var(--mx) var(--my), rgba(255, 255, 255, 0.06), transparent),
+      radial-gradient(ellipse 45% 40% at calc(100% - var(--mx)) calc(100% - var(--my)), rgba(173, 202, 124, 0.14), transparent),
+      radial-gradient(circle at 20% 80%, rgba(242, 209, 147, 0.08), transparent 45%),
+      radial-gradient(circle at 80% 20%, rgba(219, 154, 159, 0.06), transparent 45%),
+      linear-gradient(180deg, #050a18 0%, #080c22 50%, #030610 100%);
     transition: background 200ms ease;
   }
 
