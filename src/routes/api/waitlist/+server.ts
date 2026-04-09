@@ -14,9 +14,15 @@ function sanitize(input: string, maxLen: number): string {
   return input.replace(/<[^>]*>/g, '').trim().slice(0, maxLen);
 }
 
-export const POST: RequestHandler = async ({ request, getClientAddress }) => {
+export const POST: RequestHandler = async ({ request, getClientAddress, url: reqUrl }) => {
   try {
-    // ── Rate limit ──
+    // ── CSRF: block cross-origin requests ──
+    const origin = request.headers.get('origin');
+    if (origin && origin !== reqUrl.origin) {
+      return json({ ok: false, error: 'Cross-origin request blocked' }, { status: 403 });
+    }
+
+    // ── Rate limit (getClientAddress handles proxy via SvelteKit adapter) ──
     const ip = getClientAddress();
     if (!waitlistLimiter.check(ip)) {
       return json({ ok: false, error: 'Too many requests. Try again later.' }, { status: 429 });

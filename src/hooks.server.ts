@@ -24,7 +24,18 @@ export const handle: Handle = async ({ event, resolve }) => {
   response.headers.set('Cross-Origin-Opener-Policy', 'same-origin');
   response.headers.set('Cross-Origin-Resource-Policy', 'same-site');
   response.headers.set('X-Permitted-Cross-Domain-Policies', 'none');
-  response.headers.set('Content-Security-Policy', "base-uri 'self'; frame-ancestors 'self'; object-src 'none'");
+  response.headers.set('Content-Security-Policy', [
+    "base-uri 'self'",
+    "frame-ancestors 'self'",
+    "object-src 'none'",
+    "form-action 'self'",
+    "script-src 'self' 'wasm-unsafe-eval' https://unpkg.com https://cloud.umami.is",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.prod.website-files.com",
+    "img-src 'self' data: https:",
+    "font-src 'self' https://fonts.gstatic.com",
+    "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.binance.com wss://stream.binance.com",
+    "upgrade-insecure-requests",
+  ].join('; '));
 
   if (!dev && event.url.protocol === 'https:') {
     response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
