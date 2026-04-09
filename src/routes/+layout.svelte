@@ -9,7 +9,7 @@
   import P0Banner from '../components/shared/P0Banner.svelte';
   import { page } from '$app/stores';
   import { gameState } from '$lib/stores/gameState';
-  import { derived } from 'svelte/store';
+  import { derived, get } from 'svelte/store';
   import { onMount, onDestroy } from 'svelte';
   import { fetchPrices, fetch24hrMulti, subscribeMiniTicker } from '$lib/api/binance';
   import { updatePrice, updatePrices as updatePriceStore, updatePriceFull } from '$lib/stores/priceStore';
@@ -52,6 +52,11 @@
   let _wsFullFlushTimer: ReturnType<typeof setTimeout> | null = null;
 
   onMount(async () => {
+    const currentPath = get(page).url.pathname;
+    if (currentPath.startsWith('/cogochi')) {
+      return;
+    }
+
     // Track viewport width for conditional BottomBar
     const handleResize = () => { windowWidth = window.innerWidth; };
     window.addEventListener('resize', handleResize);
@@ -170,8 +175,8 @@
 
 <div id="app" class:cogochi-mode={$isCogochi} class:home-mode={$isHome}>
   {#if !$isCogochi}<Header />{/if}
-  {#if !$isCogochi}<P0Banner />{/if}
-  <div id="main-content" class:terminal-route={$isTerminal}>
+  {#if !$isCogochi && !$isHome}<P0Banner />{/if}
+  <div id="main-content" class:terminal-route={$isTerminal} class:home-route={$isHome}>
     {@render children()}
   </div>
   {#if !$isCogochi && !$isHome}
@@ -187,10 +192,10 @@
 <WalletModal />
 
 <!-- Global Notification Tray (bottom-right bell + slide-up panel) -->
-<NotificationTray />
+{#if !$isHome && !$isCogochi}<NotificationTray />{/if}
 
 <!-- Global Toast Stack (bottom-right, above bell) -->
-<ToastStack />
+{#if !$isHome && !$isCogochi}<ToastStack />{/if}
 
 <style>
   #app {
@@ -208,11 +213,18 @@
   }
   #app.home-mode {
     padding-bottom: 0 !important;
+    padding-top: 0;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
   }
   #main-content {
     flex: 1;
     overflow: hidden;
     position: relative;
+  }
+  #main-content.home-route {
+    overflow: visible;
   }
 
   /* 769-1024px: tablet */
@@ -222,12 +234,19 @@
       height: 100svh;
       min-height: 100svh;
     }
+    #app.home-mode {
+      padding-top: 0;
+    }
   }
   /* ≤768px: header (40px) + tab strip (34px) = 74px top */
   @media (max-width: 768px) {
     #app {
       padding-top: 48px;
       padding-bottom: calc(var(--sc-mobile-nav-h, 64px) + env(safe-area-inset-bottom, 0px));
+    }
+    #app.home-mode {
+      padding-top: 0;
+      padding-bottom: 0 !important;
     }
     #main-content {
       overflow: auto;
@@ -242,6 +261,9 @@
   @media (max-width: 480px) {
     #app {
       padding-top: 44px;
+    }
+    #app.home-mode {
+      padding-top: 0;
     }
   }
 </style>

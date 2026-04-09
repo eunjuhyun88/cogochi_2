@@ -30,6 +30,7 @@ Purpose:
 - `docs/page-specs/settings-page.md`
 - `docs/page-specs/arena-war-page.md`
 - `docs/page-specs/arena-v2-page.md`
+- `docs/page-specs/cogochi-showcase-page.md`
 
 ## Rules
 

@@ -347,7 +347,7 @@
     transition: background .2s, border-color .2s;
     padding: 0;
   }
-  .toggle-btn.on { background: var(--grn); border-color: rgba(0,255,136,.4); }
+  .toggle-btn.on { background: #11233b; border-color: rgba(113,147,196,.38); }
   .toggle-dot {
     width: 16px; height: 16px;
     border-radius: 50%;

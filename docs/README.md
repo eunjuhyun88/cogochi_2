@@ -12,12 +12,21 @@ Purpose:
 6. `ARCHITECTURE.md`
 7. `docs/README.md`
 8. Relevant design/spec docs
+
+Default bundle:
+- `README.md`
+- `AGENTS.md`
+- `docs/README.md`
+- one surface-specific canonical doc
+
+Do not load `docs/generated/*`, the full watch log, or `.agent-context/*` unless the task explicitly needs them.
 ## Active Boundaries
 - Active implementation target: current git worktree rooted at this repository
 - Canonical code lives in: `src/`, `db/`, `supabase/`, `scripts/`, `docs/`
 - Sibling clone folders outside this repo are reference-only unless a current plan explicitly says otherwise.
 - `docs/archive/` is historical context, not current authority.
-- `docs/AGENT_WATCH_LOG.md` is an operations log, not a design spec. Read targeted entries only.
+- `docs/generated/*` are opt-in navigation aids. Only open them when route/store/API navigation is the task.
+- `docs/AGENT_WATCH_LOG.md` is an operations log, not a design spec. Read the recent tail or a work-id match only.
 ## Structured Knowledge Base
 - `docs/design-docs/` — stable design beliefs and design-catalog index
 - `docs/product-specs/` — short specs for the target IA plus current legacy implementation slices
@@ -114,7 +123,8 @@ Purpose:
 - Do not treat a provisional task contract as sufficient; replace placeholder finish checks with task-specific checks.
 - Do not treat old audits as source of truth when a newer execution design exists.
 - Do not start in `docs/archive/` unless the active doc explicitly points there.
-- Do not scan the full watch log; use keyword/date filtering when you need recent decisions.
+- Do not scan the full watch log; use tail or work-id filtering when you need recent decisions.
+- Do not open `docs/generated/*` unless the task specifically needs route/store/API navigation.
 - Do not require parent-folder docs for normal first-pass context recovery.
 - When a task changes ongoing behavior or architecture, update the canonical doc for that surface, not just the watch log.
 ## Promotion Rules

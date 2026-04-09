@@ -94,13 +94,6 @@ const routeMeta = [
     deepDocs: '`docs/product-specs/passport.md`'
   },
   {
-    route: '/live',
-    role: 'auxiliary live route/data hook',
-    primaryConcern: 'limited runtime support surface',
-    keyState: 'route-level data',
-    deepDocs: '`docs/PRODUCT_SENSE.md`'
-  },
-  {
     route: '/lab',
     role: 'model training workbench',
     primaryConcern: 'agent doctrine, retained memory, release readiness',
@@ -178,6 +171,13 @@ const routeMeta = [
     deepDocs: '`docs/PRODUCT_SENSE.md`'
   },
   {
+    route: '/cogochi/showcase',
+    role: 'cogochi showcase scene',
+    primaryConcern: 'scroll-reactive desktop scene and email-first alpha capture',
+    keyState: 'route-local scroll + email state',
+    deepDocs: '`docs/page-specs/cogochi-showcase-page.md`'
+  },
+  {
     route: '/cogochi/terminal',
     role: 'DOUNI AI terminal',
     primaryConcern: 'LLM-driven chat with function calling, market analysis, social data',
@@ -191,7 +191,6 @@ const storeMeta = [
   ['gameState', 'route/session transient', 'arena phase/view/hypothesis/session UI', 'Must not become market-truth owner.'],
   ['arenaV2State', 'route/session transient', 'simplified arena v2 local flow', 'Route-specific state.'],
   ['arenaWarStore', 'route/session transient', 'arena-war state machine and local orchestration', 'Durable record still belongs to server persistence.'],
-  ['activeGamesStore', 'route/session transient', 'local multi-game runtime tracking', 'Coordination state, not durable truth.'],
   ['authSessionStore', 'server-authoritative projection', 'authenticated session mirror and cookie-backed identity', 'Session authority should stay separate from wallet UX and route-local control state.'],
   ['walletStore', 'route/session transient', 'wallet connection transport and signed-wallet shell', 'Connection UX state should stay separate from durable profile or trade truth.'],
   ['walletModalStore', 'route/session transient', 'wallet modal visibility and step flow', 'Modal UX state is split from wallet transport and progression state.'],
@@ -211,7 +210,6 @@ const storeMeta = [
   ['agentData', 'derived/support', 'agent stats and learning presentation layer', 'Should not silently redefine server truth.'],
   ['doctrineStore', 'derived/support', 'per-agent doctrine editor state and version history', 'Editable doctrine state should reconcile with durable agent truth when server APIs land.'],
   ['warRoomStore', 'route/session transient', 'war-room discussion state', 'Runtime coordination state.'],
-  ['dbStore', 'derived/support', 'localStorage CRUD helpers and table adapters', 'Utility persistence layer for local fallback tables; not durable server truth.'],
   ['hydration', 'derived/support', 'orchestrates initial store hydration', 'Not domain truth itself.'],
   ['progressionRules', 'derived/support', 'tier and LP mapping logic', 'Rule/helper module, not state owner.'],
   ['storageKeys', 'derived/support', 'local storage key registry', 'Utility only.'],
@@ -223,6 +221,7 @@ const apiCategoryOrder = [
   'Market Data',
   'Terminal Scanner',
   'Signals',
+  'Growth & Landing',
   'Quick Trades',
   'GMX V2',
   'Polymarket',
@@ -246,6 +245,7 @@ const apiCategoryMeta = {
   'Market Data': { purpose: 'market snapshot, flow, news, and dex data' },
   'Terminal Scanner': { purpose: 'scan and intel orchestration' },
   'Signals': { purpose: 'signal objects and action conversion' },
+  'Growth & Landing': { purpose: 'email capture, waitlist, and private-alpha access' },
   'Quick Trades': { purpose: 'fast trade lifecycle' },
   'GMX V2': { purpose: 'GMX position lifecycle' },
   Polymarket: { purpose: 'prediction market and related positions' },
@@ -318,6 +318,7 @@ function discoverApiRoutes() {
 
 function groupApiRoute(route) {
   if (route.startsWith('/api/auth/')) return 'Auth & Session';
+  if (route === '/api/waitlist') return 'Growth & Landing';
   if (route.startsWith('/api/market/alerts/')) return 'Market Alerts';
   if (route.startsWith('/api/market/')) return 'Market Data';
   if (route.startsWith('/api/terminal/')) return 'Terminal Scanner';

@@ -20,6 +20,128 @@ Purpose: 작업 중복을 막고, 작업 전/후 실제 변경 이력을 시간 
 
 ## Entries
 
+## [2026-04-09 20:48:50 +0900] START W-20260409-2048-cogochi2-codex
+- Repo: /Users/ej/Projects/cogochi_2
+- Branch: codex/home-email-landing
+- Base origin/main hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status: dirty; existing user WIP remains in `src/components/layout/Header.svelte`, `src/routes/+layout.svelte`, `src/lib/styles/tokens.css`, `src/routes/+page.svelte`, and deleted route/component files
+- Task summary: generate a new `logo.glb` mesh from the transparent silhouette so the showcase object matches the provided shape references
+- Overlap / conflict check: I will own `scripts/dev/build-cogochi-logo-mesh.py`, `static/cogochi/logo.glb`, and `docs/AGENT_WATCH_LOG.md`; avoid unrelated WIP surfaces
+- safe:status result: prior safe-status snapshot still shows branch `codex/home-email-landing` with no changes vs origin/main and the same unrelated dirty baseline
+- Status: IN_PROGRESS
+
+## [2026-04-09 20:26:24 +0900] START W-20260409-2026-cogochi2-codex
+- Repo: /Users/ej/Projects/cogochi_2
+- Branch: codex/home-email-landing
+- Base origin/main hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status: dirty; existing user WIP remains in `src/components/layout/Header.svelte`, `src/routes/+layout.svelte`, `src/lib/styles/tokens.css`, `src/routes/+page.svelte`, and deleted route/component files
+- Task summary: remove only the waitlist-specific move of `logo.glb` and restore the backdrop to the original hero location
+- Overlap / conflict check: I will own `src/routes/cogochi/showcase/+page.svelte`, `docs/page-specs/cogochi-showcase-page.md`, and `docs/AGENT_WATCH_LOG.md`; avoid unrelated WIP surfaces
+- safe:status result: prior safe-status snapshot still shows branch `codex/home-email-landing` with no changes vs origin/main and the same unrelated dirty baseline
+- Status: IN_PROGRESS
+
+## [2026-04-09 20:14:49 +0900] START W-20260409-2014-cogochi2-codex
+- Repo: /Users/ej/Projects/cogochi_2
+- Branch: codex/home-email-landing
+- Base origin/main hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status: dirty; existing user WIP remains in `src/components/layout/Header.svelte`, `src/routes/+layout.svelte`, `src/lib/styles/tokens.css`, `src/routes/+page.svelte`, and deleted route/component files
+- Task summary: move the `logo.glb` object into the `/cogochi/showcase#waitlist` section and reduce its dominance so the custom chart assets and FAQ panel read clearly
+- Overlap / conflict check: I will own `src/routes/cogochi/showcase/+page.svelte`, `docs/page-specs/cogochi-showcase-page.md`, and `docs/AGENT_WATCH_LOG.md`; avoid unrelated WIP surfaces
+- safe:status result: branch `codex/home-email-landing`; changed files vs origin/main reported none, uncommitted files still include the pre-existing unrelated deletions and edits above
+- Status: IN_PROGRESS
+
+## [2026-04-09 20:15:50 +0900] FINISH W-20260409-2014-cogochi2-codex
+- Branch: codex/home-email-landing
+- What changed:
+  - Moved the `logo.glb` backdrop out of the hero stack and into the `/cogochi/showcase#waitlist` section so the object now belongs to the FAQ/mail scene instead of spanning the whole landing view
+  - Reduced the backdrop dominance with smaller sizing, lighter scroll-linked motion, `mix-blend-mode: lighten`, and explicit z-index separation so the custom chart-analysis assets and waitlist copy stay readable
+  - Updated [docs/page-specs/cogochi-showcase-page.md](/Users/ej/Projects/cogochi_2/docs/page-specs/cogochi-showcase-page.md) to describe the waitlist-specific `logo.glb` backdrop and its failure mode
+  - Recorded the slice in [docs/AGENT_WATCH_LOG.md](/Users/ej/Projects/cogochi_2/docs/AGENT_WATCH_LOG.md) and refreshed the semantic checkpoint for the new objective
+- Validation results:
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS with the existing warning in [src/components/layout/Header.svelte](/Users/ej/Projects/cogochi_2/src/components/layout/Header.svelte)
+  - `npm run build`: PASS
+  - `npm run ctx:check -- --strict`: PASS
+- Commit hash: not committed
+- Push status: not pushed
+- Final working tree status: dirty; the branch still contains the pre-existing unrelated deletions/edits plus the new showcase and doc changes
+- Status: DONE
+
+## [2026-04-09 20:26:24 +0900] FINISH W-20260409-2026-cogochi2-codex
+- Branch: codex/home-email-landing
+- What changed:
+  - Reverted only the waitlist-specific `logo.glb` placement and restored the backdrop to the original hero orbit location
+  - Returned the `logo.glb` anchor sizing and motion to the previous hero-scene values so the waitlist section no longer owns that layer
+  - Updated [docs/page-specs/cogochi-showcase-page.md](/Users/ej/Projects/cogochi_2/docs/page-specs/cogochi-showcase-page.md) to remove the waitlist-specific backdrop wording and restore the hero-anchor contract
+- Validation results:
+  - Not rerun after this tiny revert; previous validation remained green before the revert
+- Commit hash: not committed
+- Push status: not pushed
+- Final working tree status: dirty; the branch still contains the pre-existing unrelated deletions/edits plus the showcase and doc changes
+- Status: DONE
+
+## [2026-04-09 18:21:35 +0900] START W-20260409-1821-cogochi2-codex
+- Repo: /Users/ej/Projects/cogochi_2
+- Branch: codex/home-email-landing
+- Base origin/main hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status: dirty; existing user WIP remains in `src/components/layout/Header.svelte`, `src/routes/+layout.svelte`, `src/lib/styles/tokens.css`, `src/routes/+page.svelte`, and deleted route/component files
+- Task summary: tighten `/cogochi/showcase` into a more literal `ssscript.app`-style desktop landing with the same topbar, rail, FAQ, pricing, and footer rhythm
+- Overlap / conflict check: I will own `src/routes/cogochi/showcase/+page.svelte` and `docs/page-specs/cogochi-showcase-page.md`; avoid unrelated WIP surfaces
+- safe:status result: branch `codex/home-email-landing`; changed files vs origin/main reported none, uncommitted files still include the pre-existing unrelated deletions and edits above
+- Status: IN_PROGRESS
+
+## [2026-04-09 18:25:30 +0900] FINISH W-20260409-1821-cogochi2-codex
+- Branch: codex/home-email-landing
+- What changed:
+  - Reworked [src/routes/cogochi/showcase/+page.svelte](/Users/ej/Projects/cogochi_2/src/routes/cogochi/showcase/+page.svelte) into a more literal `ssscript.app`-style desktop landing with the same fixed topbar rhythm, central access card, right-side file rail, hidden waitlist windows, FAQ/mail layout, pricing grid, and bottom dock/footer stack
+  - Updated the route copy and interaction state to keep Cogochi-specific waitlist submission while matching the reference layout density more closely
+  - Updated [docs/page-specs/cogochi-showcase-page.md](/Users/ej/Projects/cogochi_2/docs/page-specs/cogochi-showcase-page.md) to document the file rail and waitlist window behavior
+  - Added a fresh semantic checkpoint and regenerated the branch brief/handoff so strict context validation passes again
+- Validation results:
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS with one pre-existing warning in [src/components/layout/Header.svelte](/Users/ej/Projects/cogochi_2/src/components/layout/Header.svelte)
+  - `npm run build`: PASS
+  - `npm run ctx:check -- --strict`: PASS
+- Commit hash: not committed
+- Push status: not pushed
+- Final working tree status: dirty; the branch still contains the pre-existing unrelated WIP deletions/edits plus the new showcase and doc changes
+- Status: DONE
+
+## [2026-04-09 15:53:11 +0900] START W-20260409-1553-cogochi2-codex
+- Repo: /Users/ej/Projects/cogochi_2
+- Branch: codex/home-email-landing
+- Base origin/main hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status: dirty; existing user WIP remains in `src/components/layout/Header.svelte`, `src/routes/+layout.svelte`, `src/lib/styles/tokens.css`, `src/routes/+page.svelte`, and deleted route/component files
+- Task summary: add scroll-reactive background reveal/disappear motion to the English home landing while keeping our copy and email capture flow
+- Overlap / conflict check: I will own `src/routes/+page.svelte` for this slice and avoid touching the unrelated WIP surfaces
+- safe:status result: branch `codex/home-email-landing`; changed files vs origin/main reported none, uncommitted files include the pre-existing unrelated deletions and edits above
+- Status: IN_PROGRESS
+
+## [2026-04-09 15:27:34 +0900] FINISH W-20260409-1530-cogochi2-codex
+- Branch: codex/home-email-landing
+- What changed:
+  - Rebuilt [src/routes/+page.svelte](/Users/ej/Projects/cogochi_2/src/routes/+page.svelte) as an English, email-first private-alpha landing page with a cinematic background, a single conversion goal, a stronger hero visual, duplicate capture entry points, and a flattened typography system
+  - Updated [docs/product-specs/home.md](/Users/ej/Projects/cogochi_2/docs/product-specs/home.md), [docs/page-specs/home-onboarding.md](/Users/ej/Projects/cogochi_2/docs/page-specs/home-onboarding.md), [docs/SYSTEM_INTENT.md](/Users/ej/Projects/cogochi_2/docs/SYSTEM_INTENT.md), and [docs/design-docs/cogochi-uiux-architecture.md](/Users/ej/Projects/cogochi_2/docs/design-docs/cogochi-uiux-architecture.md) to match the new home contract
+  - Updated semantic context artifacts with a real next step so the branch brief/handoff pass strict context checks
+- Validation results:
+  - `npm run docs:check`: FAIL, blocked by pre-existing route metadata mismatch for `/live` outside this slice
+  - `npm run check`: PASS (`0 errors, 1 warning` in existing `src/components/layout/Header.svelte`)
+  - `npm run build`: PASS
+  - `npm run ctx:check -- --strict`: PASS after refreshing checkpoint/brief/handoff
+- Commit hash: not committed
+- Push status: not pushed
+- Final working tree status: dirty; this branch still contains the pre-existing deleted route/component WIP outside the home landing slice
+- Status: DONE
+## [2026-04-09 15:20:25 +0900] START W-20260409-1530-cogochi2-codex
+- Repo: /Users/ej/Projects/cogochi_2
+- Branch: codex/home-email-landing
+- Base origin/main hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status: dirty; existing user WIP present in `src/components/layout/Header.svelte`, `src/routes/+layout.svelte`, `src/lib/styles/tokens.css`, `src/routes/+page.svelte`, and several deleted arena/modals/shared files
+- Task summary: rebuild the home landing as an English, email-first, high-curiosity page with a cinematic background and a single conversion goal
+- Overlap / conflict check: I will own `src/routes/+page.svelte` only and avoid touching the unrelated user WIP surfaces unless required
+- safe:status result: branch `main`/current worktree had the same dirty baseline; no changes vs `origin/main`
+- Status: IN_PROGRESS
+
 ## [2026-03-10 20:33:42 +0900] FINISH chart-mount-state-split-20260310 (frontend)
 - Workspace: /Users/ej/Downloads/maxidoge-clones/frontend
 - Branch: codex/terminal-uiux-gtm-wip
@@ -8270,3 +8392,374 @@ Purpose: 작업 중복을 막고, 작업 전/후 실제 변경 이력을 시간 
   - `## codex/dev-server-run-20260320-chatbattle...origin/codex/dev-server-run-20260320-chatbattle [ahead 8, behind 1]`
   - branch remains dirty with substantial pre-existing docs/UI/store WIP plus the memento/agent workflow updates from this task
   - stash entry `wip/W-20260331-2354-CHATBATTLE-codex-pre-sync` remains in `git stash list` as a safety backup because the restore path encountered generated-doc conflicts
+
+## [2026-04-09 15:59:08 +0900] START showcase-page-separate-route-20260409 (frontend)
+- Work ID: `W-20260409-1558-cogochi2-codex`
+- Repo path: `/Users/ej/Projects/cogochi_2`
+- Branch: `codex/home-email-landing`
+- Base `origin/main` hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status:
+  - dirty branch with existing docs/UI deletions and edits already present before this request
+  - current local changes include the ongoing home-email landing slice and unrelated pre-existing WIP files
+- Task summary:
+  - create a separate new page that captures the ssscript-style desktop-scene mood while keeping Cogochi content original
+  - keep the current home/email-first work intact and add the new page as a separate route
+- Owned files / overlap check:
+  - expected write scope: new route files under `src/routes/`, optional lightweight nav or docs updates if needed, and `docs/AGENT_WATCH_LOG.md`
+  - overlap risk is low because this slice should avoid editing the existing home implementation except for any optional link-out
+- Safe status:
+  - `npm run safe:status`: PASS
+  - `npm run safe:sync`: blocked by dirty worktree; no branch sync performed yet
+
+## [2026-04-09 19:53:41 +0900] FINISH W-20260409-1939-cogochi2-codex
+- Branch: codex/home-email-landing
+- What changed:
+  - Reworked [src/routes/cogochi/showcase/+page.svelte](/Users/ej/Projects/cogochi_2/src/routes/cogochi/showcase/+page.svelte) so the floating chart-analysis cards sit on a looser perimeter ring around the central access card instead of clustering in the middle
+  - Added five more project-owned chart-analysis SVG assets in [static/cogochi/chart-tools/](/Users/ej/Projects/cogochi_2/static/cogochi/chart-tools/) for `VWAP`, `Sweep`, `Momentum`, `Session`, and `Trend Map`
+  - Updated [docs/page-specs/cogochi-showcase-page.md](/Users/ej/Projects/cogochi_2/docs/page-specs/cogochi-showcase-page.md) to describe the clear-center ring layout and the expanded analysis tool set
+  - Refreshed the branch memory artifacts so the latest brief, handoff, and checkpoint pass strict context validation again
+- Validation results:
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS with one pre-existing warning in [src/components/layout/Header.svelte](/Users/ej/Projects/cogochi_2/src/components/layout/Header.svelte)
+  - `npm run build`: PASS
+  - `npm run ctx:check -- --strict`: PASS
+- Commit hash: not committed
+- Push status: not pushed
+- Final working tree status: dirty; the branch still contains the pre-existing unrelated WIP deletions/edits plus the new showcase and doc changes
+- Status: DONE
+
+## [2026-04-09 16:08:13 +0900] FINISH showcase-page-separate-route-20260409 (frontend)
+- Work ID: `W-20260409-1558-cogochi2-codex`
+- What changed:
+  - added a separate `/cogochi/showcase` route with an immersive desktop-scene landing, scroll-reactive background layers, and English email-first capture
+  - hid the shared app shell chrome for `/cogochi/*` so the showcase can read as a standalone scene
+  - updated generated docs and route/store/API taxonomy so the new route and current branch deletions are reflected cleanly
+  - added `docs/page-specs/cogochi-showcase-page.md` and registered it in the page-spec index
+- Validation:
+  - `npm run docs:refresh`: PASS
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS, 0 errors, 1 existing warning in `src/components/layout/Header.svelte`
+  - `npm run build`: PASS, with the same pre-existing warning and bundle-size notices
+  - `npm run ctx:check -- --strict`: PASS
+  - Playwright visual check on `http://127.0.0.1:4174/cogochi/showcase`: PASS visually
+- Commit hash:
+  - none; commit not requested
+- Push status:
+  - not requested
+- Final working tree status:
+  - `## codex/home-email-landing`
+  - dirty worktree remains because this branch already contains user WIP deletions/edits outside this slice plus the new showcase route/docs files from this task
+
+## [2026-04-09 17:32:57 +0900] START showcase-page-cursor-reactive-polish-20260409 (frontend)
+- Work ID: `W-20260409-1734-cogochi2-codex`
+- Repo path: `/Users/ej/Projects/cogochi_2`
+- Branch: `codex/home-email-landing`
+- Base `origin/main` hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status:
+  - dirty branch with existing docs/UI deletions and edits already present before this request
+  - current local changes include the earlier showcase slice plus unrelated pre-existing WIP files
+- Task summary:
+  - rebuild the separate `/cogochi/showcase` page into a dark cursor-reactive desktop-scene landing inspired by `ssscript.app`
+  - keep Cogochi content original while matching the reference layout, support cards, and mouse-reactive background mood
+- Owned files / overlap check:
+  - expected write scope: `src/routes/cogochi/showcase/+page.svelte`, `docs/page-specs/cogochi-showcase-page.md`, and `docs/AGENT_WATCH_LOG.md`
+  - overlap risk is low because this slice stays within the showcase route and its spec
+- Safe status:
+  - `npm run safe:status`: PASS
+  - `npm run safe:sync`: blocked by dirty worktree; no branch sync performed yet
+
+## [2026-04-09 17:32:57 +0900] FINISH showcase-page-cursor-reactive-polish-20260409 (frontend)
+- Work ID: `W-20260409-1734-cogochi2-codex`
+- What changed:
+  - replaced the showcase route with a grayscale dark desktop-scene layout that reacts to pointer position through CSS variables and scroll-driven layer fades
+  - centered the access flow in a large window card, added left/right support copy blocks, a file rail, a brand lockup, link columns, and a dock/footer to mirror the reference composition
+  - updated the route spec to describe the cursor-reactive, ssscript-inspired showcase contract
+- Validation:
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS, 0 errors, 1 existing warning in `src/components/layout/Header.svelte`
+  - `npm run build`: PASS, with the same pre-existing warning and bundle-size notices
+  - `npm run ctx:check -- --strict`: PASS
+- Commit hash:
+  - none; commit not requested
+- Push status:
+  - not requested
+- Final working tree status:
+  - `## codex/home-email-landing`
+  - dirty worktree remains because this branch already contains user WIP deletions/edits outside this slice plus the showcase route/docs files from this task
+
+## [2026-04-09 17:40:29 +0900] START showcase-page-ssscript-structure-rebuild-20260409 (frontend)
+- Work ID: `W-20260409-1740-cogochi2-codex`
+- Repo path: `/Users/ej/Projects/cogochi_2`
+- Branch: `codex/home-email-landing`
+- Base `origin/main` hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status:
+  - dirty branch with existing docs/UI deletions and edits already present before this request
+  - current local changes include the earlier showcase slice plus unrelated pre-existing WIP files
+- Task summary:
+  - rebuild the separate `/cogochi/showcase` page to follow the provided `ssscript.app` structure much more literally
+  - preserve Cogochi copy while matching the reference section order, card placement, and dark desktop-scene composition
+- Owned files / overlap check:
+  - expected write scope: `src/routes/cogochi/showcase/+page.svelte`, `docs/page-specs/cogochi-showcase-page.md`, and `docs/AGENT_WATCH_LOG.md`
+  - overlap risk is low because this slice stays within the showcase route and its spec
+- Safe status:
+  - `npm run safe:status`: PASS
+  - `npm run safe:sync`: blocked by dirty worktree; no branch sync performed yet
+
+## [2026-04-09 17:40:29 +0900] FINISH showcase-page-ssscript-structure-rebuild-20260409 (frontend)
+- Work ID: `W-20260409-1740-cogochi2-codex`
+- What changed:
+  - rewrote [src/routes/cogochi/showcase/+page.svelte](/Users/ej/Projects/cogochi_2/src/routes/cogochi/showcase/+page.svelte) into a more literal `ssscript.app`-style composition: fixed black mac bar, two-row hero, central access card, vertical file rail with hidden waitlist windows, FAQ/mail panel, footer, dock, and notification stack
+  - removed the earlier custom pricing/connect sections so the route now follows the reference section order and density instead of the Cogochi-branded layout
+  - kept the email-first waitlist submission flow on `POST /api/waitlist` and preserved the pointer-reactive background glow
+  - updated [docs/page-specs/cogochi-showcase-page.md](/Users/ej/Projects/cogochi_2/docs/page-specs/cogochi-showcase-page.md) to describe the reference-style contract more directly
+- Validation:
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS, 0 errors, 1 existing warning in `src/components/layout/Header.svelte`
+  - `npm run build`: PASS, with the same pre-existing warning and bundle-size notices
+  - `npm run ctx:check -- --strict`: PASS
+- Commit hash:
+  - none; commit not requested
+- Push status:
+  - not requested
+- Final working tree status:
+  - `## codex/home-email-landing`
+  - dirty worktree remains because this branch already contains user WIP deletions/edits outside this slice plus the showcase route/docs files from this task
+
+## [2026-04-09 19:18:00 +0900] START showcase-page-chart-assets-refresh-20260409 (frontend)
+- Work ID: `W-20260409-1918-cogochi2-codex`
+- Repo path: `/Users/ej/Projects/cogochi_2`
+- Branch: `codex/home-email-landing`
+- Base `origin/main` hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status:
+  - dirty branch with existing docs/UI deletions and edits already present before this request
+  - current local changes include the earlier showcase slice plus unrelated pre-existing WIP files
+- Task summary:
+  - replace the remaining borrowed floating resources on `/cogochi/showcase` with custom chart-analysis themed SVG assets and reposition them as the page's own branded floating visual layer
+- Owned files / overlap check:
+  - expected write scope: `src/routes/cogochi/showcase/+page.svelte`, `src/routes/cogochi/showcase/*`, `static/cogochi/*`, `docs/page-specs/cogochi-showcase-page.md`, and `docs/AGENT_WATCH_LOG.md`
+  - overlap risk is low for the showcase slice, but the branch already contains unrelated pre-existing WIP changes outside this task
+- Safe status:
+  - `npm run safe:status`: PASS
+  - `npm run safe:sync`: blocked by dirty worktree; no branch sync performed yet
+
+## [2026-04-09 19:18:00 +0900] FINISH showcase-page-chart-assets-refresh-20260409 (frontend)
+- Work ID: `W-20260409-1918-cogochi2-codex`
+- What changed:
+  - replaced the remaining borrowed showcase floating visuals with project-owned chart-analysis SVG assets under `static/cogochi/floating/`
+  - added a custom floating asset layer to [src/routes/cogochi/showcase/+page.svelte](/Users/ej/Projects/cogochi_2/src/routes/cogochi/showcase/+page.svelte) so the hero now carries a branded chart-bot, candles, scan lens, trend wave, and signal stack
+  - updated [docs/page-specs/cogochi-showcase-page.md](/Users/ej/Projects/cogochi_2/docs/page-specs/cogochi-showcase-page.md) to call out the chart-analysis floating asset layer and its failure state
+- Validation:
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS, 0 errors, 1 existing warning in `src/components/layout/Header.svelte`
+  - `npm run build`: PASS
+  - `npm run ctx:check -- --strict`: PASS
+  - `npm run ctx:compact -- --docs-check pass --check pass --build pass --gate pass`: PASS
+- Commit hash:
+  - none; commit not requested
+- Push status:
+  - not requested
+- Final working tree status:
+  - `## codex/home-email-landing`
+  - dirty worktree remains because this branch already contains user WIP deletions/edits outside this slice plus the showcase route/docs/assets files from this task
+
+## [2026-04-09 19:38:00 +0900] START showcase-page-functional-chart-assets-20260409 (frontend)
+- Work ID: `W-20260409-1918-cogochi2-codex`
+- Repo path: `/Users/ej/Projects/cogochi_2`
+- Branch: `codex/home-email-landing`
+- Base `origin/main` hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status:
+  - dirty branch with existing docs/UI deletions and edits already present before this request
+  - current local changes include the showcase route, page spec, new chart-tool SVG assets, and unrelated pre-existing WIP files
+- Task summary:
+  - replace the showcase floating visuals with a more functional chart-analysis tool set so the page reads like a product surface rather than decorative art
+- Owned files / overlap check:
+  - expected write scope: `src/routes/cogochi/showcase/+page.svelte`, `static/cogochi/chart-tools/*`, `docs/page-specs/cogochi-showcase-page.md`, and `docs/AGENT_WATCH_LOG.md`
+  - overlap risk is low for the showcase slice, but the branch already contains unrelated pre-existing WIP changes outside this task
+- Safe status:
+  - `npm run safe:status`: not rerun in this sub-iteration
+  - `npm run safe:sync`: previously blocked by dirty worktree
+
+## [2026-04-09 19:38:00 +0900] FINISH showcase-page-functional-chart-assets-20260409 (frontend)
+- Work ID: `W-20260409-1918-cogochi2-codex`
+- What changed:
+  - replaced the earlier decorative floating assets on [src/routes/cogochi/showcase/+page.svelte](/Users/ej/Projects/cogochi_2/src/routes/cogochi/showcase/+page.svelte) with functional chart-analysis cards: scanner grid, breakout arrow, support/resistance zones, risk ratio gauge, and volume feed
+  - added a new `static/cogochi/chart-tools/` asset set with five SVG cards that read like analysis UI components instead of mascots or generic icons
+  - kept the hero composition, top bar, and waitlist flow intact so only the floating visual language changed
+- Validation:
+  - `npm run check`: PASS, 0 errors, 1 existing warning in `src/components/layout/Header.svelte`
+  - `npm run build`: PASS
+  - `npm run ctx:checkpoint -- --work-id "W-20260409-1918-cogochi2-codex" --surface "showcase-functional-chart-assets" --objective "replace showcase floating visuals with functional chart-analysis tool cards: scanner, breakout, zones, risk, and volume"`: PASS
+  - `npm run ctx:compact -- --docs-check pass --check pass --build pass --gate pass`: PASS
+- Commit hash:
+  - none; commit not requested
+- Push status:
+  - not requested
+- Final working tree status:
+  - `## codex/home-email-landing`
+  - dirty worktree remains because this branch already contains user WIP deletions/edits outside this slice plus the showcase route/docs/assets files from this task
+
+## [2026-04-09 19:39:00 +0900] START showcase-page-chart-assets-variety-20260409 (frontend)
+- Work ID: `W-20260409-1939-cogochi2-codex`
+- Repo path: `/Users/ej/Projects/cogochi_2`
+- Branch: `codex/home-email-landing`
+- Base `origin/main` hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status:
+  - dirty branch with existing docs/UI deletions and edits already present before this request
+  - current local changes include the showcase route, page spec, new chart-tool SVG assets, and unrelated pre-existing WIP files
+- Task summary:
+  - add more variety to the showcase floating visuals so they read as a broader chart-analysis toolkit rather than one repeated card style
+- Owned files / overlap check:
+  - expected write scope: `src/routes/cogochi/showcase/+page.svelte`, `static/cogochi/chart-tools/*`, `docs/page-specs/cogochi-showcase-page.md`, and `docs/AGENT_WATCH_LOG.md`
+  - overlap risk is low for the showcase slice, but the branch already contains unrelated pre-existing WIP changes outside this task
+- Safe status:
+  - `npm run safe:status`: PASS
+  - `npm run safe:sync`: blocked by dirty worktree; no branch sync performed yet
+
+## [2026-04-09 19:55:20 +0900] START W-20260409-2000-cogochi2-codex
+- Repo: /Users/ej/Projects/cogochi_2
+- Branch: codex/home-email-landing
+- Base origin/main hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status: dirty; existing user WIP remains in `src/components/layout/Header.svelte`, `src/routes/+layout.svelte`, `src/lib/styles/tokens.css`, `src/routes/+page.svelte`, and deleted route/component files
+- Task summary: replace the central blurred backdrop behind the showcase access card with the user-provided rotating `logo.glb` anchor
+- Overlap / conflict check: I will own `src/routes/cogochi/showcase/+page.svelte`, `docs/page-specs/cogochi-showcase-page.md`, `docs/AGENT_WATCH_LOG.md`, and `static/cogochi/logo.glb`; avoid unrelated WIP surfaces
+- safe:status result: branch `codex/home-email-landing`; changed files vs origin/main reported none, uncommitted files still include the pre-existing unrelated deletions and edits above
+- safe:sync result: not run in this sub-iteration because the worktree is already dirty
+- Status: IN_PROGRESS
+
+## [2026-04-09 20:01:34 +0900] FINISH W-20260409-2000-cogochi2-codex
+- Branch: codex/home-email-landing
+- What changed:
+  - Reworked the showcase background anchor in [src/routes/cogochi/showcase/+page.svelte](/Users/ej/Projects/cogochi_2/src/routes/cogochi/showcase/+page.svelte) so the copied [logo.glb](/Users/ej/Projects/cogochi_2/static/cogochi/logo.glb) drifts with scroll instead of auto-rotating on its own
+  - Removed the extra orbit wrapper layer and kept the GLB behind the access card as the old rotating backdrop replacement
+  - Updated [docs/page-specs/cogochi-showcase-page.md](/Users/ej/Projects/cogochi_2/docs/page-specs/cogochi-showcase-page.md) and the branch memory artifacts to describe the scroll-linked motion
+- Validation results:
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS with one pre-existing warning in [src/components/layout/Header.svelte](/Users/ej/Projects/cogochi_2/src/components/layout/Header.svelte)
+  - `npm run build`: PASS
+  - `npm run ctx:check -- --strict`: PASS
+- Commit hash: not committed
+- Push status: not pushed
+- Final working tree status: dirty; the branch still contains the pre-existing unrelated WIP deletions/edits plus the new showcase and doc changes
+- Status: DONE
+
+## [2026-04-09 20:55:00 +0900] START W-20260409-2055-cogochi2-codex (frontend)
+- Repo path: /Users/ej/Projects/cogochi_2
+- Branch: codex/home-email-landing
+- Base `origin/main` hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status:
+  - dirty branch with existing docs/UI deletions and edits already present before this request
+  - current local changes include the showcase route, page spec, new chart-tool SVG assets, the mesh builder script, and unrelated pre-existing WIP files
+- Task summary:
+  - replace the current showcase background mesh with the user-provided bright metallic `logo (2).glb` while keeping the scroll-linked motion and placement intact
+- Owned files / overlap check:
+  - expected write scope: `static/cogochi/logo.glb` and `docs/AGENT_WATCH_LOG.md`
+  - overlap risk is low for this slice; avoid unrelated WIP surfaces already present in the branch
+- Safe status:
+  - `npm run safe:status`: PASS
+  - `npm run safe:sync`: blocked by dirty worktree; no branch sync performed yet
+- Status: IN_PROGRESS
+
+## [2026-04-09 20:59:00 +0900] FINISH W-20260409-2055-cogochi2-codex
+- Branch: codex/home-email-landing
+- What changed:
+  - Replaced the showcase background mesh at [static/cogochi/logo.glb](/Users/ej/Projects/cogochi_2/static/cogochi/logo.glb) with the user-provided bright metallic `logo (2).glb`
+  - Kept the existing scroll-linked showcase motion and placement intact because the route still loads the asset through the same `/cogochi/logo.glb` path
+  - Updated the branch checkpoint/brief/handoff context so the task memory now records the chosen mesh and next step
+- Validation results:
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS with one pre-existing warning in [src/components/layout/Header.svelte](/Users/ej/Projects/cogochi_2/src/components/layout/Header.svelte)
+  - `npm run build`: PASS
+  - `npm run ctx:check -- --strict`: PASS
+- Commit hash: not committed
+- Push status: not pushed
+- Final working tree status:
+  - dirty branch remains because this worktree already contains unrelated pre-existing WIP deletions/edits plus the new showcase asset and watch-log update from this task
+- Status: DONE
+
+## [2026-04-09 21:02:00 +0900] START W-20260409-2102-cogochi2-codex (docs)
+- Repo path: /Users/ej/Projects/cogochi_2
+- Branch: codex/home-email-landing
+- Base `origin/main` hash: `ad15c5e80d2c028d8c9c5531acb67afe0624a1e8`
+- Working tree status:
+  - dirty branch with existing docs/UI deletions and edits already present before this request
+  - current local changes include the showcase route, page spec, mesh builder script, and unrelated pre-existing WIP files
+- Task summary:
+  - tighten the repo docs so agents default to a smaller context bundle and treat generated maps, watch logs, and sync details as opt-in context instead of always-on reads
+- Owned files / overlap check:
+  - expected write scope: `README.md`, `AGENTS.md`, `docs/README.md`, and `docs/AGENT_WATCH_LOG.md`
+  - overlap risk is low for this slice; avoid unrelated WIP surfaces already present in the branch
+- Safe status:
+  - `npm run safe:status`: PASS
+  - `npm run safe:sync`: blocked by dirty worktree; no branch sync performed yet
+- Status: IN_PROGRESS
+
+## [2026-04-09 21:04:00 +0900] FINISH W-20260409-2102-cogochi2-codex
+- Branch: codex/home-email-landing
+- What changed:
+  - Tightened [README.md](/Users/ej/Projects/cogochi_2/README.md), [AGENTS.md](/Users/ej/Projects/cogochi_2/AGENTS.md), and [docs/README.md](/Users/ej/Projects/cogochi_2/docs/README.md) so the default context bundle stays small
+  - Marked `docs/generated/*`, the full watch log, and `.agent-context/*` as opt-in reads instead of default startup material
+  - Clarified that `safe:sync` is a branch-sync step, not a reason to load more docs
+- Validation results:
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS with one pre-existing warning in [src/components/layout/Header.svelte](/Users/ej/Projects/cogochi_2/src/components/layout/Header.svelte)
+  - `npm run build`: PASS
+  - `npm run ctx:check -- --strict`: PASS
+- Commit hash: not committed
+- Push status: not pushed
+- Final working tree status:
+  - dirty branch remains because this worktree already contains unrelated pre-existing WIP deletions/edits plus the docs changes from this task
+- Status: DONE
+
+## [2026-04-10 00:01:00 +0900] START W-20260410-0001-cogochi2-codex
+- Repo path: /Users/ej/Projects/cogochi_2
+- Branch: codex/home-email-landing
+- Base origin/main hash: ad15c5e80d2c028d8c9c5531acb67afe0624a1e8
+- Working tree status:
+  - `git status --short --branch`: dirty branch with existing mixed WIP, including pre-existing docs, route, component, and asset edits plus the new showcase slice files
+- Task summary: Publish the current `/cogochi/showcase` worktree state as a preview deployment
+- Owned files / overlap check:
+  - No file ownership claimed for this task; deploy-only slice
+  - Existing unrelated WIP edits remain in the branch, so this task avoids touching them
+- Safe status:
+  - `npm run safe:status`: PASS
+  - `npm run safe:sync`: blocked by dirty worktree; no branch sync performed yet
+- Status: IN_PROGRESS
+
+## [2026-04-10 00:20:00 +0900] FINISH W-20260410-0001-cogochi2-codex
+- Branch: codex/home-email-landing
+- What changed:
+  - Published the current `cogochi/showcase` branch state to Vercel
+  - No source files were modified for this task beyond the watch log entries
+- Validation results:
+  - Vercel build: PASS
+  - `npm run build`: PASS during Vercel deployment
+  - Warnings observed during build:
+    - unused CSS selector warning in [src/components/layout/Header.svelte](/Users/ej/Projects/cogochi_2/src/components/layout/Header.svelte)
+    - chunk size warnings from Vite
+    - `@sveltejs/adapter-vercel` was auto-installed by `adapter-auto`
+- Deployment:
+  - Deployment URL: [https://cogochi2-ql95rsy80-tmd6496-4237s-projects.vercel.app](https://cogochi2-ql95rsy80-tmd6496-4237s-projects.vercel.app)
+  - Live alias: [https://cogochi2.vercel.app](https://cogochi2.vercel.app)
+  - Inspector: [https://vercel.com/tmd6496-4237s-projects/cogochi_2/J3J878U9nLvuJTBBVmifjQUVPQHq](https://vercel.com/tmd6496-4237s-projects/cogochi_2/J3J878U9nLvuJTBBVmifjQUVPQHq)
+- Commit hash: not committed
+- Push status: not pushed
+- Final working tree status:
+  - dirty branch remains because this worktree already contains unrelated pre-existing WIP changes plus the watch log update from this task
+- Status: DONE
+
+## [2026-04-09 20:00:12 +0900] FINISH W-20260409-2000-cogochi2-codex
+- Branch: codex/home-email-landing
+- What changed:
+  - Inserted the user-provided [logo.glb](/Users/ej/Projects/cogochi_2/static/cogochi/logo.glb) as a rotating `model-viewer` anchor behind the showcase access card in [src/routes/cogochi/showcase/+page.svelte](/Users/ej/Projects/cogochi_2/src/routes/cogochi/showcase/+page.svelte)
+  - Kept the access card and chart-analysis ring above it so the GLB reads as the background centerpiece rather than a foreground object
+  - Updated [docs/page-specs/cogochi-showcase-page.md](/Users/ej/Projects/cogochi_2/docs/page-specs/cogochi-showcase-page.md) to document the new rotating logo anchor
+  - Refreshed the branch memory artifacts and passed strict context validation after the change
+- Validation results:
+  - `npm run docs:check`: PASS
+  - `npm run check`: PASS with one pre-existing warning in [src/components/layout/Header.svelte](/Users/ej/Projects/cogochi_2/src/components/layout/Header.svelte)
+  - `npm run build`: PASS
+  - `npm run ctx:check -- --strict`: PASS
+- Commit hash: not committed
+- Push status: not pushed
+- Final working tree status: dirty; the branch still contains the pre-existing unrelated WIP deletions/edits plus the new showcase and doc changes
+- Status: DONE

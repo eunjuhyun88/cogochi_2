@@ -19,6 +19,7 @@
   const connected = $derived($isWalletConnected);
   const liveP = $derived($livePrices);
   const activePath = $derived($page.url.pathname);
+  const isHomeRoute = $derived(activePath === '/');
 
   let _lastFetchedToken = '';
 
@@ -99,10 +100,22 @@
   );
 </script>
 
-<nav id="nav">
+<nav id="nav" class:home-nav={isHomeRoute}>
+  {#if isHomeRoute}
+    <div class="home-nav-inner">
+      <a class="home-logo" href="/" aria-label="Cogotchi home">
+        <span class="home-logo-mark">COGOTCHI</span>
+      </a>
+
+      <div class="home-actions">
+        <span class="home-badge">CLOSED ALPHA</span>
+        <a class="home-cta" href="#waitlist">Join Waitlist</a>
+      </div>
+    </div>
+  {:else}
   <div class="nav-main">
     <!-- Logo -->
-    <a class="nav-logo" href={buildDeepLink(connected ? '/dashboard' : '/')} aria-label="Home">
+    <a class="nav-logo" href={buildDeepLink('/')} aria-label="Home">
       <span class="nav-logo-main">COGOTCHI</span>
     </a>
 
@@ -180,6 +193,7 @@
     {/if}
   </div>
 
+  {/if}
 </nav>
 
 <style>
@@ -201,6 +215,123 @@
     color: var(--sc-text-0);
     backdrop-filter: blur(18px);
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  }
+
+  #nav.home-nav {
+    height: 64px;
+    padding: 0 24px;
+    background:
+      radial-gradient(circle at 12% 0%, rgba(232, 176, 184, 0.08), transparent 24%),
+      radial-gradient(circle at 84% 0%, rgba(202, 182, 230, 0.08), transparent 22%),
+      rgba(8, 14, 28, 0.62);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+  }
+
+  #nav.home-nav::after {
+    background: linear-gradient(90deg, transparent, rgba(232, 176, 184, 0.14), rgba(202, 182, 230, 0.1), transparent);
+  }
+
+  .home-nav-inner {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .home-logo {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .home-logo-mark {
+    color: #f5f7ff;
+    font: 700 16px/1 'Orbitron', var(--sc-font-display);
+    letter-spacing: 0.11em;
+  }
+
+  .home-logo-sub {
+    color: rgba(232, 237, 248, 0.44);
+    font: 600 9px/1 var(--sc-font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .home-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  .home-links a,
+  .home-cta {
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .home-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: rgba(232, 237, 248, 0.58);
+    font: 700 10px/1 var(--sc-font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: color .14s ease, opacity .14s ease;
+  }
+
+  .home-links a:hover {
+    color: #f5f7ff;
+    opacity: 0.96;
+  }
+
+  .home-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .home-badge {
+    font: 600 9px/1 var(--sc-font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(247, 242, 234, 0.35);
+    padding: 6px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+  }
+
+  .home-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0 18px;
+    border-radius: 8px;
+    color: #fff;
+    font: 600 11px/1 var(--sc-font-mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(219, 154, 159, 0.2);
+    border: 1px solid rgba(219, 154, 159, 0.3);
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .home-cta:hover {
+    background: rgba(219, 154, 159, 0.3);
+    border-color: rgba(219, 154, 159, 0.5);
   }
 
   #nav::after {
@@ -502,6 +633,7 @@
   /* ═══ TABLET (769-1024px) ═══ */
   @media (max-width: 1024px) and (min-width: 769px) {
     #nav { height: 52px; padding: 0 16px; }
+    #nav.home-nav { height: 60px; padding: 0 20px; }
     .desktop-only { display: none; }
     .selected-ticker { display: flex; gap: 6px; }
     .st-pair { font-size: 10px; }
@@ -526,7 +658,21 @@
       flex-wrap: nowrap;
       padding: 0 16px;
     }
+    #nav.home-nav {
+      height: 52px;
+      padding: 0 14px;
+    }
     .desktop-only { display: none; }
+    .home-nav-inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+    }
+    .home-logo-sub { display: none; }
+    .home-cta {
+      min-height: 34px;
+      padding: 0 12px;
+      font-size: 9px;
+    }
     .nav-tab-desktop { display: none; }
     .nav-main { height: 48px; }
     .nav-logo { gap: 0; }
@@ -542,9 +688,14 @@
   /* ═══ SMALL MOBILE (<=480px) ═══ */
   @media (max-width: 480px) {
     #nav { height: 44px; padding: 0 12px; }
+    #nav.home-nav {
+      height: 48px;
+      padding: 0 12px;
+    }
     .nav-main { height: 44px; }
     .nav-right { height: 44px; }
     .nav-logo-main { font-size: 14px; letter-spacing: 1.5px; }
+    .home-logo-mark { font-size: 14px; letter-spacing: 0.1em; }
     .st-price { font-size: 12px; }
     .wallet-btn { padding: 6px 14px; font-size: 11px; min-height: 32px; }
   }

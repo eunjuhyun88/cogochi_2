@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
-  import { buildDashboardLink } from '$lib/utils/deepLinks';
+
   import { initFromOnboard } from '$lib/stores/agentData';
   import { AGDEFS } from '$lib/data/agents';
 
@@ -180,7 +180,7 @@
 
     goTo('complete');
     setTimeout(() => {
-      goto(buildDashboardLink());
+      goto('/');
     }, 2200);
   }
 

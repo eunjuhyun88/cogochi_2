@@ -20,7 +20,6 @@ Source of truth remains store implementations plus canonical state-authority doc
 | `gameState` | route/session transient | arena phase/view/hypothesis/session UI | Must not become market-truth owner. |
 | `arenaV2State` | route/session transient | simplified arena v2 local flow | Route-specific state. |
 | `arenaWarStore` | route/session transient | arena-war state machine and local orchestration | Durable record still belongs to server persistence. |
-| `activeGamesStore` | route/session transient | local multi-game runtime tracking | Coordination state, not durable truth. |
 | `authSessionStore` | server-authoritative projection | authenticated session mirror and cookie-backed identity | Session authority should stay separate from wallet UX and route-local control state. |
 | `walletStore` | route/session transient | wallet connection transport and signed-wallet shell | Connection UX state should stay separate from durable profile or trade truth. |
 | `walletModalStore` | route/session transient | wallet modal visibility and step flow | Modal UX state is split from wallet transport and progression state. |
@@ -40,7 +39,6 @@ Source of truth remains store implementations plus canonical state-authority doc
 | `agentData` | derived/support | agent stats and learning presentation layer | Should not silently redefine server truth. |
 | `doctrineStore` | derived/support | per-agent doctrine editor state and version history | Editable doctrine state should reconcile with durable agent truth when server APIs land. |
 | `warRoomStore` | route/session transient | war-room discussion state | Runtime coordination state. |
-| `dbStore` | derived/support | localStorage CRUD helpers and table adapters | Utility persistence layer for local fallback tables; not durable server truth. |
 | `hydration` | derived/support | orchestrates initial store hydration | Not domain truth itself. |
 | `progressionRules` | derived/support | tier and LP mapping logic | Rule/helper module, not state owner. |
 | `storageKeys` | derived/support | local storage key registry | Utility only. |

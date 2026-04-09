@@ -179,13 +179,10 @@
      Remove these after full migration is complete.
      ═══════════════════════════════════════════════════════════ */
 
-  /* app.css legacy → new tokens */
+  /* app.css legacy → new tokens (still referenced) */
   --bg: var(--sc-bg-0);
-  --s1: var(--sc-bg-1);
-  --s2: var(--sc-bg-2);
   --blk: #0A0808;
   --card: var(--sc-surface);
-  --card2: var(--sc-surface-2);
   --yel: var(--sc-accent-3);
   --pk: var(--sc-accent);
   --grn: var(--sc-good);
@@ -195,15 +192,12 @@
   --pur: var(--sc-accent);
   --gold: var(--sc-accent-3);
   --cyan: var(--sc-accent-2);
-  --lime: var(--sc-accent-2);
-  --chain: var(--sc-accent-3);
-  --fg: var(--sc-text-0);
   --fg-strong: rgba(255, 255, 255, 0.95);
   --fg-medium: rgba(255, 255, 255, 0.7);
   --dim: rgba(255, 255, 255, 0.5);
   --dimmer: rgba(255, 255, 255, 0.18);
 
-  /* Font aliases (old → new) */
+  /* Font aliases (old → new, still referenced) */
   --fd: var(--sc-font-display);
   --fb: var(--sc-font-body);
   --fm: var(--sc-font-mono);
@@ -213,24 +207,11 @@
   --fp: var(--sc-font-pixel);
   --fv: var(--sc-font-retro);
 
-  /* Font size aliases (old → new) */
-  --fs-xs: var(--sc-fs-2xs);
-  --fs-sm: var(--sc-fs-xs);
-  --fs-base: var(--sc-fs-sm);
-  --fs-md: var(--sc-fs-base);
-  --fs-lg: var(--sc-fs-md);
-  --fs-xl: var(--sc-fs-lg);
-  --fs-2xl: var(--sc-fs-xl);
-  --fs-3xl: var(--sc-fs-2xl);
-  --lh-tight: var(--sc-lh-tight);
-  --lh-normal: var(--sc-lh-normal);
+  /* Font size / line-height aliases (still referenced) */
   --lh-relaxed: var(--sc-lh-relaxed);
 
-  /* Border aliases (comic → clean) */
-  --bdr: var(--sc-border);
-  --bdr-thick: var(--sc-border);
+  /* Border/shadow aliases (still referenced) */
   --shadow: var(--sc-shadow-sm);
-  --shadow-sm: var(--sc-shadow-sm);
 
   /* arena-tone.css compatibility */
   --arena-bg-0: var(--sc-bg-0);

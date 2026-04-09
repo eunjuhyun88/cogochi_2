@@ -18,7 +18,6 @@ Source of truth remains `src/routes/` plus canonical docs under `docs/`.
 | `/arena-v2` | simplified arena variant | alternate arena flow and views | `arenaV2State`, live price context | `docs/product-specs/arena.md` |
 | `/arena-war` | fast AI battle mode | phase machine, battle rendering, GameRecord flow | `arenaWarStore` | `docs/design-docs/arena-domain-model.md` |
 | `/holdings` | redirect route | redirect to canonical profile/holdings experience | none | `docs/product-specs/passport.md` |
-| `/live` | auxiliary live route/data hook | limited runtime support surface | route-level data | `docs/PRODUCT_SENSE.md` |
 | `/lab` | model training workbench | agent doctrine, retained memory, release readiness | `agentData` | `docs/page-specs/lab-page.md` |
 | `/battle` | standalone proof battle | daily-limited historical chart battle and result loop | `battleStore`, `matchHistoryStore` | `docs/page-specs/battle-page.md` |
 | `/oracle` | redirect route | redirect into signals ai leaderboard view | none | `docs/product-specs/signals.md` |
@@ -30,6 +29,7 @@ Source of truth remains `src/routes/` plus canonical docs under `docs/`.
 | `/world` | world bridge surface | world-map preview, readiness framing, battle handoff | `gameState` | `docs/page-specs/world-page.md` |
 | `/creator/[userId]` | public creator profile route | creator context and recent community signals | route-local creator loader + community signal cards | `docs/page-specs/creator-page.md` |
 | `/cogochi` | cogochi hub | DOUNI virtual pet entry and navigation | route-level data | `docs/PRODUCT_SENSE.md` |
+| `/cogochi/showcase` | cogochi showcase scene | scroll-reactive desktop scene and email-first alpha capture | route-local scroll + email state | `docs/page-specs/cogochi-showcase-page.md` |
 | `/cogochi/terminal` | DOUNI AI terminal | LLM-driven chat with function calling, market analysis, social data | route-local chat state + `currentSnapshot` | `docs/PRODUCT_SENSE.md` |
 
 ## Route Shells and Global Entry

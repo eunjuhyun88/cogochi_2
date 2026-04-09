@@ -11,6 +11,7 @@ Source of truth remains `src/routes/api/**` and `docs/API_CONTRACT.md`.
 | Market Data | market snapshot, flow, news, and dex data | `/api/cycles/klines`, `/api/market/derivatives/[pair]`, `/api/market/dex/ads`, `/api/market/dex/community-takeovers` | 16 |
 | Terminal Scanner | scan and intel orchestration | `/api/terminal/compare`, `/api/terminal/intel-agent-shadow`, `/api/terminal/intel-agent-shadow/execute`, `/api/terminal/intel-policy` | 9 |
 | Signals | signal objects and action conversion | `/api/signal-actions`, `/api/signals`, `/api/signals/[id]`, `/api/signals/[id]/convert` | 5 |
+| Growth & Landing | email capture, waitlist, and private-alpha access | `/api/waitlist` | 1 |
 | Quick Trades | fast trade lifecycle | `/api/quick-trades`, `/api/quick-trades/[id]/close`, `/api/quick-trades/open`, `/api/quick-trades/prices` | 4 |
 | GMX V2 | GMX position lifecycle | `/api/gmx/balance`, `/api/gmx/close`, `/api/gmx/confirm`, `/api/gmx/markets` | 6 |
 | Polymarket | prediction market and related positions | `/api/polymarket/markets`, `/api/polymarket/orderbook`, `/api/positions/polymarket`, `/api/positions/polymarket/[id]/close` | 8 |
@@ -74,6 +75,9 @@ Source of truth remains `src/routes/api/**` and `docs/API_CONTRACT.md`.
 - `/api/signals/[id]`
 - `/api/signals/[id]/convert`
 - `/api/signals/track`
+
+### Growth & Landing
+- `/api/waitlist`
 
 ### Quick Trades
 - `/api/quick-trades`
