@@ -304,9 +304,9 @@
     font: 600 9px/1 var(--sc-font-mono);
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: rgba(247, 242, 234, 0.35);
+    color: rgba(219, 154, 159, 0.7);
     padding: 6px 10px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(219, 154, 159, 0.2);
     border-radius: 6px;
   }
 
@@ -317,17 +317,17 @@
     min-height: 32px;
     padding: 0 14px;
     border-radius: 6px;
-    color: rgba(255, 255, 255, 0.85);
-    font: 600 10px/1 var(--sc-font-mono);
+    color: #0a0e1a;
+    font: 700 10px/1 var(--sc-font-mono);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(219, 154, 159, 0.9);
+    border: none;
     transition: background 0.15s ease;
   }
 
   .home-cta:hover {
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(219, 154, 159, 1);
   }
 
   #nav::after {

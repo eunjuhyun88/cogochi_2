@@ -113,7 +113,7 @@
   .waitlist-card {
     width: min(400px, 88vw);
     background: rgba(12, 14, 20, 0.82);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(219, 154, 159, 0.15);
     border-radius: 16px;
     overflow: hidden;
     backdrop-filter: blur(24px);
@@ -220,8 +220,8 @@
   .submit-btn {
     flex-shrink: 0;
     padding: 12px 22px;
-    background: #4b7cf3;
-    color: #fff;
+    background: rgba(219, 154, 159, 0.9);
+    color: #0a0e1a;
     font-family: inherit;
     font-size: 0.85rem;
     font-weight: 700;
@@ -234,7 +234,7 @@
   }
 
   .submit-btn:hover:not(:disabled) {
-    background: #5d8bf5;
+    background: rgba(219, 154, 159, 1);
     transform: translateY(-1px);
   }
 
