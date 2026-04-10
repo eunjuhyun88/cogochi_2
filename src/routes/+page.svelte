@@ -34,15 +34,43 @@
 
   function clamp01(v: number) { return Math.min(1, Math.max(0, v)); }
 
-  function updateCursor(e: PointerEvent) {
+  let lastInputTime = 0;
+  let driftRaf = 0;
+
+  function setCursor(clientX: number, clientY: number) {
     if (typeof window === 'undefined') return;
-    mouseX = Math.round(clamp01(e.clientX / window.innerWidth) * 100);
-    mouseY = Math.round(clamp01(e.clientY / window.innerHeight) * 100);
+    mouseX = Math.round(clamp01(clientX / window.innerWidth) * 100);
+    mouseY = Math.round(clamp01(clientY / window.innerHeight) * 100);
+    lastInputTime = performance.now();
+  }
+
+  function onPointer(e: PointerEvent) { setCursor(e.clientX, e.clientY); }
+  function onTouch(e: TouchEvent) {
+    const t = e.touches[0];
+    if (t) setCursor(t.clientX, t.clientY);
+  }
+
+  // Idle auto-drift so the effect lives without input (esp. mobile)
+  function driftLoop(time: number) {
+    if (time - lastInputTime > 1500) {
+      const t = time * 0.0004;
+      mouseX = Math.round(50 + Math.sin(t) * 28 + Math.sin(t * 2.3) * 6);
+      mouseY = Math.round(50 + Math.cos(t * 0.8) * 18 + Math.cos(t * 1.7) * 5);
+    }
+    driftRaf = requestAnimationFrame(driftLoop);
   }
 
   onMount(() => {
-    window.addEventListener('pointermove', updateCursor, { passive: true });
-    return () => window.removeEventListener('pointermove', updateCursor);
+    window.addEventListener('pointermove', onPointer, { passive: true });
+    window.addEventListener('touchmove', onTouch, { passive: true });
+    window.addEventListener('touchstart', onTouch, { passive: true });
+    driftRaf = requestAnimationFrame(driftLoop);
+    return () => {
+      window.removeEventListener('pointermove', onPointer);
+      window.removeEventListener('touchmove', onTouch);
+      window.removeEventListener('touchstart', onTouch);
+      cancelAnimationFrame(driftRaf);
+    };
   });
 </script>
 

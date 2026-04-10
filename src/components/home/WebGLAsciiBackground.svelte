@@ -27,7 +27,11 @@
   const { mouseX = 50, mouseY = 50 }: Props = $props();
 
   const MOBILE_BP = 768;
-  const TRAIL_SCALE = 0.75;
+  const TRAIL_SCALE_DESKTOP = 0.75;
+  const TRAIL_SCALE_MOBILE = 0.38; // ~4x fewer fragment ops
+  const DPR_CAP_DESKTOP = 2;
+  const DPR_CAP_MOBILE = 1;
+  const TARGET_FPS_MOBILE = 30;
   const LOGO_PATH = '/cogochi/logo-filled.png';
   const LOGO_COVER = 0.65;
   const DRIFT_AMP_X = 20;
@@ -86,8 +90,9 @@
     // ── FBOs + textures ─────────────────────────────────────
     let w = window.innerWidth;
     let h = window.innerHeight;
-    let tw = Math.ceil(w * TRAIL_SCALE);
-    let th = Math.ceil(h * TRAIL_SCALE);
+    let scale = w < MOBILE_BP ? TRAIL_SCALE_MOBILE : TRAIL_SCALE_DESKTOP;
+    let tw = Math.ceil(w * scale);
+    let th = Math.ceil(h * scale);
     let trail = createPingPong(gl, tw, th, useFloat);
 
     let logoTex: WebGLTexture | null = null;
@@ -110,15 +115,17 @@
       if (destroyed || !canvas) return;
       w = window.innerWidth;
       h = window.innerHeight;
-      const dpr = Math.min(window.devicePixelRatio, 2);
+      isMobile = w < MOBILE_BP;
+      scale = isMobile ? TRAIL_SCALE_MOBILE : TRAIL_SCALE_DESKTOP;
+      const dprCap = isMobile ? DPR_CAP_MOBILE : DPR_CAP_DESKTOP;
+      const dpr = Math.min(window.devicePixelRatio, dprCap);
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
-      tw = Math.ceil(w * TRAIL_SCALE);
-      th = Math.ceil(h * TRAIL_SCALE);
+      tw = Math.ceil(w * scale);
+      th = Math.ceil(h * scale);
       trail.resize(tw, th);
-      isMobile = w < MOBILE_BP;
     }
 
     resize();
@@ -138,9 +145,18 @@
     }
 
     // ── Render loop ─────────────────────────────────────────
+    const MOBILE_FRAME_MS = 1000 / TARGET_FPS_MOBILE;
+    let lastFrameTime = 0;
+
     function render(time: number) {
       if (destroyed) return;
-      if (isMobile) { animId = requestAnimationFrame(render); return; }
+
+      // Frame throttling on mobile (30fps target)
+      if (isMobile && time - lastFrameTime < MOBILE_FRAME_MS) {
+        animId = requestAnimationFrame(render);
+        return;
+      }
+      lastFrameTime = time;
 
       const t = time * 0.001;
       const mx = mouseX / 100;
@@ -225,7 +241,6 @@
 <canvas
   bind:this={canvas}
   class="ascii-bg"
-  class:hidden={isMobile}
   aria-hidden="true"
 ></canvas>
 
