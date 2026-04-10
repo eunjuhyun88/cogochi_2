@@ -129,7 +129,28 @@
     }
 
     resize();
-    window.addEventListener('resize', resize, { passive: true });
+
+    // Debounced resize — avoid reallocating FBOs while mobile URL bar animates
+    let resizeTimer: number | undefined;
+    let lastW = window.innerWidth;
+    let lastH = window.innerHeight;
+    const RESIZE_DEBOUNCE_MS = 180;
+    const H_IGNORE_PX = 120; // ignore small height changes (URL bar show/hide)
+
+    function onResize() {
+      const nw = window.innerWidth;
+      const nh = window.innerHeight;
+      // Skip if only height changed slightly (URL bar toggle on mobile)
+      if (nw === lastW && Math.abs(nh - lastH) < H_IGNORE_PX) return;
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        lastW = window.innerWidth;
+        lastH = window.innerHeight;
+        resize();
+      }, RESIZE_DEBOUNCE_MS);
+    }
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('orientationchange', onResize, { passive: true });
 
     // ── Logo rect in UV space ───────────────────────────────
     function logoRect(t: number): [number, number, number, number] {
@@ -227,7 +248,9 @@
     return () => {
       destroyed = true;
       cancelAnimationFrame(animId);
-      window.removeEventListener('resize', resize);
+      if (resizeTimer) clearTimeout(resizeTimer);
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('orientationchange', onResize);
       trail.destroy();
       gl.deleteTexture(blankTex);
       if (logoTex) gl.deleteTexture(logoTex);
@@ -250,9 +273,12 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100dvh; /* dynamic viewport — ignores mobile URL bar toggle */
     display: block;
+  }
+  @supports not (height: 100dvh) {
+    .ascii-bg { height: 100vh; }
   }
   .hidden { display: none; }
   @media (prefers-reduced-motion: reduce) {

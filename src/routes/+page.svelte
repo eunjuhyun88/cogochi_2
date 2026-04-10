@@ -163,6 +163,7 @@
   .hero {
     position: relative;
     min-height: 100vh;
+    min-height: 100dvh; /* stable height across mobile URL bar toggle */
     display: flex;
     align-items: center;
     justify-content: center;
