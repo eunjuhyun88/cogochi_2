@@ -163,7 +163,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
        LIMIT $3 OFFSET $4`,
       [intervalDays, pretge, limit, offset]
     ),
-    query<{ rank: number; ticker: string; keyword: string; trend_score: string; mentions: string; logo_url: string | null }>(
+    query<{ rank: number; ticker: string; keyword: string; trend_score: string; mentions: string; logo_url: string | null; }>(
       `SELECT rank, ticker, keyword, trend_score, mentions, logo_url
        FROM mindshare_summary
        WHERE period_days = $1 AND pretge = $2
@@ -179,7 +179,8 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
   ]);
 
   const items = pageRes.rows.map(toItem);
-  const allRows = allRes.rows;
+  type AllRow = { rank: number; ticker: string; keyword: string; trend_score: string; mentions: string; logo_url: string | null };
+  const allRows: AllRow[] = allRes.rows;
 
   // DB에 데이터 없으면 모크 폴백
   if (items.length === 0 && allRows.length === 0) {
@@ -188,7 +189,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
   }
 
   const total_keywords = allRows.length;
-  const total_mentions = allRows.reduce((s, r) => s + Number(r.mentions), 0);
+  const total_mentions = allRows.reduce((s: number, r) => s + Number(r.mentions), 0);
   const latestUpdatedAt = tsRes.rows[0]?.max ?? null;
 
   const sortedByTrend = [...allRows].sort((a, b) => Number(b.trend_score) - Number(a.trend_score));
@@ -222,7 +223,7 @@ export const GET: RequestHandler = async ({ url, cookies }) => {
       mentions:    Number(r.mentions),
     }));
 
-  const timeseries = await getTimeseries(items.map(i => i.ticker), intervalDays, pretge);
+  const timeseries = await getTimeseries(items.map((i: ReturnType<typeof toItem>) => i.ticker), intervalDays, pretge);
 
   return json({
     tab:             'community',
