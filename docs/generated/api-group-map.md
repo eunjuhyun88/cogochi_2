@@ -7,6 +7,7 @@ Source of truth remains `src/routes/api/**` and `docs/API_CONTRACT.md`.
 
 | Group | Purpose | Representative routes | Count |
 | --- | --- | --- | --- |
+| Mindshare | 한국 텔레그램 마인드쉐어 집계, 영향력 채널 점수 | `/api/influence/channel/[id]`, `/api/influence/leaderboard`, `/api/mindshare/community`, `/api/mindshare/weighted` | 4 |
 | Auth & Session | login, wallet auth, session lifecycle | `/api/auth/login`, `/api/auth/logout`, `/api/auth/nonce`, `/api/auth/register` | 7 |
 | Market Data | market snapshot, flow, news, and dex data | `/api/cycles/klines`, `/api/market/derivatives/[pair]`, `/api/market/dex/ads`, `/api/market/dex/community-takeovers` | 16 |
 | Terminal Scanner | scan and intel orchestration | `/api/terminal/compare`, `/api/terminal/intel-agent-shadow`, `/api/terminal/intel-agent-shadow/execute`, `/api/terminal/intel-policy` | 9 |
@@ -30,6 +31,12 @@ Source of truth remains `src/routes/api/**` and `docs/API_CONTRACT.md`.
 | Proxies & Infra | third-party proxy and support endpoints | `/api/chat/messages`, `/api/coinalyze`, `/api/coingecko/global`, `/api/etherscan/onchain` | 16 |
 
 ## Current Route Inventory Snapshot
+
+### Mindshare
+- `/api/influence/channel/[id]`
+- `/api/influence/leaderboard`
+- `/api/mindshare/community`
+- `/api/mindshare/weighted`
 
 ### Auth & Session
 - `/api/auth/login`

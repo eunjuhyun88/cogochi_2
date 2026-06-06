@@ -9,6 +9,8 @@ Source of truth remains `src/routes/` plus canonical docs under `docs/`.
 | --- | --- | --- | --- | --- |
 | `/` | product entry | positioning, navigation, onboarding | `walletStore`, `authSessionStore`, `profileTier` | `docs/PRODUCT_SENSE.md` |
 | `/dashboard` | daily hub | agent status, battle quota, revenue summary, Lab CTA | `agentStore`, `battleStore` | `docs/product-specs/core.md` |
+| `/dashboard/mindshare` | mindshare index | 한국 크립토 텔레그램 커뮤니티 언급 트렌드 — community / pre-TGE 카드 선택 | none | `docs/product-specs/core.md` |
+| `/dashboard/mindshare/community` | mindshare community dashboard | 키워드별 언급량 버블 차트, 가중 순위, KOL 리더보드, 채널 상세 패널 | `mindshare API`, `influence API` | `docs/product-specs/core.md` |
 | `/onboard` | onboarding flow | archetype selection, tutorial battle, ERA reveal | `onboardingStore` | `docs/product-specs/core.md` |
 | `/agent` | agent roster surface | owned-agent collection, manage/train handoff, create entry | `agentData`, `userProfileStore`, `matchHistoryStore` | `docs/page-specs/agent-page.md` |
 | `/agent/[id]` | agent hq detail route | doctrine, memory, history, and record for one agent | `agentData`, `doctrineStore` | `docs/page-specs/agent-detail-page.md` |

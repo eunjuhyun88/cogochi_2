@@ -31,6 +31,20 @@ const routeMeta = [
     deepDocs: '`docs/product-specs/core.md`'
   },
   {
+    route: '/dashboard/mindshare',
+    role: 'mindshare index',
+    primaryConcern: '한국 크립토 텔레그램 커뮤니티 언급 트렌드 — community / pre-TGE 카드 선택',
+    keyState: 'none',
+    deepDocs: '`docs/product-specs/core.md`'
+  },
+  {
+    route: '/dashboard/mindshare/community',
+    role: 'mindshare community dashboard',
+    primaryConcern: '키워드별 언급량 버블 차트, 가중 순위, KOL 리더보드, 채널 상세 패널',
+    keyState: '`mindshare API`, `influence API`',
+    deepDocs: '`docs/product-specs/core.md`'
+  },
+  {
     route: '/onboard',
     role: 'onboarding flow',
     primaryConcern: 'archetype selection, tutorial battle, ERA reveal',
@@ -217,6 +231,7 @@ const storeMeta = [
 ];
 
 const apiCategoryOrder = [
+  'Mindshare',
   'Auth & Session',
   'Market Data',
   'Terminal Scanner',
@@ -241,6 +256,7 @@ const apiCategoryOrder = [
 ];
 
 const apiCategoryMeta = {
+  'Mindshare': { purpose: '한국 텔레그램 마인드쉐어 집계, 영향력 채널 점수' },
   'Auth & Session': { purpose: 'login, wallet auth, session lifecycle' },
   'Market Data': { purpose: 'market snapshot, flow, news, and dex data' },
   'Terminal Scanner': { purpose: 'scan and intel orchestration' },
@@ -317,6 +333,7 @@ function discoverApiRoutes() {
 }
 
 function groupApiRoute(route) {
+  if (route.startsWith('/api/mindshare/') || route.startsWith('/api/influence/')) return 'Mindshare';
   if (route.startsWith('/api/auth/')) return 'Auth & Session';
   if (route === '/api/waitlist') return 'Growth & Landing';
   if (route.startsWith('/api/market/alerts/')) return 'Market Alerts';
